@@ -1,3 +1,5 @@
+
+
 cd("C:/Users/francis.smart.ctr/GitDir/SoftDatesJL/SoftDatesJL")
 
 using Pkg
@@ -61,10 +63,19 @@ V3 = [sample(1:(n*5), 1)[1] for i in 1:n]
 fmlist = [
   ["dd$(sep[i])mm$(sep[i])yyyy" for i in 1:n] ,
   ["dd$(sep[i])mm$(sep[i])yy"   for i in 1:n] ,
-  ["yyyy$(sep[i])mm$(sep[i])dd" for i in 1:n] ,
+  ["E dd$(sep[i])mm$(sep[i])yyyy" for i in 1:n] ,
+  ["E dd$(sep[i])mm$(sep[i])yy"   for i in 1:n] ,
+  ["e dd$(sep[i])mm$(sep[i])yyyy" for i in 1:n] ,
+  ["e dd$(sep[i])mm$(sep[i])yy"   for i in 1:n] ,
+  ["e mm$(sep[i])yyyy" for i in 1:n] ,
+  ["e mm$(sep[i])yy"   for i in 1:n] ,
   ["yy$(sep[i])mm$(sep[i])dd"   for i in 1:n] ,
   ["mm$(sep[i])dd$(sep[i])yyyy" for i in 1:n] ,
-  ["mm$(sep[i])dd$(sep[i])yy"   for i in 1:n] ]
+  ["mm$(sep[i])dd$(sep[i])yy"   for i in 1:n] ,
+  ["U dd, yyyy" for i in 1:n] ,
+  ["U dd, yy"   for i in 1:n] ,
+  ["u dd, yyyy" for i in 1:n] ,
+  ["u dd, yy"   for i in 1:n] ]
 
 txtblocks =
     [begin
@@ -97,7 +108,8 @@ for i in 2:length(fmlist)
 
 CSV.write("sampledata/SampleDates.csv", dt)
 
-####################################
+########################################################################
+
 
 dayranges =
   [begin
@@ -113,16 +125,26 @@ seprange = sample( ["-", "thru", "through", "till"] , n)
 fm2list = [
   ["dd$(sep[i])mm$(sep[i])yyyy" for i in 1:n] ,
   ["dd$(sep[i])mm$(sep[i])yy"   for i in 1:n] ,
+  ["E dd$(sep[i])mm$(sep[i])yyyy" for i in 1:n] ,
+  ["E dd$(sep[i])mm$(sep[i])yy"   for i in 1:n] ,
+  ["e dd$(sep[i])mm$(sep[i])yyyy" for i in 1:n] ,
+  ["e dd$(sep[i])mm$(sep[i])yy"   for i in 1:n] ,
   ["yyyy$(sep[i])mm$(sep[i])dd" for i in 1:n] ,
   ["yy$(sep[i])mm$(sep[i])dd"   for i in 1:n] ,
   ["mm$(sep[i])dd$(sep[i])yyyy" for i in 1:n] ,
   ["mm$(sep[i])dd$(sep[i])yy"   for i in 1:n] ,
-  ["dd$(sep[i])mm$(sep[i])yyyy" for i in 1:n] ,
-  ["dd$(sep[i])mm$(sep[i])yy" for i in 1:n] ]
+  ["U dd, yyyy" for i in 1:n] ,
+  ["U dd, yy"   for i in 1:n] ,
+  ["u dd, yyyy" for i in 1:n] ,
+  ["u dd, yy"   for i in 1:n] ]
 
 fr1list = [
     ["dd$(sep[i])mm$(sep[i])yyyy" for i in 1:n] ,
     ["dd$(sep[i])mm$(sep[i])yy"   for i in 1:n] ,
+    ["E dd$(sep[i])mm$(sep[i])yyyy" for i in 1:n] ,
+    ["E dd$(sep[i])mm$(sep[i])yy"   for i in 1:n] ,
+    ["e dd$(sep[i])mm$(sep[i])yyyy" for i in 1:n] ,
+    ["e dd$(sep[i])mm$(sep[i])yy"   for i in 1:n] ,
     ["yyyy$(sep[i])mm$(sep[i])dd" for i in 1:n] ,
     ["yy$(sep[i])mm$(sep[i])dd"   for i in 1:n] ,
     ["mm$(sep[i])dd$(sep[i])yyyy" for i in 1:n] ,
@@ -133,12 +155,16 @@ fr1list = [
 fr2list = [
   ["dd$(sep[i])mm$(sep[i])yyyy" for i in 1:n] ,
   ["dd$(sep[i])mm$(sep[i])yy"   for i in 1:n] ,
+  ["E dd$(sep[i])mm$(sep[i])yyyy" for i in 1:n] ,
+  ["E dd$(sep[i])mm$(sep[i])yy"   for i in 1:n] ,
+  ["e dd$(sep[i])mm$(sep[i])yyyy" for i in 1:n] ,
+  ["e dd$(sep[i])mm$(sep[i])yy"   for i in 1:n] ,
   ["yyyy$(sep[i])mm$(sep[i])dd" for i in 1:n] ,
   ["yy$(sep[i])mm$(sep[i])dd"   for i in 1:n] ,
   ["mm$(sep[i])dd$(sep[i])yyyy" for i in 1:n] ,
   ["mm$(sep[i])dd$(sep[i])yy"   for i in 1:n] ,
-  ["dd$(sep[i])mm$(sep[i])yyyy" for i in 1:n] ,
-  ["dd$(sep[i])mm$(sep[i])yyyy" for i in 1:n] ]
+  ["dd$(sep[i])yyyy" for i in 1:n] ,
+  ["dd$(sep[i])yyyy" for i in 1:n] ]
 
 
 dtrange = dt[1:0,]
