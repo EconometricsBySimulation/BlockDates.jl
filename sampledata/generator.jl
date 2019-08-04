@@ -13,6 +13,11 @@ lip_par = [replace(i, r"\r|\n" => "") for i in split(lipsum, "\n\r") if i!=""]
 lip_sen  = [replace(i, r"\r|\n|^ " => "") for i in split(lipsum, ".") if i!=""]
 lip_wrd  = [replace(i, r"\r|\n|^ " => "") for i in split(lipsum, r"\n\r|\s+") if i!=""]
 
+# Units from wikipedia (https://en.wikipedia.org/wiki/United_States_customary_units)
+units = split(read("sampledata/Units.txt", String), "\r\n")
+
+sampleset = [sample(lip_sen, 200, replace = false)..., units...]
+
 # DataGenerators
 # Type1
 # Number of dates to generate
@@ -33,7 +38,9 @@ daydates = [sort(sample(startdt[i]:Day(1):enddt[i], coverage[i], replace = false
 
 notes =  [join(sample(lip_sen, rand(Binomial(3, .25),1)[1]), " ") for i in 1:n]
 
-txtfield = [[join(sample(lip_sen, rand([1,1,2,3])), "\n\r") for j in 1:length(daydates[i])]  for i in 1:n]
+txtfield = [[join(sample(sampleset, rand([1,2,2,3,4,5,6])),
+             sample([". ", "; ", " ", " - ", ", ", ".\n\r", "\n\r", "\n\r\n\r"], 1)[1])
+             for j in 1:length(daydates[i])]  for i in 1:n]
 
 sep = sample(split(raw"./- ","") , n)
 
@@ -109,6 +116,61 @@ for i in 2:length(fmlist)
 CSV.write("sampledata/SampleDates.csv", dt)
 
 ########################################################################
+# Input Errors
+
+sloppy_rt = .10
+
+sloppy_entries = sample(1:n, Int(round(n*sloppy_rt)), replace = false) |> sort
+
+dt[:sloppy] = [dt[i, :V0] ∈ sloppy_entries for i in 1:size(dt)[1]]
+
+
+# A function that replaces a value at a specific place
+function Base.replace(x::String, sep::String, rep::String, pos::Integer)
+  a = split(x, sep)
+  if (length(a)<pos+1) return x end
+  join([a[1:(pos-1)]..., join(a[pos:(pos+1)], rep), a[(pos+2):end]...], sep)
+end
+
+replace("a1 is a2 is a3", " ", ".", 2)
+replace("a1 is a2 is a3", "-", ".", 2)
+replace("a1 is a2 is a3", "2", ".", 2)
+replace("a1 is a2 is a3", "2", ".", 1)
+
+txsloppy = dt[dt[:sloppy], :Text]
+
+symbolset = split(raw"./- ","")
+
+# Replace some symbols in the sloppy dates with alternative symbols
+for i in 1:size(txsloppy)[1]
+  position = sample(1:2,1)[1]
+  for j in 1:length(symbolset)
+    txsloppy[i] = replace(txsloppy[i],
+      string(symbolset[j % length(symbolset) + 1]),
+      string(symbolset[j]),
+      position)
+  end
+end
+
+dt[dt[:sloppy], :Text] = txsloppy
+
+# There are also some entries which have the wrong date - typically year or month
+error_rt = .10
+
+error_entries = sample(1:n, Int(round(n*error_rt)), replace = false) |> sort
+
+dt[:error] = [dt[i, :V0] ∈ error_entries for i in 1:size(dt)[1]]
+
+txerror = dt[dt[:error], :Text]
+
+txerror = [replace(txerror[i], r"1[6-8]\b" => (x -> "$(parse(Int, x)-1)")) for i in 1:size(txerror)[1]]
+
+# 10% of years are off
+dt[dt[:error], :Text] = txerror
+
+CSV.write("sampledata/SampleDatesErrors.csv", dt)
+
+########################################################################
 
 
 dayranges =
@@ -119,7 +181,7 @@ dayranges =
    end
    for i in 1:n]
 
-seprange = sample( ["-", "thru", "through", "till"] , n)
+seprange = sample( ["-", "thru", "through", "till", "to"] , n)
 
 # Generate date type 1
 fm2list = [
@@ -129,14 +191,14 @@ fm2list = [
   ["E dd$(sep[i])mm$(sep[i])yy"   for i in 1:n] ,
   ["e dd$(sep[i])mm$(sep[i])yyyy" for i in 1:n] ,
   ["e dd$(sep[i])mm$(sep[i])yy"   for i in 1:n] ,
+  ["e mm$(sep[i])yyyy" for i in 1:n] ,
+  ["e mm$(sep[i])yy"   for i in 1:n] ,
   ["yyyy$(sep[i])mm$(sep[i])dd" for i in 1:n] ,
   ["yy$(sep[i])mm$(sep[i])dd"   for i in 1:n] ,
   ["mm$(sep[i])dd$(sep[i])yyyy" for i in 1:n] ,
   ["mm$(sep[i])dd$(sep[i])yy"   for i in 1:n] ,
   ["U dd, yyyy" for i in 1:n] ,
-  ["U dd, yy"   for i in 1:n] ,
-  ["u dd, yyyy" for i in 1:n] ,
-  ["u dd, yy"   for i in 1:n] ]
+  ["U dd, yy"   for i in 1:n] ]
 
 fr1list = [
     ["dd$(sep[i])mm$(sep[i])yyyy" for i in 1:n] ,
@@ -145,6 +207,8 @@ fr1list = [
     ["E dd$(sep[i])mm$(sep[i])yy"   for i in 1:n] ,
     ["e dd$(sep[i])mm$(sep[i])yyyy" for i in 1:n] ,
     ["e dd$(sep[i])mm$(sep[i])yy"   for i in 1:n] ,
+    ["e mm$(sep[i])yyyy" for i in 1:n] ,
+    ["e mm$(sep[i])yy"   for i in 1:n] ,
     ["yyyy$(sep[i])mm$(sep[i])dd" for i in 1:n] ,
     ["yy$(sep[i])mm$(sep[i])dd"   for i in 1:n] ,
     ["mm$(sep[i])dd$(sep[i])yyyy" for i in 1:n] ,
@@ -159,6 +223,8 @@ fr2list = [
   ["E dd$(sep[i])mm$(sep[i])yy"   for i in 1:n] ,
   ["e dd$(sep[i])mm$(sep[i])yyyy" for i in 1:n] ,
   ["e dd$(sep[i])mm$(sep[i])yy"   for i in 1:n] ,
+  ["e mm$(sep[i])yyyy" for i in 1:n] ,
+  ["e mm$(sep[i])yy"   for i in 1:n] ,
   ["yyyy$(sep[i])mm$(sep[i])dd" for i in 1:n] ,
   ["yy$(sep[i])mm$(sep[i])dd"   for i in 1:n] ,
   ["mm$(sep[i])dd$(sep[i])yyyy" for i in 1:n] ,
@@ -212,5 +278,60 @@ for k in 1:length(fm2list)
 end
 
 dtrange
+dtrange[:Text]
 
 CSV.write("sampledata/SampleDateRanges.csv", dtrange)
+
+##############################################################################
+
+sloppy_rt = .10
+
+sloppy_entries = sample(1:n, Int(round(n*sloppy_rt)), replace = false) |> sort
+
+dtrange[:sloppy] = [dtrange[i, :V0] ∈ sloppy_entries for i in 1:size(dtrange)[1]]
+
+
+# A function that replaces a value at a specific place
+function Base.replace(x::String, sep::String, rep::String, pos::Integer)
+  a = split(x, sep)
+  if (length(a)<pos+1) return x end
+  join([a[1:(pos-1)]..., join(a[pos:(pos+1)], rep), a[(pos+2):end]...], sep)
+end
+
+replace("a1 is a2 is a3", " ", ".", 2)
+replace("a1 is a2 is a3", "-", ".", 2)
+replace("a1 is a2 is a3", "2", ".", 2)
+replace("a1 is a2 is a3", "2", ".", 1)
+
+txsloppy = dtrange[dtrange[:sloppy], :Text]
+
+symbolset = split(raw"./- ","")
+
+# Replace some symbols in the sloppy dates with alternative symbols
+for i in 1:size(txsloppy)[1]
+  position = sample(1:2,1)[1]
+  for j in 1:length(symbolset)
+    txsloppy[i] = replace(txsloppy[i],
+      string(symbolset[j % length(symbolset) + 1]),
+      string(symbolset[j]),
+      position)
+  end
+end
+
+dtrange[dtrange[:sloppy], :Text] = txsloppy
+
+# There are also some entries which have the wrong date - typically year or month
+error_rt = .10
+
+error_entries = sample(1:n, Int(round(n*error_rt)), replace = false) |> sort
+
+dtrange[:error] = [dtrange[i, :V0] ∈ error_entries for i in 1:size(dtrange)[1]]
+
+txerror = dtrange[dtrange[:error], :Text]
+
+txerror = [replace(txerror[i], r"1[6-8]\b" => (x -> "$(parse(Int, x)-1)")) for i in 1:size(txerror)[1]]
+
+# 10% of years are off
+dtrange[dtrange[:error], :Text] = txerror
+
+CSV.write("sampledata/SampleDatesRangeErrors.csv", dtrange)
