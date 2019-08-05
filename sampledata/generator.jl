@@ -1,9 +1,20 @@
+# A function that replaces a value at a specific place (say the third )
+function Base.replace(x::String, sep::String, rep::String, pos::Integer)
+  a = split(x, sep)
+  if (length(a)<pos+1) return x end
+  join([a[1:(pos-1)]..., join(a[pos:(pos+1)], rep), a[(pos+2):end]...], sep)
+end
 
+replace("a1 is a2 is a3", " ", ".", 2)
+replace("a1 is a2 is a3", "-", ".", 2)
+replace("a1 is a2 is a3", "2", ".", 2)
+replace("a1 is a2 is a3", "2", ".", 1)
 
 cd("C:/Users/francis.smart.ctr/GitDir/SoftDatesJL/SoftDatesJL")
 
 using Pkg
 Pkg.activate(".")
+Pkg.add("Distributions")
 using Pkg, Dates, DataFrames, Distributions, CSV
 
 # used lipsum.com to grab 2000 year old document (https://www.lipsum.com/)
@@ -21,7 +32,7 @@ sampleset = [sample(lip_sen, 200, replace = false)..., units...]
 # DataGenerators
 # Type1
 # Number of dates to generate
-n = 1000
+n = 250
 
 dtrange = (Date(now()) - Year(5)):Day(1):Date(now())
 
@@ -116,63 +127,96 @@ for i in 2:length(fmlist)
 CSV.write("sampledata/SampleDates.csv", dt)
 
 ########################################################################
+
+# Save starting text
+dt[:Text0] = dt[:Text]
+
 # Input Errors
 
-sloppy_rt = .10
+    sloppy_rt = .10
 
-sloppy_entries = sample(1:n, Int(round(n*sloppy_rt)), replace = false) |> sort
+    sloppy_entries = sample(1:n, Int(round(n*sloppy_rt)), replace = false) |> sort
 
-dt[:sloppy] = [dt[i, :V0] ∈ sloppy_entries for i in 1:size(dt)[1]]
+    dt[:sloppy] = [dt[i, :V0] ∈ sloppy_entries for i in 1:size(dt)[1]]
 
+    symbolset = split(raw"./- ","")
 
-# A function that replaces a value at a specific place
-function Base.replace(x::String, sep::String, rep::String, pos::Integer)
-  a = split(x, sep)
-  if (length(a)<pos+1) return x end
-  join([a[1:(pos-1)]..., join(a[pos:(pos+1)], rep), a[(pos+2):end]...], sep)
-end
+    txsloppy = dtrange[dt[:sloppy], :Text]
 
-replace("a1 is a2 is a3", " ", ".", 2)
-replace("a1 is a2 is a3", "-", ".", 2)
-replace("a1 is a2 is a3", "2", ".", 2)
-replace("a1 is a2 is a3", "2", ".", 1)
+    # Replace some symbols in the sloppy dates with alternative symbols
+    for i in 1:size(txsloppy)[1]
+      position = sample(1:2,1)[1]
+      for j in 1:length(symbolset)
+        txsloppy[i] = replace(txsloppy[i],
+          string(symbolset[j % length(symbolset) + 1]),
+          string(symbolset[j]),
+          position)
+      end
+    end
 
-txsloppy = dt[dt[:sloppy], :Text]
+    dt[dt[:sloppy], :Text] = txsloppy
 
-symbolset = split(raw"./- ","")
+# There are also some entries which have the wrong date - 15-19 -> +- 1
+    error_rt = .10
 
-# Replace some symbols in the sloppy dates with alternative symbols
-for i in 1:size(txsloppy)[1]
-  position = sample(1:2,1)[1]
-  for j in 1:length(symbolset)
-    txsloppy[i] = replace(txsloppy[i],
-      string(symbolset[j % length(symbolset) + 1]),
-      string(symbolset[j]),
-      position)
-  end
-end
+    error_entries = sample(1:n, Int(round(n*error_rt)), replace = false) |> sort
 
-dt[dt[:sloppy], :Text] = txsloppy
+    dt[:error] = [dt[i, :V0] ∈ error_entries for i in 1:size(dt)[1]]
 
-# There are also some entries which have the wrong date - typically year or month
-error_rt = .10
+    txerror = dt[dt[:error], :Text]
 
-error_entries = sample(1:n, Int(round(n*error_rt)), replace = false) |> sort
+    txerror = [replace(txerror[i], r"1[6-8]\b" => (x -> "$(parse(Int, x)-1)")) for i in 1:size(txerror)[1]]
 
-dt[:error] = [dt[i, :V0] ∈ error_entries for i in 1:size(dt)[1]]
+    # 10% of years are off
+    dt[dt[:error], :Text] = txerror
 
-txerror = dt[dt[:error], :Text]
+# Drop zeros for some portion of dates
+    drop0_rt = .10
 
-txerror = [replace(txerror[i], r"1[6-8]\b" => (x -> "$(parse(Int, x)-1)")) for i in 1:size(txerror)[1]]
+    drop0_entries = sample(1:n, Int(round(n*drop0_rt)), replace = false) |> sort
 
-# 10% of years are off
-dt[dt[:error], :Text] = txerror
+    dt[:drop0] = [dt[i, :V0] ∈ drop0_entries for i in 1:size(dt)[1]]
+
+    txdrop0 = dt[dt[:drop0], :Text]
+
+    txdrop0 = [replace(txdrop0[i], "0"=>"",count = sample([1,1,1,1,2,3],1)[1]) for i in 1:size(txdrop0)[1]]
+
+    dt[dt[:drop0], :Text] = txdrop0
+
+# Rand Δ of numbers are replaced with other random numbers 10 -> 30
+    rand_rt = .10
+
+    rand_entries = sample(1:n, Int(round(n*rand_rt)), replace = false) |> sort
+
+    dt[:rand] = [dt[i, :V0] ∈ rand_entries for i in 1:size(dt)[1]]
+
+    txrand = dt[dt[:rand], :Text]
+
+    txrand = [replace(txrand[i], string(sample(0:9,1)[1]), string(sample(0:9,1)[1]), 1) for i in 1:size(txrand)[1]]
+
+    dt[dt[:rand], :Text] = txrand
+
+# Non-standard abbreviation of days of the week: Mon->M or Mo, Tuesday -> Tuesda
+    abbrev_rt = .30
+
+    abbrev_entries = sample(1:n, Int(round(n*abbrev_rt)), replace = false) |> sort
+
+    dt[:abbrev] = [dt[i, :V0] ∈ abbrev_entries for i in 1:size(dt)[1]]
+
+    txabbrev = dt[dt[:abbrev], :Text]
+
+    daynames = join(dayname.(now() .+ Day.(0:6)), "|")
+    dayabbrs = join(dayabbr.(now() .+ Day.(0:6)), "|")
+
+    randcut(x) = x[1:sample(1:length(x)-1)[1]]
+
+    txabbrev = [replace(txabbrev[i], Regex("\\b($daynames|$dayabbrs)\\b") => randcut ) for i in 1:size(txabbrev)[1]]
+
+    dt[dt[:abbrev], :Text] = txabbrev
 
 CSV.write("sampledata/SampleDatesErrors.csv", dt)
 
 ########################################################################
-
-
 dayranges =
   [begin
     y = daydates[i]
@@ -284,54 +328,91 @@ CSV.write("sampledata/SampleDateRanges.csv", dtrange)
 
 ##############################################################################
 
-sloppy_rt = .10
+# Save starting text
+dtrange[:Text0] = dtrange[:Text]
 
-sloppy_entries = sample(1:n, Int(round(n*sloppy_rt)), replace = false) |> sort
+# Input Errors
 
-dtrange[:sloppy] = [dtrange[i, :V0] ∈ sloppy_entries for i in 1:size(dtrange)[1]]
+    sloppy_rt = .10
+
+    sloppy_entries = sample(1:n, Int(round(n*sloppy_rt)), replace = false) |> sort
+
+    dtrange[:sloppy] = [dtrange[i, :V0] ∈ sloppy_entries for i in 1:size(dtrange)[1]]
+
+    symbolset = split(raw"./- ","")
+
+    txsloppy = dtrange[dtrange[:sloppy], :Text]
 
 
-# A function that replaces a value at a specific place
-function Base.replace(x::String, sep::String, rep::String, pos::Integer)
-  a = split(x, sep)
-  if (length(a)<pos+1) return x end
-  join([a[1:(pos-1)]..., join(a[pos:(pos+1)], rep), a[(pos+2):end]...], sep)
-end
+    # Replace some symbols in the sloppy dates with alternative symbols
+    for i in 1:size(txsloppy)[1]
+      position = sample(1:2,1)[1]
+      for j in 1:length(symbolset)
+        txsloppy[i] = replace(txsloppy[i],
+          string(symbolset[j % length(symbolset) + 1]),
+          string(symbolset[j]),
+          position)
+      end
+    end
 
-replace("a1 is a2 is a3", " ", ".", 2)
-replace("a1 is a2 is a3", "-", ".", 2)
-replace("a1 is a2 is a3", "2", ".", 2)
-replace("a1 is a2 is a3", "2", ".", 1)
+    dtrange[dtrange[:sloppy], :Text] = txsloppy
 
-txsloppy = dtrange[dtrange[:sloppy], :Text]
+# There are also some entries which have the wrong date - 15-19 -> +- 1
+    error_rt = .10
 
-symbolset = split(raw"./- ","")
+    error_entries = sample(1:n, Int(round(n*error_rt)), replace = false) |> sort
 
-# Replace some symbols in the sloppy dates with alternative symbols
-for i in 1:size(txsloppy)[1]
-  position = sample(1:2,1)[1]
-  for j in 1:length(symbolset)
-    txsloppy[i] = replace(txsloppy[i],
-      string(symbolset[j % length(symbolset) + 1]),
-      string(symbolset[j]),
-      position)
-  end
-end
+    dtrange[:error] = [dtrange[i, :V0] ∈ error_entries for i in 1:size(dtrange)[1]]
 
-dtrange[dtrange[:sloppy], :Text] = txsloppy
+    txerror = dtrange[dtrange[:error], :Text]
 
-# There are also some entries which have the wrong date - typically year or month
-error_rt = .10
+    txerror = [replace(txerror[i], r"1[6-8]\b" => (x -> "$(parse(Int, x)-1)")) for i in 1:size(txerror)[1]]
 
-error_entries = sample(1:n, Int(round(n*error_rt)), replace = false) |> sort
+    # 10% of years are off
+    dtrange[dtrange[:error], :Text] = txerror
 
-dtrange[:error] = [dtrange[i, :V0] ∈ error_entries for i in 1:size(dtrange)[1]]
+# Drop zeros for some portion of dates
+    drop0_rt = .10
 
-txerror = dtrange[dtrange[:error], :Text]
+    drop0_entries = sample(1:n, Int(round(n*drop0_rt)), replace = false) |> sort
 
-txerror = [replace(txerror[i], r"1[6-8]\b" => (x -> "$(parse(Int, x)-1)")) for i in 1:size(txerror)[1]]
+    dtrange[:drop0] = [dtrange[i, :V0] ∈ drop0_entries for i in 1:size(dtrange)[1]]
 
-# 10% of years are off
-dtrange[dtrange[:error], :Text] = txerror
+    txdrop0 = dtrange[dtrange[:drop0], :Text]
+
+    txdrop0 = [replace(txdrop0[i], "0"=>"",count = sample([1,1,1,1,2,3],1)[1]) for i in 1:size(txdrop0)[1]]
+
+    dtrange[dtrange[:drop0], :Text] = txdrop0
+
+# Rand Δ of numbers are replaced with other random numbers 10 -> 30
+    rand_rt = .10
+
+    rand_entries = sample(1:n, Int(round(n*rand_rt)), replace = false) |> sort
+
+    dtrange[:rand] = [dtrange[i, :V0] ∈ rand_entries for i in 1:size(dtrange)[1]]
+
+    txrand = dtrange[dtrange[:rand], :Text]
+
+    txrand = [replace(txrand[i], string(sample(0:9,1)[1]), string(sample(0:9,1)[1]), 1) for i in 1:size(txrand)[1]]
+
+    dtrange[dtrange[:rand], :Text] = txrand
+
+# Non-standard abbreviation of days of the week: Mon->M or Mo, Tuesday -> Tuesda
+    abbrev_rt = .30
+
+    abbrev_entries = sample(1:n, Int(round(n*abbrev_rt)), replace = false) |> sort
+
+    dtrange[:abbrev] = [dtrange[i, :V0] ∈ abbrev_entries for i in 1:size(dtrange)[1]]
+
+    txabbrev = dtrange[dtrange[:abbrev], :Text]
+
+    daynames = join(dayname.(now() .+ Day.(0:6)), "|")
+    dayabbrs = join(dayabbr.(now() .+ Day.(0:6)), "|")
+
+    randcut(x) = x[1:sample(1:length(x)-1)[1]]
+
+    txabbrev = [replace(txabbrev[i], Regex("\\b($daynames|$dayabbrs)\\b") => randcut ) for i in 1:size(txabbrev)[1]]
+
+    dtrange[dtrange[:abbrev], :Text] = txabbrev
 
 CSV.write("sampledata/SampleDatesRangeErrors.csv", dtrange)
