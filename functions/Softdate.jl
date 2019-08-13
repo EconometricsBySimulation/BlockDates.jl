@@ -6,6 +6,171 @@
 ## if rangeformatter does not find a match then singleformatter is attempted
 ## if that finds a match then a single value is returned
 
+# This function converts input dateformats into potential regex matches
+# It assumes years fall between 2000-29. Change this by changing yrpre or
+# yrdec year decade restricts the decade of the year while year prefix restricts
+# the melenium.
+function dateformat2regex(m::String; yrpre="20", yrdec="[0-2]")
+    m = replace(m,   r"\bmm\b"=>"[0-1]?[0-9]")
+    m = replace(m, r"\byyyy\b"=>"$yrpre$yrdec[0-9]")
+    m = replace(m,   r"\byy\b"=>"$yrdec[0-9]")
+    m = replace(m,   r"\bdd\b"=>"[0-3]?[0-9]")
+end
+dateformat2regex("yyyy dd mm")
+dateformat2regex("yy dd mm")
+# Requires exact number for match
+dateformat2regex("yy d mm This is something")
+
+rmwhitespace(x) = strip(replace(x, r"\s+"=>" "))
+rmwhitespace(" asdf  asdf as")
+rmwhitespace.([" asdf  asdf as", " 1  2   3   4"])
+
+
+
+
+### Range Date Format
+# Function for formatting ranged dates
+function rangeformatter(txtin; rangeformat, seperator="through|till| ", toomany=30)
+
+  txt = replace(txtin, r"[|./\\-]"=>" ")
+  txt = replace(txt, r"\b([0-9])\b"=>s"0\1")
+
+  # Input range formats
+  rf1 = rangeformat[1]
+  if length(rangeformat) == 1 ; rf2 = rangeformat[1]; end
+  if length(rangeformat) >= 2 ; rf2 = rangeformat[2]; end
+
+  left, right = dateformat2regex.([rf1,rf2])
+  matchcheck = match(Regex("^($left)([ ]*)($seperator)([ ]*)($right)"), txt)
+
+  (matchcheck === nothing) && (return [])
+
+  m1 = matchcheck.captures[1]
+  m2 = matchcheck.captures[5]
+
+  # Interprettable range formats
+  if length(rangeformat) == 4 ; rf1 = rangeformat[4]; rf2 = rangeformat[4]; end
+  if length(rangeformat) == 5 ; rf1 = rangeformat[4]; rf2 = rangeformat[5]; end
+
+  if length(rangeformat) >= 3 ; m1, m2 = rmwhitespace.(rangeformat[3](m1, m2)); end
+
+  try
+    dt1 = Date(m1, DateFormat(rf1))
+    dt2 = Date(m2, DateFormat(rf2))
+
+    starter = sum(length.(matchcheck.captures))+1
+
+    txtout = strip(txtin[starter:end])
+    indt   = txtin[1:(starter-1)]
+
+    (length(dt1:Day(1):dt2) > toomany) && return []
+
+    return DataFrame(date=collect(dt1:Day(1):dt2),
+               txt=fill(txtout, length(dt1:Day(1):dt2)),
+               indt=fill(indt, length(dt1:Day(1):dt2)))
+  catch
+    return  []
+  end
+end
+
+rangeformatter("26/10/2015 till 01/11/2015 Date match", rangeformat = ["dd mm yyyy"])
+
+# fail from date misspecification, firs tis too many dates, second is
+rangeformatter("2/1/2017 through 12/1/2017 Date mismatch", rangeformat = ["mm dd yyyy"])
+rangeformatter("16/1/2017 through 19/1/2017 Date mismatch", rangeformat =["mm dd yyyy"])
+
+#### Some date ranges are so messy they have to borrow elements from each other
+convertmdy2mdY(x,y) = ["$(x[1:(end-2)])$(y[(end-3):(end-2)])$(x[(end-1):end])", y]
+convertmdy2mdY("11 12 17", "11 15 2017")
+
+rg = rangeformatter("11 12 17 through 11 15 2017 ipsum tadsf",
+  rangeformat =["mm dd yy", "mm dd yyyy", convertmdy2mdY])
+
+#### Some date ranges are so messy they have to borrow elements
+convertmd_dy2mdy(x,y) = ["$x $(y[(end-3):end])", "$(x[1:2]) $y"]
+convertmd_dy2mdy("07 16", "19 2019")
+
+# fail from insufficient date data
+rangeformat=("mm dd", "dd yyyy", convertmd_dy2mdy, "mm dd yyyy")
+rangeformatter("1/10 - 15/2017 Date Match!", rangeformat, "through|till| ")
+
+
+#### Single Date Format
+# Function for formatting single dates
+function singleformatter(txtin, singleformat::Array{String}="mm dd yyyy")
+  txt = replace(txtin, r"[|./\\-]"=>" ")
+  txt = replace(txt, r"\b([0-9])\b"=>s"0\1")
+
+  left = dateformat2regex.(singleformat)
+  matchcheck = match(Regex("^($left)"), txt)
+
+  (matchcheck === nothing) && (return DataFrame(date = Date(0), txt= txt, indt=""))
+
+  try
+    dt1 = Date(matchcheck.captures[1], DateFormat(singleformat[1]))
+    starter = sum(length.(matchcheck.captures[1]))+1
+
+    txtout = strip(txtin[starter:end])
+    indt   = txtin[1:(starter-1)]
+
+    return DataFrame(date=dt1, txt=txtout, indt = indt)
+  catch
+    return DataFrame(date=Date(0), txt=txt, indt = "")
+  end
+end
+
+sg1 = singleformatter("1 16 2017 A date", ["mm dd yyyy"])
+sg2 = singleformatter("443.43 Not a date", ["mm dd yyyy"])
+sg3 = singleformatter("16 1 2017 A date mismatch", ["mm dd yyyy"])
+sg4 = singleformatter("16.1.2017 A date match", ["dd mm yyyy"])
+
+
+######
+## Takes a date text string Array and tries to match first ranges then singles
+## Uses dtstart and dtend to fill in missing
+function dt2block2(txtin,
+    dtstart = now()-Day(10),
+    dtend   = now(),
+    singlefmt = ["mm dd yyyy"],
+    rangefmt = [["dd mm yyyy", "dd mm yyyy"], ["mm dd yyyy", "mm dd yyyy"]],
+    seperator = r"through|till|-|to",
+    fillmissing = true)
+
+  outframe = DataFrame(date = Date(0), txt= "", indt="")
+
+  for tx in txtin;
+    rangeattempt = rangeformatter(tx, rangefmt, seperator)
+
+    if size(rangeattempt)[1] > 0
+        outframe= vcat(outframe, rangeattempt)
+        continue
+    end
+    singleattempt = singleformatter(tx, singlefmt)
+    outframe = vcat(outframe, singleattempt)
+    continue
+  end
+
+  # Fill in any missing dates if dates exist in range but not in set
+  if fillmissing; for dt in Date(dtstart):Day(1):Date(dtend);
+      !(dt ∈ outframe[:date]) &&
+        (append!(outframe, DataFrame(date=dt, txt="<<Input Missing>>", indt = "")))
+  end; end
+
+  # Merge any txt fields which do not have dates associated with them except for the first.
+  outframekeep = fill(true, size(outframe)[1])
+
+  for i = 2:size(outframe)[1]
+    if outframe[i,1] ==  Date(0)
+       outframe[i-1,2] = join(outframe[(i-1):i,2], "\n\r")
+       outframekeep[i] = false
+    end
+  end
+
+  outframe = outframe[outframekeep, :]
+
+  outframe[2:end,:]
+end
+
 
 function softdate(txt, dtstart::Date, dtend::Date;
      splits  = [r"\n\r|\n"],
@@ -58,116 +223,11 @@ end
 txtin = txt2
 tx = txtin[1]
 
-function dt2block2(txtin,
-    dtstart = now()-Day(10),
-    dtend   = now(),
-    singlefmt = "mm dd yyyy",
-    rangefmt = ("dd mm yyyy", "dd mm yyyy"), seperator = r"through|till",
-    fillmissing = true)
-
-  outframe = DataFrame(date = Date(0), txt= "", indt="")
-
-  for tx in txtin;
-    rangeattempt = rangeformatter(tx, rangefmt, seperator)
-
-    if size(rangeattempt)[1] > 0
-        outframe= vcat(outframe, rangeattempt)
-        continue
-    end
-    singleattempt = singleformatter(tx, singlefmt)
-    outframe = vcat(outframe, singleattempt)
-    continue
-  end
-
-  # Fill in any missing dates if dates exist in range but not in set
-  if fillmissing; for dt in Date(dtstart):Day(1):Date(dtend);
-      !(dt ∈ outframe[:date]) &&
-        (append!(outframe, DataFrame(date=dt, txt="<<Input Missing>>", indt = "")))
-  end; end
-
-  # Merge any txt fields which do not have dates associated with them except for the first.
-  outframekeep = fill(true, size(outframe)[1])
-
-  for i = 2:size(outframe)[1]
-    if outframe[i,1] ==  Date(0)
-       outframe[i-1,2] = join(outframe[(i-1):i,2], "\n\r")
-       outframekeep[i] = false
-    end
-  end
-
-  outframe = outframe[outframekeep, :]
-
-  outframe[2:end,:]
-end
 
 
-function dateformat2regex(m::String)
-    m = replace(m,   r"\bmm\b"=>"[0-1][0-9]")
-    m = replace(m, r"\byyyy\b"=>"201[0-9]")
-    m = replace(m,   r"\byy\b"=>"1[0-9]")
-    m = replace(m,   r"\bdd\b"=>"[0-3][0-9]")
-end
 
-# Function for formatting ranged dates
-function rangeformatter(txt, rangeformat, seperator)
-  txt = replace(txt, r"[|./\\-]"=>" ")
-  #println(txt)
-  left, right = dateformat2regex.(rangeformat)
-  matchcheck = match(Regex("^($left)([ ]*)($seperator)([ ]*)($right)"), txt)
 
-  (matchcheck === nothing) && (return [])
-  try
-    dt1 = Date(matchcheck.captures[1], DateFormat(rangeformat[1]))
-    dt3 = Date(matchcheck.captures[5], DateFormat(rangeformat[2]))
 
-    starter = sum(length.(matchcheck.captures))+1
-
-    txtout = strip(txt[starter:end])
-    indt   = txt[1:(starter-1)]
-
-    DataFrame(date=collect(dt1:Day(1):dt3),
-               txt=fill(txtout, length(dt1:Day(1):dt3)),
-               indt=fill(indt, length(dt1:Day(1):dt3)))
-  catch
-    return  []
-  end
-end
-
-rangeformatter("26/10/2015 till 01/11/2015 Nunc rhoncus dictum", ("dd mm yyyy", "dd mm yyyy"), "through|till")
-txt = "26/10/2015 till 01/11/2015 Nunc rhoncus dictum"
-rangeformat = ("dd mm yyyy", "dd mm yyyy")
-seperator = "(through|till)"
-
-# Function for formatting single dates
-function singleformatter(txt, singleformat::String="mm dd yyyy")
-  txt = replace(txt, r"[|./\\-]"=>" ")
-  println(txt)
-
-  left = dateformat2regex.(singleformat)
-  matchcheck = match(Regex("^($left)"), txt)
-
-  (matchcheck === nothing) && (return DataFrame(date = Date(0), txt= txt, indt=""))
-
-  try
-    dt1 = Date(matchcheck.captures[1], DateFormat(rangeformat[1]))
-    starter = sum(length.(matchcheck.captures[1]))+1
-
-    txtout = strip(txt[starter:end])
-    indt   = txt[1:(starter-1)]
-
-    return DataFrame(date=dt1, txt=txtout, indt = indt)
-  catch
-    return DataFrame(date=Date(0), txt=txt, indt = "")
-  end
-end
-
-rangeformat = ("mm dd yyyy", "mm dd yyyy")
-#txt         = replace(txt, "/"=>" ")
-seperator   = "through"
-
-rg = rangeformatter("11 12 2017 through 11 15 2017 ipsum tadsf", ("mm dd yyyy", "mm dd yyyy"), "through")
-sg1 = singleformatter("11 16 2017 ipsum tadsf", "mm dd yyyy")
-sg2 = singleformatter("443.43 ipsum tadsf", "mm dd yyyy")
 
 vcat(rg, sg1, sg2)
 
