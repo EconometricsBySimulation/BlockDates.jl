@@ -1,6 +1,6 @@
 
 cd("C:/Users/francis.smart.ctr/GitDir/SoftDatesJL/SoftDatesJL")
-
+cd("C:/Users/Francis Smart/Documents/GitHub/SoftDatesJL")
 using Pkg
 Pkg.activate(".")
 using Pkg, Dates, DataFrames, Distributions, CSV
