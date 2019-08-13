@@ -1,6 +1,16 @@
+
+try
+    cd("C:/Users/francis.smart.ctr/GitDir/SoftDates.jl")
+catch
+   cd("C:/Users/Francis Smart/Documents/GitHub/SoftDates.jl")
+end
+using Pkg
+Pkg.activate(".")
+using Pkg, Dates, DataFrames, Distributions, CSV
+
 #### Code Structure
 ## text with dates are passed one by one to the softdate function
-## softdate passes txt to dt2block2 function which first passes txt to rangeformatter
+## softdate passes txt to dt2block function which first passes txt to rangeformatter
 ## if rangeformatter finds a range match then dates are spread over that range
 ## and returned to softdate
 ## if rangeformatter does not find a match then singleformatter is attempted
@@ -10,12 +20,15 @@
 # It assumes years fall between 2000-29. Change this by changing yrpre or
 # yrdec year decade restricts the decade of the year while year prefix restricts
 # the melenium.
+
+
 function dateformat2regex(m::String; yrpre="20", yrdec="[0-2]")
     m = replace(m,   r"\bmm\b"=>"[0-1]?[0-9]")
     m = replace(m, r"\byyyy\b"=>"$yrpre$yrdec[0-9]")
     m = replace(m,   r"\byy\b"=>"$yrdec[0-9]")
     m = replace(m,   r"\bdd\b"=>"[0-3]?[0-9]")
 end
+
 dateformat2regex("yyyy dd mm")
 dateformat2regex("yy dd mm")
 # Requires exact number for match
@@ -126,24 +139,25 @@ sg4 = singleformatter("16.1.2017 A date match", singleformat=["dd mm yyyy"])
 ######
 ## Takes a date text string Array and tries to match first ranges then singles
 ## Uses dtstart and dtend to fill in missing
-function dt2block2(txtin::Array{String,1};
+function dt2block(txtin;
     dtstart = Date(now()-Day(10)),
     dtend   = Date(now()),
-    singeformat = ["mm dd yyyy"],
+    singleformat = ["mm dd yyyy"],
     rangeformat = ["mm dd yyyy"],
-    seperator = "through|till| |to",
+    seperator   = "through|till| |to",
     fillmissing = true)
 
-  outframe = DataFrame(date = Date(0), txt= "", indt="")
+  outframe = DataFrame()
 
   for tx in txtin;
+     # global outframe
     rangeattempt = rangeformatter(tx, rangeformat=rangeformat, seperator=seperator)
 
     if size(rangeattempt)[1] > 0
         outframe= vcat(outframe, rangeattempt)
         continue
     end
-    singleattempt = singleformatter(tx, singlefmt)
+    singleattempt = singleformatter(tx, singleformat=singleformat)
     outframe = vcat(outframe, singleattempt)
     continue
   end
@@ -155,6 +169,7 @@ function dt2block2(txtin::Array{String,1};
   end; end
 
   # Merge any txt fields which do not have dates associated with them except for the first.
+
   outframekeep = fill(true, size(outframe)[1])
 
   for i = 2:size(outframe)[1]
@@ -166,28 +181,105 @@ function dt2block2(txtin::Array{String,1};
 
   outframe = outframe[outframekeep, :]
 
-  outframe[2:end,:]
+  outframe
 end
 
+# Alternative specification of dt2block
+dt2block(txt, dtstart, dtend, I...) = dt2block(txt, dtstart=dtstart, dtend=dtend, I...)
+
+#### Test block 1
 dtstart = Date("2017 16 01", dateformat"yyyy dd mm")
 dtend   = Date("2017 25 01", dateformat"yyyy dd mm")
 
 txtin = ["1 16 2017 A date"]
-dt2block2(["1 15 2017 an out of date date","1 16 2017 A date", "1 18 2017 - 01 24 2017 A range"],
+dt2block(["1 15 2017 an out of date date","1 16 2017 A date", "1 18 2017 - 01 24 2017 A range"],
   dtstart=dtstart, dtend=dtend)
 
-
+#### Test block 2
 dtstart = Date("2015 16 11", dateformat"yyyy dd mm")
 dtend   = Date("2015 20 11", dateformat"yyyy dd mm")
-dt2block2(["11 17 2015 a date in range","1 18 through 20 2015 A range match"],
-  dtstart=dtstart, dtend=dtend, rangeformat = rangeformat)
+
+rangeformat_md_dy2mdy=("mm dd", "dd yyyy", convertmd_dy2mdy, "mm dd yyyy")
+dt2block(["11 17 2015 a date in range","1 18 through 20 2015 A range match"],
+  dtstart=dtstart, dtend=dtend, rangeformat = rangeformat_md_dy2mdy)
+
+#### Test block 3
+dt2block(["a non-date entry"], dtstart=dtstart, dtend=dtstart)
+
+
+txtin = ["A note to the reader",
+  "11 09 2017 through 11 11 2017 Range Nov 9 till 11th",
+  "A line without any dates",
+  "11 12 2017 through 11 15 2017 Range Nov 12 till 15th",
+  "11 17 2017 Singleton",
+  "443.43 Different line without any dates",
+  "11 27 2017 Singleton Out of Range"]
+
+dtstart = Date("2017 09 11", dateformat"yyyy dd mm")
+dtend   = Date("2017 27 11", dateformat"yyyy dd mm")
+
+dt2block(txtin, dtstart=dtstart, dtend=dtend)
+
+
+
+
+# Function for scoring date block matches.
+# Penalizes range misses
+# Penalizes dates outside of range
+# Rewards dates which increase
+# Penalizes dates which are far from the center of date start and date end
+function scorer(txtframe; scoreparameters=[1,1,1,1], dtstart, dtend=dtend)
+    rngmiss    = [tx == "<<Input Missing>>" for tx in txtframe[:txt]] |> sum
+    txtout     = [!(dt ∈ dtstart:Day(1):dtend) for dt in txtframe[:date]] |> sum
+    gradient = [txtframe[i, :date] > txtframe[i-1, :date]
+     for i in 2:size(txtframe)[1] if txtframe[i, :txt] != "<<Input Missing>>" ]
+    length(gradient)==0 ? increasing = 0 : increasing = sum(gradient)
+
+    distfrmmiddle = sum(Dates.value.(abs.(txtframe[:date] .- (dtstart+(dtend-dtstart)÷2))))/10
+
+    α, β, γ, δ = scoreparameters
+    α*increasing - β*rngmiss - γ*txtout - γ*distfrmmiddle
+end
+
+### Score 1
+dtstart = Date("2015 16 11", dateformat"yyyy dd mm")
+dtend   = Date("2015 20 11", dateformat"yyyy dd mm")
+rangeformat_md_dy2mdy=("mm dd", "dd yyyy", convertmd_dy2mdy, "mm dd yyyy")
+
+dtframe = dt2block(["11 17 2015 a date in range","11 18 through 20 2015 A range match"],
+  dtstart=dtstart, dtend=dtend, rangeformat = rangeformat_md_dy2mdy)
+scorer(dtframe, dtstart=dtstart, dtend=dtend)
+
+### Score 2
+dtstart = Date("2017 16 01", dateformat"yyyy dd mm")
+dtend   = Date("2017 25 01", dateformat"yyyy dd mm")
+
+txtin = ["1 16 2017 A date"]
+dtframe = dt2block(["1 15 2017 an out of date date","1 16 2017 A date", "1 18 2017 - 01 24 2017 A range"],
+  dtstart=dtstart, dtend=dtend)
+scorer(dtframe, dtstart=dtstart, dtend=dtend)
+
+### Score 3 - Poor fit for dataset
+txtin = ["11 16 2017 A date"]
+dtframe = dt2block(["15 1 2017 an out of date date","16 1 2017 A date", "18 1 2017 - 24 1 2017 A range"],
+  dtstart=dtstart, dtend=dtend)
+scorer(dtframe, dtstart=dtstart, dtend=dtend)
+
+
+# Some transformations which convert weird dates
+makeyr3into4(x::AbstractString, I...) = replace(x, r"2(1[0-9])"=>s"20\1")
+makeyr3into4("10 12 219 a poorly entered date 219 notice that transformation converts all\n\r11 12 219")
+
+transformations = [((x, I...) -> x), makeyr3into4]
+
 
 function softdate(txt, dtstart::Date, dtend::Date;
      splits  = [r"\n\r|\n"],
-     transformations = [(x -> x)],
-     singlefmts = ["yyyy mm dd"],
-     rangeformats = [("mm dd yyyy", "mm dd yyyy"), ("dd mm yyyy", "dd mm yyyy")],
-     seperators = [r"through|till"],
+     transformations = [((x, I...) -> x), makeyr3into4],
+     singleformats = [["mm dd yyyy"], ["dd mm yyyy"], ["yyyy dd mm"]],
+     rangeformats =
+       [["mm dd yyyy"], ["dd mm yyyy"], ["yyyy dd mm"], rangeformat_md_dy2mdy],
+     seperators = ["through|till| |thru|to"],
      scoreparameters = [1,1,1,1])
 
     # Fill in some initial values
@@ -200,18 +292,21 @@ function softdate(txt, dtstart::Date, dtend::Date;
 
     for s in 1:length(splits),
         t in 1:length(transformations),
-        F in 1:length(singlefmts) ,
+        F in 1:length(singleformats) ,
         r in 1:length(rangeformats)
 
-        global scoremax, dttxtout, combset, combfull, s0, t0, f0, r0, framemax
+#        global scoremax, dttxtout, combset, combfull, s0, t0, f0, r0, framemax
 
         txt1 = split(txt, splits[s])
         txt2 = [transformations[t](x,dtstart,dtend) for x in txt1]
         txt2 = txt2[txt2 .!= ""]
 
-        txtframe = dt2block2(txt2, dtstart, dtend, singlefmts[F], rangeformats[r], seperators[s])
+        txtframe = dt2block(txt2, dtstart=dtstart, dtend=dtend, singleformat=singleformats[F],
+          rangeformat=rangeformats[r], seperator=seperators[s])
+
+#        txtframe = dt2block(txt2, dtstart, dtend, singleformats[F], rangeformats[r], seperators[s])
         #return(txtframe, scoreparameters, dtstart, dtend)
-        scorei = scorer(txtframe, scoreparameters, dtstart, dtend)
+        scorei = scorer(txtframe, scoreparameters = scoreparameters, dtstart = dtstart, dtend = dtend)
 
         if scorei > scoremax
          # global scoremax, dttxtout, combset, combfull, soremax, framemax
@@ -219,101 +314,20 @@ function softdate(txt, dtstart::Date, dtend::Date;
           dttxtout = txtframe[:txt]
           framemax = txtframe
           combset = [s, t, F, r]
-          combfull = [splits[s], transformations[t], singlefmts[F], rangeformats[r]]
+          combfull = [splits[s], transformations[t], singleformats[F], rangeformats[r]]
         end
     end
 
-   return(framemax, [scoremax, combset...])
+   # return(framemax, [scoremax, combset...])
     framemax[:score] = scoremax
     framemax[:s], framemax[:t], framemax[:F], framemax[:r] = combset
 
    framemax
 end
 
-txtin = txt2
-tx = txtin[1]
+txt = txtin[1]
 
-
-
-
-
-
-
-vcat(rg, sg1, sg2)
-
-dtstart = Date("2017 09 11", dateformat"yyyy dd mm")
+dtstart = Date("2017 15 11", dateformat"yyyy dd mm")
 dtend   = Date("2017 18 11", dateformat"yyyy dd mm")
 
-txtin = ["A note to the reader",
-    "11 09 2017 through 11 11 2017 Range Nov 9 till 11th",
-    "A line without any dates",
-    "11 12 2017 through 11 15 2017 Range Nov 12 till 15th",
-    "11 17 2017 Singleton",
-    "443.43 Different line without any dates",
-    "11 27 2017 Singleton Out of Range"]
-
-outframe = dt2block2(
-  ["A note to the reader",
-  "11 09 2017 through 11 11 2017 Range Nov 9 till 11th",
-  "A line without any dates",
-  "11 12 2017 through 11 15 2017 Range Nov 12 till 15th",
-  "11 17 2017 Singleton",
-  "443.43 Different line without any dates",
-  "11 27 2017 Singleton Out of Range"],
-  dtstart,
-  dtend,
-  "mm dd yyyy",
-  ("mm dd yyyy", "mm dd yyyy"),
-  "through")
-
-outframe = dt2block2(
-    ["11 08 2017 through 11 09 2017 Two Dates", "11 09 not date",
-     "11 12 2017 Single Date", "33 PSI -not date"],
-    Date("2017 07 11", dateformat"yyyy dd mm"),
-    Date("2017 13 11", dateformat"yyyy dd mm"),
-    "mm dd yyyy",
-    ("mm dd yyyy", "mm dd yyyy"),
-    "through")
-
-for i in outframe[:txt]; println(i); end
-
-txtframe = outframe
-
-function scorer(txtframe, scoreparameters, dtstart, dtend)
-  rngmiss    = [tx == "<<Input Missing>>" for tx in txtframe[:txt]] |> sum
-  txtout     = [!(dt ∈ dtstart:Day(1):dtend) for dt in txtframe[:date]] |> sum
-  gradient = [txtframe[i, :date] > txtframe[i-1, :date]
-   for i in 2:size(txtframe)[1] if txtframe[i, :txt] != "<<Input Missing>>" ]
-  length(gradient)==0 ? increasing = 0 : increasing = sum(gradient)
-
-  distfrmmiddle = sum(Dates.value.(abs.(txtframe[:date] .- (dtstart+(dtend-dtstart)÷2))))/10
-
-  α, β, γ, δ = scoreparameters
-  α*increasing - β*rngmiss - γ*txtout - γ*distfrmmiddle
-end
-
-txt = """A note to the reader
-  11 09 2017 through 11 11 2017 Range Nov 9 till 11th
-  A line without any dates
-  11 12 2017 through 11 15 2017 Range Nov 12 till 15th
-  11 17 2017 Singleton
-  443.43 Different line without any dates
-  11 27 2017 Singleton Out of Range]"""
-
-dtstart = Date("2017 09 11", dateformat"yyyy dd mm")
-dtend   = Date("2017 18 11", dateformat"yyyy dd mm")
-
-makeyr3into4(x::AbstractString, I...) = replace(x, r"2(1[0-9])"=>s"20\1")
-makeyr3into4("10 12 219 asdlkjfdsalkf 219 adsf\n\r11 12 219")
-singlefmts= ["mm dd yyyy", "dd mm yyyy"]
-rangeformats = [("mm dd yyyy", "mm dd yyyy"),
-             ("dd mm yyyy", "dd mm yyyy")]
-
-
-
-transformations = [((x, I...) -> x), makeyr3into4]
-
-dtmatch = softdate(txt, dtstart, dtend,
-  singlefmts = singlefmts,
-  rangeformats  = rangeformats,
-  transformations = transformations)
+x = softdate(txt, dtstart, dtend)
