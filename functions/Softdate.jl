@@ -26,8 +26,6 @@ rmwhitespace(" asdf  asdf as")
 rmwhitespace.([" asdf  asdf as", " 1  2   3   4"])
 
 
-
-
 ### Range Date Format
 # Function for formatting ranged dates
 function rangeformatter(txtin; rangeformat, seperator="through|till| ", toomany=30)
@@ -75,8 +73,8 @@ end
 
 rangeformatter("26/10/2015 till 01/11/2015 Date match", rangeformat = ["dd mm yyyy"])
 
-# fail from date misspecification, firs tis too many dates, second is
-rangeformatter("2/1/2017 through 12/1/2017 Date mismatch", rangeformat = ["mm dd yyyy"])
+# fail from date misspecification, fits too many dates, second is misspecified and fits no dates
+rangeformatter("2/1/2017 through 12/1/2017 Date mismatch" , rangeformat = ["mm dd yyyy"])
 rangeformatter("16/1/2017 through 19/1/2017 Date mismatch", rangeformat =["mm dd yyyy"])
 
 #### Some date ranges are so messy they have to borrow elements from each other
@@ -92,16 +90,16 @@ convertmd_dy2mdy("07 16", "19 2019")
 
 # fail from insufficient date data
 rangeformat=("mm dd", "dd yyyy", convertmd_dy2mdy, "mm dd yyyy")
-rangeformatter("1/10 - 15/2017 Date Match!", rangeformat, "through|till| ")
+rangeformatter("1/10 - 15/2017 Range Match!", rangeformat = rangeformat)
 
 
 #### Single Date Format
 # Function for formatting single dates
-function singleformatter(txtin, singleformat::Array{String}="mm dd yyyy")
+function singleformatter(txtin; singleformat::Array{String,1}=["mm dd yyyy"])
   txt = replace(txtin, r"[|./\\-]"=>" ")
   txt = replace(txt, r"\b([0-9])\b"=>s"0\1")
 
-  left = dateformat2regex.(singleformat)
+  left = dateformat2regex.(singleformat[1])
   matchcheck = match(Regex("^($left)"), txt)
 
   (matchcheck === nothing) && (return DataFrame(date = Date(0), txt= txt, indt=""))
@@ -119,27 +117,27 @@ function singleformatter(txtin, singleformat::Array{String}="mm dd yyyy")
   end
 end
 
-sg1 = singleformatter("1 16 2017 A date", ["mm dd yyyy"])
-sg2 = singleformatter("443.43 Not a date", ["mm dd yyyy"])
-sg3 = singleformatter("16 1 2017 A date mismatch", ["mm dd yyyy"])
-sg4 = singleformatter("16.1.2017 A date match", ["dd mm yyyy"])
+sg1 = singleformatter("1 16 2017 A date", singleformat=["mm dd yyyy"])
+sg2 = singleformatter("443.43 Not a date", singleformat=["mm dd yyyy"])
+sg3 = singleformatter("16 1 2017 A date mismatch", singleformat=["mm dd yyyy"])
+sg4 = singleformatter("16.1.2017 A date match", singleformat=["dd mm yyyy"])
 
 
 ######
 ## Takes a date text string Array and tries to match first ranges then singles
 ## Uses dtstart and dtend to fill in missing
-function dt2block2(txtin,
-    dtstart = now()-Day(10),
-    dtend   = now(),
-    singlefmt = ["mm dd yyyy"],
-    rangefmt = [["dd mm yyyy", "dd mm yyyy"], ["mm dd yyyy", "mm dd yyyy"]],
-    seperator = r"through|till|-|to",
+function dt2block2(txtin::Array{String,1};
+    dtstart = Date(now()-Day(10)),
+    dtend   = Date(now()),
+    singeformat = ["mm dd yyyy"],
+    rangeformat = ["mm dd yyyy"],
+    seperator = "through|till| |to",
     fillmissing = true)
 
   outframe = DataFrame(date = Date(0), txt= "", indt="")
 
   for tx in txtin;
-    rangeattempt = rangeformatter(tx, rangefmt, seperator)
+    rangeattempt = rangeformatter(tx, rangeformat=rangeformat, seperator=seperator)
 
     if size(rangeattempt)[1] > 0
         outframe= vcat(outframe, rangeattempt)
@@ -171,12 +169,24 @@ function dt2block2(txtin,
   outframe[2:end,:]
 end
 
+dtstart = Date("2017 16 01", dateformat"yyyy dd mm")
+dtend   = Date("2017 25 01", dateformat"yyyy dd mm")
+
+txtin = ["1 16 2017 A date"]
+dt2block2(["1 15 2017 an out of date date","1 16 2017 A date", "1 18 2017 - 01 24 2017 A range"],
+  dtstart=dtstart, dtend=dtend)
+
+
+dtstart = Date("2015 16 11", dateformat"yyyy dd mm")
+dtend   = Date("2015 20 11", dateformat"yyyy dd mm")
+dt2block2(["11 17 2015 a date in range","1 18 through 20 2015 A range match"],
+  dtstart=dtstart, dtend=dtend, rangeformat = rangeformat)
 
 function softdate(txt, dtstart::Date, dtend::Date;
      splits  = [r"\n\r|\n"],
      transformations = [(x -> x)],
      singlefmts = ["yyyy mm dd"],
-     rangefmts = [("mm dd yyyy", "mm dd yyyy"), ("dd mm yyyy", "dd mm yyyy")],
+     rangeformats = [("mm dd yyyy", "mm dd yyyy"), ("dd mm yyyy", "dd mm yyyy")],
      seperators = [r"through|till"],
      scoreparameters = [1,1,1,1])
 
@@ -191,7 +201,7 @@ function softdate(txt, dtstart::Date, dtend::Date;
     for s in 1:length(splits),
         t in 1:length(transformations),
         F in 1:length(singlefmts) ,
-        r in 1:length(rangefmts)
+        r in 1:length(rangeformats)
 
         global scoremax, dttxtout, combset, combfull, s0, t0, f0, r0, framemax
 
@@ -199,7 +209,7 @@ function softdate(txt, dtstart::Date, dtend::Date;
         txt2 = [transformations[t](x,dtstart,dtend) for x in txt1]
         txt2 = txt2[txt2 .!= ""]
 
-        txtframe = dt2block2(txt2, dtstart, dtend, singlefmts[F], rangefmts[r], seperators[s])
+        txtframe = dt2block2(txt2, dtstart, dtend, singlefmts[F], rangeformats[r], seperators[s])
         #return(txtframe, scoreparameters, dtstart, dtend)
         scorei = scorer(txtframe, scoreparameters, dtstart, dtend)
 
@@ -209,7 +219,7 @@ function softdate(txt, dtstart::Date, dtend::Date;
           dttxtout = txtframe[:txt]
           framemax = txtframe
           combset = [s, t, F, r]
-          combfull = [splits[s], transformations[t], singlefmts[F], rangefmts[r]]
+          combfull = [splits[s], transformations[t], singlefmts[F], rangeformats[r]]
         end
     end
 
@@ -296,7 +306,7 @@ dtend   = Date("2017 18 11", dateformat"yyyy dd mm")
 makeyr3into4(x::AbstractString, I...) = replace(x, r"2(1[0-9])"=>s"20\1")
 makeyr3into4("10 12 219 asdlkjfdsalkf 219 adsf\n\r11 12 219")
 singlefmts= ["mm dd yyyy", "dd mm yyyy"]
-rangefmts = [("mm dd yyyy", "mm dd yyyy"),
+rangeformats = [("mm dd yyyy", "mm dd yyyy"),
              ("dd mm yyyy", "dd mm yyyy")]
 
 
@@ -305,5 +315,5 @@ transformations = [((x, I...) -> x), makeyr3into4]
 
 dtmatch = softdate(txt, dtstart, dtend,
   singlefmts = singlefmts,
-  rangefmts  = rangefmts,
+  rangeformats  = rangeformats,
   transformations = transformations)
