@@ -27,14 +27,12 @@ function trunk(x,n=60)
 end
 trunk(x[:txt][1])
 
-for i in 11:100
+for i in 1:1
+  println("------Input-------")
   println(i)
+  [println(trunk(tx)) for tx in split(DTtext[i], r"\n\r|\r")]
+  println("------SoftDates-------")
   x = softdate(DTtext[i], Date(DTStart[i]), Date(DTEnd[i]))
   [println("$(x[:date][j]) || $(trunk(x[:txt][j])) || $(x[:indt][j]) || $(x[:score][j])") for j in 1:size(x)[1]]
   readline()
 end
-
-rangeformatter("26/10/2015 till 01/11/2015 Date match", rangeformat = ["dd mm yyyy"])
-
-DTtext[1]
-rangeformatter(tx, rangeformat=rangeformat, seperator=seperator)
