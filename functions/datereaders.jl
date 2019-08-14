@@ -27,12 +27,17 @@ function trunk(x,n=60)
 end
 trunk(x[:txt][1])
 
-for i in 1:1
-  println("------Input-------")
-  println(i)
-  [println(trunk(tx)) for tx in split(DTtext[i], r"\n\r|\r")]
+i = 1
+while i <= length(DTtext)
+  println("------Input $i -- Start Date $(Date(DTStart[i])) till $(Date(DTEnd[i]))------")
+  [println(trunk(tx)) for tx in split(DTtext[i], r"\n\r|\r") if strip(tx) != ""]
   println("------SoftDates-------")
   x = softdate(DTtext[i], Date(DTStart[i]), Date(DTEnd[i]))
   [println("$(x[:date][j]) || $(trunk(x[:txt][j])) || $(x[:indt][j]) || $(x[:score][j])") for j in 1:size(x)[1]]
-  readline()
+  println()
+  print("Type \"break\" or enter to continue:")
+  userinput = readline(stdin)
+  (length(userinput)>0) && (userinput[1:1] ∈ ["b"]) && break
+  global i
+  i += 1
 end

@@ -143,16 +143,8 @@ sg6 = singleformatter("16/1/2017 A date match", singleformat=["dd mm yyyy"])
 sg7 = singleformatter("16-1-2017 A date match", singleformat=["dd mm yyyy"])
 
 
-for i = 2:size(outframe)[1]
-  if outframe[i,1] ==  Date(0)
-     outframemap = collect(1:(i-1))[outframe[1:(i-1),3] .== outframe[(i-1),3]]
-     outframe[outframemap,:txt] .= join(outframe[(i-1):i,2], "---")
-     outframekeep[i] = false
-  end
-end
-
-
-function dropmerge(inframe::DataFrame; excludevalue=Date(0), exclude::Symbol, merge::Symbol, verbose=false)
+using DataFrames
+function dropmerge(inframe::DataFrame; excludevalue=0, exclude::Symbol, merge::Symbol, verbose=false)
   framekeep = fill(true, size(inframe)[1])
   for i in 2:size(inframe)[1]
     if inframe[i, exclude] == excludevalue
@@ -166,11 +158,10 @@ function dropmerge(inframe::DataFrame; excludevalue=Date(0), exclude::Symbol, me
   inframe[framekeep, :]
 end
 
-mydata = DataFrame(date=[(today() .- Day.([1,2,2,2]))..., Date(0)],
+mydata = DataFrame(date=[1,2,2,2,0],
   txt=["Some input", fill("Input repeated",3)..., "Spread me"],
   othervar = 1:5)
-
-dropmerge(mydata, excludevalue = Date(0), exclude=:date, merge=:txt, verbose=true)
+dropmerge(mydata, excludevalue = 0, exclude=:date, merge=:txt, verbose=true)
 
 ######
 ## Takes a date text string Array and tries to match first ranges then singles
