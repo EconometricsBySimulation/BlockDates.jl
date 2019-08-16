@@ -22,18 +22,19 @@ x = softdate(DTtext[1], Date(DTStart[1]), Date(DTEnd[1]))
 [println(y) for y in x[:txt]]
 
 function trunk(x,n=60)
- x = replace(x, "\n\r"=>" ")
+ x = replace(x, "\n\r"=>"---")
  join([x[1:min(length(x), n)], repeat(" ", n-min(length(x), n))])
 end
 trunk(x[:txt][1])
 
 i = 1
 while i <= length(DTtext)
-  println("------Input $i -- Start Date $(Date(DTStart[i])) till $(Date(DTEnd[i]))------")
-  [println(trunk(tx)) for tx in split(DTtext[i], r"\n\r|\r") if strip(tx) != ""]
+  println("\n------Input $i -- Start Date $(Date(DTStart[i])) till $(Date(DTEnd[i]))------")
+  [println(trunk(tx,130)) for tx in split(DTtext[i], r"\n\r|\r") if strip(tx) != ""]
   println("------SoftDates-------")
   x = softdate(DTtext[i], Date(DTStart[i]), Date(DTEnd[i]))
-  [println("$(x[:date][j]) || $(trunk(x[:txt][j])) || $(x[:indt][j]) || $(x[:score][j])") for j in 1:size(x)[1]]
+  sort!(x, :date)
+  [println("$(x[:date][j]) || $(trunk(x[:txt][j], 130)) || $(x[:indt][j]) || $(x[:score][j])") for j in 1:size(x)[1]]
   println()
   print("Type \"break\" or enter to continue:")
   userinput = readline(stdin)
