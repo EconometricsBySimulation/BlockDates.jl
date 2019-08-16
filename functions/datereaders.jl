@@ -27,6 +27,11 @@ function trunk(x,n=60)
 end
 trunk(x[:txt][1])
 
+#presenting problems
+# 459
+# 463
+# 465 # range not Interprettable! What happenned to "17 12 16 Maecenas tellus metus, venenatis ut faucibus in, eleifend at ipsum Nullam enim nibh, rhoncus eu odio nec, condimentum ele"
+
 i = 1
 while i <= length(DTtext)
   println("\n------Input $i -- Start Date $(Date(DTStart[i])) till $(Date(DTEnd[i]))------")
@@ -42,3 +47,6 @@ while i <= length(DTtext)
   global i
   i += 1
 end
+
+x = "10 14 16 through 16 12 16"
+((x,I...)->replace(x, r"([0-9]{2}).*?([0-9]{2}).*?(1[0-9])(.*)([0-9]{2}).*?([0-9]{2}).*?\3"=>s"\1 \2 20\3 \4 \5 \6 20\3"))(x)

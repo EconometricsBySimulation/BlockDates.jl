@@ -398,10 +398,13 @@ function softdate(txt, dtstart::Date, dtend::Date;
      ["mm dd yy", (x->x[1:(end-2)] * "20" * x[(end-1):end]), "mm dd yyyy"] ,
      ["dd mm yy", (x->x[1:(end-2)] * "20" * x[(end-1):end]), "dd mm yyyy"] ] ,
    rangeformats =
-     [["mm dd yyyy"], ["dd mm yyyy"], ["yyyy dd mm"], ["yyyy mm dd"], 
+     [
+     ["mm dd yyyy"], ["dd mm yyyy"], ["yyyy dd mm"], ["yyyy mm dd"],
      rangeformat_md_dy2mdy,
-     ["dd mm yy", "dd mm yy", (x->replace(r"[0-9]{2} [0-9]{2} ([0-9]{2}).*[0-9]{2} [0-9]{2} \\1"))] ],
-   seperators = ["through|till| |thru|to"],
+     ["dd mm yy", "dd mm yy", ((x,I...)->replace(x, r"([0-9]{2}).*?([0-9]{2}).*?(1[0-9])(.*)([0-9]{2}).*?([0-9]{2}).*?\3"=>s"\1 \2 20\3 \4 \5 \6 20\3")), "dd mm yyyy", "dd mm yyyy"],
+     ["mm dd yy", "mm dd yy", ((x,I...)->replace(x, r"([0-9]{2}).*?([0-9]{2}).*?(1[0-9])(.*)([0-9]{2}).*?([0-9]{2}).*?\3"=>s"\1 \2 20\3 \4 \5 \6 20\3")), "mm dd yyyy", "mm dd yyyy"]
+     ],
+   seperators = ["through|till| |thru|to|-"],
    scoreparameters = [1,1,1,1,1],
    verbose = false)
 
