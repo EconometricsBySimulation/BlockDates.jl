@@ -86,7 +86,7 @@ function rangeformatter(txtin; rangeformat, seperator = "through|till| ", tooman
         #txtout = strip(txtin[starter:end])
         txtout = strip(txtin)
         # txtout = replace(txtin, Regex("^($left)([ ]*)($seperator)([ ]*)($right)")=>"")
-        indt   = txtin[1:(starter - 1)]
+        indt   = txtin[1:min(starter - 1, end)]
         # indt   = rangematch.match
 
 
@@ -104,6 +104,7 @@ rangeformatter(;txtin::AbstractString, rangeformat) = rangeformatter(txtin, rang
 
 # Extra spaces between dates are ignore (after the first)
 rangeformatter(txtin = "1 1  2015 till   5/1/2015 Date match", rangeformat = ["dd mm yyyy"])
+rangeformatter(txtin = "1 1  2015 till   5/1/2015", rangeformat = ["dd mm yyyy"])
 
 # fail from date misspecification, fits too many dates, second is misspecified and fits no dates
 rangeformatter("2/1/2017 through 12/1/2017 Date mismatch", rangeformat = ["mm dd yyyy"])
@@ -137,7 +138,7 @@ function singleformatter(txtin; singleformat::Array = ["mm dd yyyy"],
     txt = trans1(txtin, dt1, dt2)
     txt = trans2(txt,   dt1, dt2)
     txt = replace(txt, r"[|./\\-]" => " ")
-    txt = replace(txt, r"\b([0-9])\b" => s"0\1") |> x->replace(x, r"[ ]+" => " ")
+    txt = replace(txt, r"\b([0-9])\b" => s"0\1") |> x->replace(x, r"[ ]+" => " ") |> strip
 
     sf = singleformat[1]
 
@@ -157,9 +158,9 @@ function singleformatter(txtin; singleformat::Array = ["mm dd yyyy"],
         starter = length(sm)  + (length(txtin) - length(txt)) +1
         # starter = length(rangematch.match) + (length(txtin) - length(txt))
 
-        txtout = strip(txtin[starter:end])
+        #txtout = strip(txtin[starter:end])
         txtout = strip(txtin)
-        indt   = strip(txtin[1:(starter)])
+        indt   = strip(txtin[1:min(starter, end)])
 
         return DataFrame(date = dt1, txt = txtout, indt = indt)
     catch
@@ -174,8 +175,9 @@ sg4 = singleformatter("16  1  2017 A date match", singleformat = ["dd mm yyyy"])
 sg5 = singleformatter("16.1.2017 A date match", singleformat = ["dd mm yyyy"])
 sg6 = singleformatter("16/1/2017 A date match", singleformat = ["dd mm yyyy"])
 sg7 = singleformatter("16-1-2017 A date match", singleformat = ["dd mm yyyy"])
+sg8 = singleformatter("16-1-2017", singleformat = ["dd mm yyyy"])
 
-sg8 = singleformatter("1 16 17 A date", singleformat = ["mm dd yy", (x->x[1:(end-2)] * "20" * x[(end-1):end]), "mm dd yyyy"])
+sg9 = singleformatter("1 16 17 A date", singleformat = ["mm dd yy", (x->x[1:(end-2)] * "20" * x[(end-1):end]), "mm dd yyyy"])
 
 # Previous singleformatter
 ##########################################################################################
@@ -216,7 +218,7 @@ dropmerger(mydata, excludevalue = 0, exclude = :date, merger = :txt)
 ######
 ## Takes a date text string Array and tries to match first ranges then singles
 ## Uses dtstart and dtend to fill in missing
-function dt2block(txtin;
+function dt2block(txtsplit;
   dtstart = Date(now() - Day(10)),
   dtend   = Date(now()),
   singleformat = ["mm dd yyyy"],
@@ -228,7 +230,7 @@ function dt2block(txtin;
 
   outframe = DataFrame()
 
-  for tx in txtin;
+  for tx in txtsplit;
   # global outframe
     rangeattempt = rangeformatter(tx, rangeformat = rangeformat, seperator = seperator,
       trans1=trans1, trans2=trans2, dt1=dtstart, dt2=dtend)
@@ -409,13 +411,25 @@ set1st3rd1x_201x("12 9 19 to 12 14 19")
 set2nd3rd1x_201x("12 14 18 to 1 4 19")
 set2nd4th1x_201x("12 14 19 to 12 16 19")
 
-mytranformations = [((x, I...)->x), makeyr3into4, set20xx_dtstart, set20xx_dtend,
-  set1st1x_201x, set2nd1x_201x, set3rd1x_201x, set4th1x_201x, set1st2nd1x_201x,
+function removedays(x; I...)
+  dayabrev = Regex("(?i)(^|\\b)(" * join(unique([[dn[1:min(i,end)] for dn in dayname.(now() + Day.(0:6)), i in 9:-1:1]...]),"|") * ")(\\b|\$)")
+  replace(x, dayabrev=>"")
+end
+removedays("Monday mond test")
+removedays(" mond test")
+
+replacemonth(x; I...) = (for i in 1:12; x = replace(x, monthname(i)=>string(i)); end; x)
+replacemonth("January")
+
+mytranformations = [((x, I...)->x), removedays, replacemonth, makeyr3into4, set20xx_dtstart, set20xx_dtend,
+  set1st1x_201x, set2nd1x_201x]
+
+  [set3rd1x_201x, set4th1x_201x, set1st2nd1x_201x,
   set1st3rd1x_201x, set2nd3rd1x_201x, set2nd4th1x_201x]
 
 ################################################### - Begin softdate
 function softdate(txt, dtstart::Date, dtend::Date;
-   splits  = [r"\n\r|\n"],
+   splits  = [r"\n\r|\r\n|\n"],
    transformations = mytranformations,
    singleformats = [["mm dd yyyy"], ["dd mm yyyy"], ["yyyy dd mm"], ["yyyy mm dd"],
      ["mm dd yy", (x->x[1:(end-2)] * "20" * x[(end-1):end]), "mm dd yyyy"] ,
@@ -450,7 +464,7 @@ function softdate(txt, dtstart::Date, dtend::Date;
       F in 1:length(singleformats) ,
       r in 1:length(rangeformats)
 
-        txtsplit = split(txt, splits[s])
+        txtsplit = [tx for tx in split(txt, splits[s]) if tx != ""]
         # txt2 = [transformations[t](x, dtstart, dtend) for x in txt1]
         # txt2 = txt2[txt2 .!= ""]
 
@@ -478,7 +492,7 @@ function softdate(txt, dtstart::Date, dtend::Date;
                 txt2last, txtframelast, scoreilast = txt, txtframe, scorei
             end
        if scorei > scorecut
-           println("--------- $(round(scorei,2)) achieved!!")
+           println("--------- $(round(scorei,digits=1)) achieved!")
            break
        end
       end
@@ -492,6 +506,10 @@ end
 
 softdate(txt; dtstart::Date, dtend::Date, verbose=false) =
   softdate(txt, dtstart, dtend, verbose=verbose)
+
+softdate(;txt=txt, dtstart::Date, dtend::Date, verbose=false) =
+  softdate(txt, dtstart, dtend, verbose=verbose)
+
 
 ################################################### - End softdate
 
