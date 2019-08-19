@@ -421,7 +421,9 @@ removedays(" mond test")
 replacemonth(x; I...) = (for i in 1:12; x = replace(x, monthname(i)=>string(i)); end; x)
 replacemonth("January")
 
-mytranformations = [((x, I...)->x), removedays, replacemonth, makeyr3into4, set20xx_dtstart, set20xx_dtend,
+replacemonth(x, I...) = replacemonth(x; I...)
+
+mytranformations = [((x, I...)->x), removedays,  makeyr3into4, set20xx_dtstart, set20xx_dtend,
   set1st1x_201x, set2nd1x_201x]
 
   [set3rd1x_201x, set4th1x_201x, set1st2nd1x_201x,
