@@ -6,7 +6,7 @@ catch
 end
 using Pkg
 Pkg.activate(".")
-using Pkg, Dates, DataFrames, Distributions, CSV
+using Pkg, Dates, DataFrames, Distributions, CSV, StatsBase, IterTools
 
 ##############################################################################
 # Read in Dates
@@ -22,7 +22,7 @@ x = softdate(DTtext[1], Date(DTStart[1]), Date(DTEnd[1]))
 [println(y) for y in x[:txt]]
 
 function trunk(x,n=60)
- x = replace(x, "\n\r"=>"---")
+ x = replace(x, "\n\r"=>"]")
  join([x[1:min(length(x), n)], repeat(" ", n-min(length(x), n))])
 end
 trunk(x[:txt][1])
@@ -32,12 +32,12 @@ trunk(x[:txt][1])
 # 463
 # 465 # range not Interprettable! What happenned to "17 12 16 Maecenas tellus metus, venenatis ut faucibus in, eleifend at ipsum Nullam enim nibh, rhoncus eu odio nec, condimentum ele"
 
-i = 1
+i = 465
 while i <= length(DTtext)
   println("\n------Input $i -- Start Date $(Date(DTStart[i])) till $(Date(DTEnd[i]))------")
-  [println(trunk(tx,130)) for tx in split(DTtext[i], r"\n\r|\r") if strip(tx) != ""]
+  [println(trunk(tx,130)) for tx in split(DTtext[i], r"\n\r|\r\n|\r") if strip(tx) != ""]
   println("------SoftDates-------")
-  x = softdate(DTtext[i], Date(DTStart[i]), Date(DTEnd[i]))
+   x = softdate(DTtext[i], dtstart = Date(DTStart[i]), dtend = Date(DTEnd[i]))
   sort!(x, :date)
   [println("$(x[:date][j]) || $(trunk(x[:txt][j], 130)) || $(x[:indt][j]) || $(x[:score][j])") for j in 1:size(x)[1]]
   println()

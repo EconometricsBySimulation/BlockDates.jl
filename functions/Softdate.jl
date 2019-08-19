@@ -382,13 +382,36 @@ makeyr3into4("10 12 219 a poorly entered date 219 notice that transformation con
 
 set20xx_dtstart(x, I...) = replace(x, r"20[0-9]{2}" => year([I...][1]))
 set20xx_dtend(x, I...)   = replace(x, r"20[0-9]{2}" => year([I...][2]))
+
+Base.replace(x, y::Pair; which::Integer) =
+  replace(x, r"\b(1[4-9])\b" => s"20\1", count=which) |>
+  z -> (which > 1, replace(z, r"\b20(1[4-9])\b" => s"\1", count=which-1), z)
+
 set1st1x_201x(x, I...) = replace(x, r"\b(1[4-9])\b" => s"20\1", count=1)
-set2nd1x_201x(x, I...) = replace(replace(x, r"\b(1[4-9])\b" => s"20\1", count=2), r"\b20(1[4-9])\b" => s"\1", count=1)
+set2nd1x_201x(x, I...) = replace(replace(x, r"\b(1[4-9])\b" => s"20\1", count=2),
+  r"\b20(1[4-9])\b" => s"\1", count=1)
+set3rd1x_201x(x, I...) = replace(replace(x, r"\b(1[4-9])\b" => s"20\1", count=3),
+  r"\b20(1[4-9])\b" => s"\1", count=2)
+set4th1x_201x(x, I...) = replace(replace(x, r"\b(1[4-9])\b" => s"20\1", count=4),
+  r"\b20(1[4-9])\b" => s"\1", count=3)
 
-set1st1x_201x("18 19")
-set2nd1x_201x("18 19")
+set1st3rd1x_201x(x, I...) = set1st1x_201x(set4th1x_201x(x, I...), I...)
+set1st2nd1x_201x(x, I...) = set1st1x_201x(set2nd1x_201x(x, I...), I...)
+set2nd3rd1x_201x(x, I...) = set2nd1x_201x(set3rd1x_201x(x, I...), I...)
+set2nd4th1x_201x(x, I...) = set2nd1x_201x(set4th1x_201x(x, I...), I...)
 
-mytranformations = [((x, I...)->x), makeyr3into4, set20xx_dtstart, set20xx_dtend, set1st1x_201x, set2nd1x_201x]
+set1st1x_201x("01 18 19")
+set2nd1x_201x("12 18 19")
+set3rd1x_201x("12 14 to 16 19")
+set4th1x_201x("12 14 19 to 12 16 19")
+set1st2nd1x_201x("12 9 19 to 12 11 19")
+set1st3rd1x_201x("12 9 19 to 12 14 19")
+set2nd3rd1x_201x("12 14 18 to 1 4 19")
+set2nd4th1x_201x("12 14 19 to 12 16 19")
+
+mytranformations = [((x, I...)->x), makeyr3into4, set20xx_dtstart, set20xx_dtend,
+  set1st1x_201x, set2nd1x_201x, set3rd1x_201x, set4th1x_201x, set1st2nd1x_201x,
+  set1st3rd1x_201x, set2nd3rd1x_201x, set2nd4th1x_201x]
 
 ################################################### - Begin softdate
 function softdate(txt, dtstart::Date, dtend::Date;
@@ -406,7 +429,8 @@ function softdate(txt, dtstart::Date, dtend::Date;
      ],
    seperators = ["through|till| |thru|to|-"],
    scoreparameters = [1,1,1,1,1],
-   verbose = false)
+   verbose = false,
+   scorecut = 0)
 
   # Fill in some initial values
     scoremax = -999999
@@ -422,7 +446,7 @@ function softdate(txt, dtstart::Date, dtend::Date;
 
     for s in 1:length(splits),
       t1 in 1:(length(transformations)-1),
-      t2 in t1:length(transformations),
+      t2 in 1:length(transformations),
       F in 1:length(singleformats) ,
       r in 1:length(rangeformats)
 
@@ -440,7 +464,6 @@ function softdate(txt, dtstart::Date, dtend::Date;
 
         scorei = scorer(txtframe, scoreparameters = scoreparameters, dtstart = dtstart, dtend = dtend)
 
-
       if scorei > scoremax
             scoremax = scorei
             dttxtout = txtframe[:txt]
@@ -454,6 +477,10 @@ function softdate(txt, dtstart::Date, dtend::Date;
                 (txtframelast != txtframe) && println(txtframe)
                 txt2last, txtframelast, scoreilast = txt, txtframe, scorei
             end
+       if scorei > scorecut
+           println("--------- $(round(scorei,2)) achieved!!")
+           break
+       end
       end
     end
 
@@ -462,6 +489,10 @@ function softdate(txt, dtstart::Date, dtend::Date;
 
     framemax
 end
+
+softdate(txt; dtstart::Date, dtend::Date, verbose=false) =
+  softdate(txt, dtstart, dtend, verbose=verbose)
+
 ################################################### - End softdate
 
 outframe = softdate("Missing Date\n\r10 12 219 a poorly entered date\n\r11 12 2019 ads",
