@@ -60,6 +60,7 @@ function removedays(x, I...)
 end
 removedays("Monday mond test")
 removedays(" mond test", Date(0))
+removedays("Wednesday adsf", Date(0))
 
 
 ##########################################################################################
@@ -67,12 +68,12 @@ removedays(" mond test", Date(0))
 
 ### Range Date Format
 # Function for formatting ranged dates
-function rangeformatter(txtin; rangeformat, toomany = 30,
-      trans=(x,I...)->x, dt1=Date(0), dt2=Date(0))
+function rangeformatter(txtin; rangeformat = ["m d y"], toomany = 30,
+      trans=(x,I...)->x, dtstart=Date(0), dtend=Date(0))
 
     txt = txtin |> x->replace(x, r"[ ]+" => " ") |> strip
 
-    txt = trans(txt, dt1, dt2)
+    txt = trans(txt, dtstart, dtend)
     txt = replace(txt, r"[|./\-\\,\\:]" => " ") |> replacemonth |> removedays
 
     txt = replace(txt, r"\b([0-9])\b" => s"0\1") |>
@@ -100,7 +101,7 @@ function rangeformatter(txtin; rangeformat, toomany = 30,
     if rangematch === nothing
         txt2 = replace(txt, Regex("($d2) ($d2)(.{1,15}?)($d2) ($d14)")=>
                       s"\1 \2 \5 \3 \1 \4 \5")|> x->replace(x, r"[ ]+" => " ")
-        rx = Regex("^($left).{1,15}($right)")
+        rx = Regex("^($left).{1,15}?($right)")
         rangematch = match(rx, txt2)
     end
     (rangematch === nothing) && (return [])
@@ -140,8 +141,8 @@ function rangeformatter(txtin; rangeformat, toomany = 30,
         (length(dt1:Day(1):dt2) > toomany) && return []
 
         return DataFrame(date = collect(dt1:Day(1):dt2),
-        txt = fill(txtout, length(dt1:Day(1):dt2)),
-        indt = fill(indt, length(dt1:Day(1):dt2)))
+          txt = fill(txtout, length(dt1:Day(1):dt2)),
+          indt = fill(indt, length(dt1:Day(1):dt2)))
     catch
         return  []
     end
@@ -151,7 +152,7 @@ rangeformatter(;txtin::AbstractString, rangeformat, I...) =
  rangeformatter(txtin, rangeformat = rangeformat, I...)
 
 # Extra spaces between dates are ignore (after the first)
-rangeformatter(txtin = "1 1 2015 : 5/1/2015 Date match", rangeformat = ["d m y"])
+rangeformatter(txtin = "1 1 2015:5/1/2015 Date match", rangeformat = ["d m y"])
 rangeformatter(txtin = "1 1 15 till   5/1/15 Some values", rangeformat = ["d m y"])
 rangeformatter(txtin = "1 1 215 till   5 1 2015 poorly entered dates", rangeformat = ["d m y"])
 
@@ -200,8 +201,10 @@ function singleformatter(txtin; singleformat::Array = ["m d y"],
         dt1 = Date(sm, DateFormat(sf))
 
         # If dt1 is less than 100 assume it is 2000s and need to add 2000 years
-        (dt1 < Date(100)) && (dt1 = dt1 + Year(2000))
+        (dt1 > Date(3000)) && (dt1 = dt1 - Year(1000))
+        (dt1 > Date(2100)) && (dt1 = dt1 - Year(90))
         # If dt1 is less than 300 assume it is 2000s and need to add 1800 years
+        (dt1 < Date(100))  && (dt1 = dt1 + Year(2000))
         (dt1 < Date(300)) && (dt1 = dt1 + Year(1800))
 
         # Define a place to start capturing the text input after the date
@@ -223,8 +226,8 @@ function singleformatter(txtin; singleformat::Array = ["m d y"],
     end
 end
 
-sg1 = singleformatter("1 16 17 A date", singleformat = ["m d y"])
-sg2 = singleformatter("Sunday, June 30, 2019", singleformat = ["m d y"])
+sg1 = singleformatter("3/21/3019:  16", singleformat = ["m d y"])
+sg2 = singleformatter("Sunday, June 30, 2109", singleformat = ["m d y"])
 sg3 = singleformatter("16 1 2017 A date mismatch", singleformat = ["d m y"])
 sg4 = singleformatter("16  1  2017 A date match", singleformat = ["d m y"])
 sg5 = singleformatter("16.1.2017 A date match", singleformat = ["d m y"])
@@ -290,7 +293,7 @@ function dt2block(txtsplit;
   for tx in txtsplit;
   # global outframe
     rangeattempt = rangeformatter(tx, rangeformat = rangeformat,
-      trans=trans, dt1=dtstart, dt2=dtend)
+      trans=trans, dtstart=dtstart, dtend=dtend)
 
     if size(rangeattempt)[1] > 0
         outframe = vcat(outframe, rangeattempt)
@@ -405,15 +408,15 @@ end
 ### Score 1
 dtstart = Date("2015 16 11", dateformat"yyyy dd mm")
 dtend   = Date("2015 20 11", dateformat"yyyy dd mm")
-rangeformat_md_dy2mdy = ("mm dd", "dd yyyy", convertmd_dy2mdy, "mm dd yyyy")
 
-dtframe = dt2block(["11 17 2015 a date in range","11 18 through 20 2015 A range match"],
-    dtstart = dtstart, dtend = dtend, rangeformat = rangeformat_md_dy2mdy)
+dtframe = dt2block(["11 17 2015 a date in range","11 18 through 20 2015 A range match"], dtstart = dtstart, dtend = dtend)
+
 scorer(dtframe, dtstart = dtstart, dtend = dtend) # Missing values
 
 ### Score get penalized for duplicate dates
 dtframe = dt2block(["11 17 2015 a date in range","11 18 through 20 2015 A range match","11 17 2015 a duplicate"],
-    dtstart = dtstart, dtend = dtend, rangeformat = rangeformat_md_dy2mdy)
+    dtstart = dtstart, dtend = dtend)
+dtframe.txt
 scorer(dtframe, dtstart = dtstart, dtend = dtend) # Missing values
 
 
@@ -423,13 +426,13 @@ dtend   = Date("2017 25 01", dateformat"yyyy dd mm")
 
 txtin = ["1 16 2017 A date"]
 dtframe = dt2block(["1 15 2017 an out of date date","1 16 2017 A date", "1 18 2017 - 01 24 2017 A range"],
-    dtstart = dtstart, dtend = dtend, singleformat = ["mm dd yyyy"], rangeformat = ["mm dd yyyy"])
+    dtstart = dtstart, dtend = dtend, singleformat = ["m d y"], rangeformat = ["m d y"])
 scorer(dtframe, dtstart = dtstart, dtend = dtend)
 
 ### Score 3 - Format mm dd yyyy is a poor fit for dataset
 txtin = ["11 16 2017 A date"]
 dtframe = dt2block(["15 1 2017 an out of date date","16 1 2017 A date", "18 1 2017 - 24 1 2017 A range"],
-    dtstart = dtstart, dtend = dtend, singleformat = ["mm dd yyyy"], rangeformat = ["mm dd yyyy"])
+    dtstart = dtstart, dtend = dtend, singleformat = ["m d y"], rangeformat = ["m d y"])
 scorer(dtframe, dtstart = dtstart, dtend = dtend)
 
 # Previous scorer
@@ -474,8 +477,8 @@ set2nd4th1x_201x("12 14 19 to 12 16 19")
 mytranformations = [((x, I...)->x), makeyr3into4, set20xx_dtstart, set20xx_dtend,
   set1st1x_201x, set2nd1x_201x]
 
-  [set3rd1x_201x, set4th1x_201x, set1st2nd1x_201x,
-  set1st3rd1x_201x, set2nd3rd1x_201x, set2nd4th1x_201x]
+[set3rd1x_201x, set4th1x_201x, set1st2nd1x_201x,
+set1st3rd1x_201x, set2nd3rd1x_201x, set2nd4th1x_201x]
 
 # Singleformats hopefully unneccessary
 #  ["mm dd yy", (x->x[1:(end-2)] * "20" * x[(end-1):end]), "mm dd yyyy"] ,
@@ -514,15 +517,14 @@ function softdate(txtin, dtstart::Date, dtend::Date;
       F in 1:length(singleformats) ,
       r in 1:length(rangeformats)
 
-        txtsplit = [tx for tx in split(txtin, splits) if tx != ""]
+        txtsplit = [strip(tx) for tx in split(txtin, splits) if tx != ""]
 
         # Send textsplit to be converted into dates
         txtframe = dt2block(txtsplit, dtstart = dtstart, dtend = dtend,
             singleformat = singleformats[F],
             rangeformat = rangeformats[r],
-            trans1=transformations[t1],
+            trans=transformations[t1]
 #            trans2=transformations[t2]
-            trans2=transformations[1]
             )
 
         scorei = scorer(txtframe, scoreparameters = scoreparameters, dtstart = dtstart, dtend = dtend)
@@ -532,9 +534,9 @@ function softdate(txtin, dtstart::Date, dtend::Date;
             dttxtout = txtframe[:txt]
             framemax = txtframe
             combset = [t1, F, r]
-            combfull = [transformations[t1], transformations[t2], singleformats[F], rangeformats[r]]
+            combfull = [transformations[t1], singleformats[F], rangeformats[r]]
             if verbose
-                println("t=$t1 t=$t2 F=$F r=$r")
+                println("t=$t1 F=$F r=$r")
                 (scoreilast != scorei) && println("Score $scorei")
                 (txt2last != txt) && [println(tx) for tx in txtsplit]
                 (txtframelast != txtframe) && println(txtframe)
@@ -565,7 +567,7 @@ softdate(;txtin=txtin, dtstart::Date, dtend::Date, verbose=false) =
 outframe = softdate("Missing Date\n\r10 12 219 a poorly entered date\n\r11 12 2019 ads",
   Date.(["2019 10 12","2019 12 12"], dateformat"y d m")..., verbose = true)
 
-outframe = softdate("June 1 2019 adsf\n\rJune 2 22019 weqr",
+outframe = softdate("June 1 2019 adsf\n\rJune 2 2019 weqr",
   Date.(["2019 01 6","2019 02 6"], dateformat"y d m")..., verbose = true)
 
 # Forgot to update the date form 2018 to 2019
