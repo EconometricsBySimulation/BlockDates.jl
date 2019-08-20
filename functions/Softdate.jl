@@ -54,7 +54,8 @@ end
 replacemonth("January 1 2019\n\rFebruary 2 2019\n\rMar 3 2019", Date(0))
 
 function removedays(x, I...)
-  dayabrev = Regex("(?i)(^|\\b)(" * join(unique([[dn[1:min(i,end)] for dn in dayname.(now() + Day.(0:6)), i in 9:-1:1]...]),"|") * ")(\\b|\$)")
+  dayabrev = Regex("(?i)(^|\\b)(" * join(unique([[dn[1:min(i,end)]
+    for dn in dayname.(now() + Day.(0:6)), i in 9:-1:1]...]),"|") * ")(\\b|\$)")
   replace(x, dayabrev=>"")
 end
 removedays("Monday mond test")
@@ -66,13 +67,16 @@ removedays(" mond test", Date(0))
 
 ### Range Date Format
 # Function for formatting ranged dates
-function rangeformatter(txtin; rangeformat, seperator = "through|till| ", toomany = 30,
-      trans1=(x,I...)->x, trans2=(x,I...)->x, dt1=Date(0), dt2=Date(0))
-    txt = trans1(txtin, dt1, dt2)
-    txt = trans2(txt,   dt1, dt2)
-    txt = replace(txt, r"[|./\-\\,]" => " ") |> replacemonth |> removedays
+function rangeformatter(txtin; rangeformat, toomany = 30,
+      trans=(x,I...)->x, dt1=Date(0), dt2=Date(0))
 
-    txt = replace(txt, r"\b([0-9])\b" => s"0\1") |> x->replace(x, r"[ ]+" => " ")
+    txt = txtin |> x->replace(x, r"[ ]+" => " ") |> strip
+
+    txt = trans(txt, dt1, dt2)
+    txt = replace(txt, r"[|./\-\\,\\:]" => " ") |> replacemonth |> removedays
+
+    txt = replace(txt, r"\b([0-9])\b" => s"0\1") |>
+           x->replace(x, r"[ ]+" => " ") |> strip
 
     # Input range formats
     rf1 = rangeformat[1]
@@ -147,7 +151,7 @@ rangeformatter(;txtin::AbstractString, rangeformat, I...) =
  rangeformatter(txtin, rangeformat = rangeformat, I...)
 
 # Extra spaces between dates are ignore (after the first)
-rangeformatter(txtin = "1 1 2015 till   5/1/2015 Date match", rangeformat = ["d m y"])
+rangeformatter(txtin = "1 1 2015 : 5/1/2015 Date match", rangeformat = ["d m y"])
 rangeformatter(txtin = "1 1 15 till   5/1/15 Some values", rangeformat = ["d m y"])
 rangeformatter(txtin = "1 1 215 till   5 1 2015 poorly entered dates", rangeformat = ["d m y"])
 
@@ -171,12 +175,12 @@ rangeformatter(txtin = "1/10 - 15/2017 Range Match!", rangeformat = ["m d y"])
 #### Single Date Format
 # Function for formatting single dates
 function singleformatter(txtin; singleformat::Array = ["m d y"],
-      trans1=(x,I...)->x, trans2=(x,I...)->x, dt1=Date(0), dt2=Date(0))
+      trans=(x,I...)->x,
+      dtstart=Date(0), dtend=Date(0), toofardays = 720)
 
-    txt = txtin
-    txt = trans1(txt, dt1, dt2)
-    txt = trans2(txt, dt1, dt2)
-    txt = replace(txt, r"[|./\-\\,]" => " ") |> replacemonth |> removedays
+    txt = txtin |> x->replace(x, r"[ ]+" => " ") |> strip
+    txt = trans(txt, dtstart, dtend)
+    txt = replace(txt, r"[|./\-\\,\\:]" => " ") |> replacemonth |> removedays
     txt = replace(txt, r"\b([0-9])\b" => s"0\1") |> x->replace(x, r"[ ]+" => " ") |> strip
 
     sf = singleformat[1]
@@ -208,6 +212,11 @@ function singleformatter(txtin; singleformat::Array = ["m d y"],
         #txtout = strip(txtin)
         indt   = strip(txtin[1:min(starter, end)])
 
+        (dtstart != Date(0)) && (abs(-(Dates.value.([dt1, dtstart])...)) > toofardays) &&
+          throw("Date $dt1 too far!") #println(abs(-(Dates.value.([dt1, dtstart])...))) #
+        (dtend != Date(0)) && (abs(-(Dates.value.([dt1, dtend])...)) > toofardays) &&
+          throw("Date $dt1 too far!") # println(abs(-(Dates.value.([dt1, dtend])...))) #
+
         return DataFrame(date = dt1, txt = txtin, indt = indt)
     catch
         return DataFrame(date = Date(0), txt = txtin, indt = "")
@@ -225,6 +234,9 @@ sg8 = singleformatter("16-1-2017", singleformat = ["d m y"])
 sg9 = singleformatter("1 16 17 A date",
   singleformat = ["m d y", (x->x[1:(end-2)] * "20" * x[(end-1):end]), "m d y"])
 sg10 = singleformatter("16-January-2017 asdfdsa", singleformat = ["d m y"])
+
+sg10 = singleformatter("16-January-2014 Date Too Far", singleformat = ["d m y"],
+             dtstart = Date("2017 01 01", dateformat"y d m"), toofardays=720)
 
 # Previous singleformatter
 ##########################################################################################
@@ -270,24 +282,23 @@ function dt2block(txtsplit;
   dtend   = Date(now()),
   singleformat = ["m d y"],
   rangeformat  = ["m d y"],
-  seperator   = "through|till|to| ",
   fillmissing = true,
-  trans1=(x,I...)->x,
-  trans2=(x,I...)->x)
+  trans=(x,I...)->x)
 
   outframe = DataFrame()
 
   for tx in txtsplit;
   # global outframe
-    rangeattempt = rangeformatter(tx, rangeformat = rangeformat, seperator = seperator,
-      trans1=trans1, trans2=trans2, dt1=dtstart, dt2=dtend)
+    rangeattempt = rangeformatter(tx, rangeformat = rangeformat,
+      trans=trans, dt1=dtstart, dt2=dtend)
 
     if size(rangeattempt)[1] > 0
         outframe = vcat(outframe, rangeattempt)
         continue
     end
+
     singleattempt = singleformatter(tx, singleformat = singleformat,
-      trans1=trans1, trans2=trans2, dt1=dtstart, dt2=dtend)
+       trans=trans, dtstart=dtstart, dtend=dtend)
     outframe = vcat(outframe, singleattempt)
     continue
   end
@@ -300,9 +311,8 @@ function dt2block(txtsplit;
   outframe = dropmerger(outframe, excludevalue = Date(0), exclude = :date, merger = :txt)
 
   #outframe = outframe[outframekeep, :]
-
-  outframe[!,:day]   = day.(outframe[:,:date])
-  outframe[!,:month] = month.(outframe[:,:date])
+  outframe[:day]   = day.(outframe[:date])
+  outframe[:month] = month.(outframe[:date])
 
   # If there are any fields which have been filled in but have the same day and month
   # as a missing field then replace dates from missing fields and drop filled
@@ -339,9 +349,8 @@ outframe = dt2block(["1 15 2017 an out of date date",
 dtstart = Date("2015 16 11", dateformat"y d m")
 dtend   = Date("2015 20 11", dateformat"y d m")
 
-rangeformat_md_dy2mdy = ("m d", "d y", convertmd_dy2mdy, "m d y")
-    dt2block(["11 17 2015 a date in range","1 18 through 20 2015 A range match"],
-    dtstart = dtstart, dtend = dtend, rangeformat = rangeformat_md_dy2mdy)
+dt2block(["1 17 2015 a date in range","1 18 through 20 2015 A range match"],
+    dtstart = dtstart, dtend = dtend)
 
 #### Test block 3
 dt2block(["a non-date entry"], dtstart = dtstart, dtend = dtstart)
@@ -380,13 +389,16 @@ function scorer(txtframe; scoreparameters = [1,1,1,1,1], dtstart, dtend = dtend)
     length(gradient) == 0 ? increasing = 0 : increasing = sum(gradient)
 
     txtframe = txtframe[txtframe[:date] .!= Date(0),:]
-    distfrmmiddle = sum(Dates.value.(abs.(txtframe[:date] .- (dtstart + (dtend - dtstart) ÷ 2)))) / 10
+
+    inmiddle = [dt ∈ dtstart:Day(1):dtend for dt in txtframe[:date]]
+
+    distfrmmiddle = sum([minimum(Dates.value.([abs(dtstart - dt), abs(dtend - dt)])) for dt in txtframe[:date][.!inmiddle]])
 
     duplicatescount = length(txtframe[:date]) - length(unique(txtframe[:date]))
 
     α, β, γ, δ, ϕ = scoreparameters
     α * log(increasing + 1) - 10log(rngmiss + 1) - 5γ * log(txtout + 1) -
-     γ * log(distfrmmiddle + 1) - ϕ * duplicatescount
+     10γ * log(distfrmmiddle + 1) - ϕ * duplicatescount
 end
 
 
