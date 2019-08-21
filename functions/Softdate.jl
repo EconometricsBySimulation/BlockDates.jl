@@ -409,8 +409,8 @@ dtend   = Date("2017 27 11", dateformat"y d m")
 
 dt2block(txtin, dtstart = dtstart, dtend = dtend)
 
-dtblock = dt2block([strip(tx) for tx in split(txtin, splits) if strip(tx) != ""] ,
-   dtstart = dtstart, dtend = dtend)
+# dtblock = dt2block([strip(tx) for tx in split(txtin, splits) if strip(tx) != ""] ,
+#    dtstart = dtstart, dtend = dtend)
 
 # Previous dt2block
 ##########################################################################################
