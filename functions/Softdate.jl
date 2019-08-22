@@ -579,9 +579,9 @@ function softdate(txtin, dtstart::Date, dtend::Date;
             if verbose
                 println("t=$t1 F=$F r=$r")
                 (scoreilast != scorei) && println("Score $scorei")
-                # (txt2last != txt) && [println(tx[1:min(40,end)]) for tx in txtsplit]
+                (txt2last != txtframe) && [println(tx[1:min(40,end)]) for tx in txtsplit]
                 #(txtframelast != txtframe) && println(txtframe)
-                txt2last, txtframelast, scoreilast = txt, txtframe, scorei
+                txt2last, txtframelast, scoreilast = txtframe, txtframe, scorei
             end
        if scorei >= scorecut
            println("--------- $(round(scorei,digits=1)) achieved!")
@@ -590,7 +590,7 @@ function softdate(txtin, dtstart::Date, dtend::Date;
       end
     end
 
-    (scoremax < scorecut) && println("--------- $(round(scorei,digits=1)) not achieved!")
+    (scoremax < scorecut) && println("--------- $(round(scorecut,digits=1)) not achieved!")
 
     framemax[!,:score] .= scoremax
     framemax[!,:t1]    .= combset[1]
