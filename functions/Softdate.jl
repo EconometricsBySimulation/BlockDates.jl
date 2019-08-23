@@ -80,8 +80,10 @@ function rangeformatter(txtin; rangeformat = ["m d y"], toomany = 30,
     txt = txtin |>
        replacemonth |> removedays |>
        x->trans(x, dtstart, dtend) |>
-       x-> replace(x, r"[|./\-\\,\\:]" => " ") |>
+       x->replace(x, r"[|./\-\\,\\:+]" => " ") |>
+       x->replace(x, r" 00([1-9]) "=>s" 0\1 ") |>
        x->replace(x, r"st|nd|rd|th"=>"") |>
+       x->replace(x, r"([4-9])0"=>s"0\1") |>
        x->replace(x, r"(\b| )([0-9])(\b| )" => s"\1 0\2\3") |>
        x->replace(x, r"[ ]+" => " ") |>
        strip
@@ -93,23 +95,31 @@ function rangeformatter(txtin; rangeformat = ["m d y"], toomany = 30,
 
     left, right = dateformat2regex.([rf1,rf2])
 
-    rangematch = match(Regex("^($left).{1,15}?($right)"), txt)
+    rangematch = match(Regex("^($left).{1,10}?($right)"), txt)
 
     # Ranges might be of the form "m d - m d y" or "d m - d m y"
     if rangematch === nothing
         d2 = "[0-9]{2}"
         d14 = "[0-9]{1,4}"
-        txt2 = replace(txt, Regex("($d2 $d2)(.{1,15}?)($d2 $d2) ($d14)")=>
+        txt2 = replace(txt, Regex("($d2 $d2)(.{1,10}?)($d2 $d2) ($d14)")=>
                       s"\1 \4 \2 \3 \4")|> x->replace(x, r"[ ]+" => " ")
-        rx = Regex("^($left).{1,15}($right)")
+        rx = Regex("^($left).{1,15}?($right)")
         rangematch = match(rx, txt2)
     end
     # Ranges might be of the form "m d - d y"
     if rangematch === nothing
-        txt2 = replace(txt, Regex("($d2) ($d2)(.{1,15}?)($d2) ($d14)")=>
+        txt2 = replace(txt, Regex("($d2) ($d2)(.{1,10}?)($d2) ($d14)")=>
                       s"\1 \2 \5 \3 \1 \4 \5")|> x->replace(x, r"[ ]+" => " ")
         rx = Regex("^($left).{1,15}?($right)")
         rangematch = match(rx, txt2)
+    end
+    if rangematch === nothing
+        txt2 = txt |> x->replace(x, r"201[+ ]([0-9]) "=>s"201\1 ")
+        rangematch = match(Regex("^($left).{1,10}?($right)"), txt2)
+    end
+    if rangematch === nothing #Remove extra zero 05 006 2019 -> 05 06 2019
+        txt2 = txt |> x->replace(x, r" 00([1-9]) "=>s"0\1 ")
+        rangematch = match(Regex("^($left).{1,10}?($right)"), txt2)
     end
     (rangematch === nothing) && (return [])
 
@@ -125,9 +135,11 @@ function rangeformatter(txtin; rangeformat = ["m d y"], toomany = 30,
     try
         dt1 = Date(m1, DateFormat(rf1))
         # If dt1 is less than 1990 assume it is 2000s and need to add 2000 years
+        (dt1 < Date(10))  && (dt1 = dt1 + Year(2010))
         (dt1 < Date(100)) && (dt1 = dt1 + Year(2000))
 
         dt2 = Date(m2, DateFormat(rf2))
+        (dt2 < Date(10))  && (dt2 = dt2 + Year(2010))
         (dt2 < Date(100)) && (dt2 = dt2 + Year(2000))
 
         # If dt1 is less than 300 assume it is 2000s and need to add 1800 years
@@ -145,7 +157,15 @@ function rangeformatter(txtin; rangeformat = ["m d y"], toomany = 30,
         indt   = txtin[1:min(starter - 1, end)]
         # indt   = rangematch.match
 
-        (length(dt1:Day(1):dt2) > toomany) && return []
+        if (length(dt1:Day(1):dt2) > toomany) || (length(dt1:Day(1):dt2) == 0)
+            (dt2 > dtend + Day(toomany))   &&  (dt2 -= Year(1))
+            (dt2 < dtstart - Day(toomany)) &&  (dt2 += Year(1))
+
+            (dt1 > dtend + Day(toomany))   &&  (dt1 -= Year(1))
+            (dt1 < dtstart - Day(toomany)) &&  (dt1 += Year(1))
+
+            (length(dt1:Day(1):dt2) > toomany) && return []
+        end
 
         return DataFrame(date = collect(dt1:Day(1):dt2),
           txt = fill(txtout, length(dt1:Day(1):dt2)),
@@ -162,6 +182,8 @@ rangeformatter(;txtin::AbstractString, rangeformat, I...) =
 rangeformatter(txtin = "1 1 2015:5/1/2015 Date match", rangeformat = ["d m y"])
 rangeformatter(txtin = "1 1 15 till   5/1/15 Some values", rangeformat = ["d m y"])
 rangeformatter(txtin = "1 1 215 till   5 1 2015 poorly entered dates", rangeformat = ["d m y"])
+
+rangeformatter(txtin = "1 1 201 5 till   5 1 2015 poorly entered dates", rangeformat = ["d m y"])
 
 rangeformatter(txtin = "1 Jan  2015 till  5 Jan 2015 Date match", rangeformat = ["d m y"])
 
@@ -182,7 +204,7 @@ rangeformatter(txtin = "1/10 - 15/2017 Range Match!", rangeformat = ["m d y"])
 
 #### Single Date Format
 # Function for formatting single dates
-function singleformatter(txtin; singleformat::Array = ["m d y"],
+function singleformatter(txtin; singleformat = ["m d y"],
       trans=(x,I...)->x,
       dtstart=Date(0), dtend=Date(0), toofardays = 720)
 
@@ -192,8 +214,11 @@ function singleformatter(txtin; singleformat::Array = ["m d y"],
       txt = txtin |>
          replacemonth |> removedays |>
          x->trans(x, dtstart, dtend) |>
-         x-> replace(x, r"[|./\-\\,\\:]" => " ") |>
+         x->replace(x, r"[|./\-\\,\\:+]" => " ") |>
+         x->replace(x, r" 00([1-9]) "=>s" 0\1 ") |>
          x->replace(x, r"st|nd|rd|th"=>"") |>
+         x->replace(x, r"([4-9])0"=>s"0\1") |>
+         x->replace(x, r"201[+ ]([0-9]) "=>s"201\1 ") |>
          x->replace(x, r"(\b| )([0-9])(\b| )" => s"\1 0\2\3") |>
          x->replace(x, r"[ ]+" => " ") |>
          strip
@@ -217,6 +242,10 @@ function singleformatter(txtin; singleformat::Array = ["m d y"],
         txt2 = join([month(dtstart), txt], " ")
         singlematch = match(Regex("^($left)"), txt2)
     end
+    if singlematch === nothing
+        txt2 = txt |> x->replace(x, r"201[+ ]([0-9]) "=>s"201\1 ")
+        singlematch = match(Regex("^($left)"), txt2)
+    end
     (singlematch === nothing) && (return DataFrame(date = Date(0), txt = txtin, indt = ""))
 
     sm = singlematch.match
@@ -227,13 +256,16 @@ function singleformatter(txtin; singleformat::Array = ["m d y"],
     try
         dt1 = Date(sm, DateFormat(sf))
 
+        # If dt1 is less than 300 assume it is 2000s and need to add 1800 years
+        (dt1 < Date(10))  && (dt1 = dt1 + Year(2010))
+        (dt1 < Date(100)) && (dt1 = dt1 + Year(2000))
+        (dt1 < Date(210)) && (dt1 = dt1 + Year(1810))
+        (dt1 < Date(300)) && (dt1 = dt1 + Year(1800))
+
         # If dt1 is less than 100 assume it is 2000s and need to add 2000 years
         (dt1 > Date(3000)) && (dt1 = dt1 - Year(1000))
         (dt1 > Date(2100)) && (dt1 = dt1 - Year(90))
-        # If dt1 is less than 300 assume it is 2000s and need to add 1800 years
-        (dt1 < Date(100))  && (dt1 = dt1 + Year(2000))
-        (dt1 < Date(210)) && (dt1 = dt1 + Year(1810))
-        (dt1 < Date(300)) && (dt1 = dt1 + Year(1800))
+        (dt1 > Date(2023)) && (dt1 = dt1 - Year(10))
 
         # Define a place to start capturing the text input after the date
         starter = length(sm)  + (length(txtin) - length(txt)) +1
@@ -241,12 +273,18 @@ function singleformatter(txtin; singleformat::Array = ["m d y"],
 
         #txtout = strip(txtin[starter:end])
         #txtout = strip(txtin)
-        indt   = strip(txtin[1:min(30, end)])
+        indt   = strip(txtin[1:min(starter, end, 30)])
 
-        (dtstart != Date(0)) && (abs(-(Dates.value.([dt1, dtstart])...)) > toofardays) &&
-          throw("Date $dt1 too far!") #println(abs(-(Dates.value.([dt1, dtstart])...))) #
-        (dtend != Date(0)) && (abs(-(Dates.value.([dt1, dtend])...)) > toofardays) &&
-          throw("Date $dt1 too far!") # println(abs(-(Dates.value.([dt1, dtend])...))) #
+        if (dtstart != Date(0)) && (abs(-(Dates.value.([dt1, dtstart])...)) > toofardays) |
+           (dtend != Date(0)) && (abs(-(Dates.value.([dt1, dtend])...)) > toofardays)
+
+        #Try setting year to dtstart
+        dt1 = dt1 - Year(dt1) + Year(dtstart)
+
+        # ((dtstart != Date(0)) && (abs(-(Dates.value.([dt1, dtstart])...)) > toofardays) ||
+        #   (dtend != Date(0)) && (abs(-(Dates.value.([dt1, dtend])...)) > toofardays)) &&
+        #   throw("Date $dt1 too far!") # println(abs(-(Dates.value.([dt1, dtend])...))) #
+        end
 
         return DataFrame(date = dt1, txt = txtin, indt = indt)
     catch
@@ -424,26 +462,41 @@ dt2block(txtin, dtstart = dtstart, dtend = dtend)
 # Penalizes dates which are far from the center of date start and date end
 function scorer(txtframe; scoreparameters = [1,1,1,1,1], dtstart, dtend = dtend)
 
-    rngmiss    = [tx == "<<Input Missing>>" for tx in txtframe.txt] |> sum
+  rngmiss    = [tx == "<<Input Missing>>" for tx in txtframe.txt] |> sum
 
-    txtout     = [!(dt ∈ dtstart:Day(1):dtend) for dt in txtframe.date] |> sum
+  txtout     = [!(dt ∈ dtstart:Day(1):dtend) for dt in txtframe.date] |> sum
 
-    gradient = [txtframe[i, :date] > txtframe[i - 1, :date]
-   for i in 2:size(txtframe)[1] if txtframe[i, :txt] != "<<Input Missing>>" ]
-    length(gradient) == 0 ? increasing = 0 : increasing = sum(gradient)
+  txtin     = [
+    (txtframe.date[i] ∈ dtstart:Day(1):dtend) &
+    (txtframe.txt[i] != "<<Input Missing>>") #&
+    #((i == 0) | (txtframe.txt[i] != txtframe.txt[max(i-1,1)]))
+    for i in 1:size(txtframe,1)] |> sum
 
-    txtframe = txtframe[txtframe.date .!= Date(0),:]
+  gradient = [
+    (txtframe[i, :date] > txtframe[i - 1, :date]) &
+    (txtframe[i, :txt] != txtframe[i - 1, :txt])
+    for i in 2:size(txtframe)[1] if txtframe[i, :txt] != "<<Input Missing>>" ]
 
-    inmiddle = [dt ∈ dtstart:Day(1):dtend for dt in txtframe.date]
+  length(gradient) == 0 ? increasing = 0 : increasing = sum(gradient)
 
-    distfrmmiddle = sum([minimum(Dates.value.([abs(dtstart - dt),
-      abs(dtend - dt)])) for dt in txtframe.date[.!inmiddle]])
+  downgradient = [
+    (txtframe[i, :date] < txtframe[i - 1, :date]) &
+    (txtframe[i, :txt] != txtframe[i - 1, :txt])
+    for i in 2:size(txtframe)[1] if txtframe[i, :txt] != "<<Input Missing>>" ]
 
-    duplicatescount = length(txtframe.date) - length(unique(txtframe.date))
+  length(downgradient) == 0 ? decreasing = 0 : decreasing = sum(downgradient)
 
-    α, β, γ, δ, ϕ = scoreparameters
-    α * log(increasing + 1) - 10log(rngmiss + 1) - 5γ * log(txtout + 1) -
-     10γ * log(distfrmmiddle + 1) - ϕ * duplicatescount
+  txtframe = txtframe[txtframe.date .!= Date(0),:]
+
+  inmiddle = [dt ∈ dtstart:Day(1):dtend for dt in txtframe.date]
+
+  distfrmmiddle = sum([minimum(Dates.value.([abs(dtstart - dt),
+    abs(dtend - dt)])) for dt in txtframe.date[.!inmiddle]])
+
+  duplicatescount = length(txtframe.date) - length(unique(txtframe.date))
+
+  2increasing - 10decreasing - 10rngmiss - 4txtout - 5log(distfrmmiddle + 1) -
+      10duplicatescount + 3txtin
 end
 
 
@@ -559,6 +612,8 @@ function softdate(txtin, dtstart::Date, dtend::Date;
       F in 1:length(singleformats) ,
       r in 1:length(rangeformats)
 
+        txtin = txtin |> x -> replace(x, "_x000D_"=>"\n\r")
+
         txtsplit = [strip(tx) for tx in split(txtin, splits) if strip(tx) != ""]
 
         # Send textsplit to be converted into dates
@@ -603,8 +658,8 @@ end
 softdate(txtin; dtstart::Date, dtend::Date, verbose=false) =
   softdate(txtin, dtstart, dtend, verbose=verbose)
 
-softdate(;txtin=txtin, dtstart::Date, dtend::Date, verbose=false) =
-  softdate(txtin, dtstart, dtend, verbose=verbose)
+softdate(;txtin=txtin, dtstart::Date, dtend::Date, verbose=false, scorecut = 0) =
+  softdate(txtin, dtstart, dtend, verbose=verbose, scorecut=scorecut)
 
 
 ################################################### - End softdate
