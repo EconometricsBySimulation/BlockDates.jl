@@ -1,4 +1,4 @@
-name = "SoftDates.jl"
+name = "SoftDates"
 uuid = "a59a0362-b561-11e9-14f8-f5e251d5119d"
 authors = ["Francis Smart"]
 version = "0.1.0"
