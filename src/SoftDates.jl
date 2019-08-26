@@ -1,12 +1,19 @@
+module SoftDates
 
-try
-    cd("C:/Users/francis.smart.ctr/GitDir/SoftDates.jl")
-catch
-    cd("C:/Users/Francis Smart/Documents/GitHub/SoftDates.jl")
-end
-using Pkg
-Pkg.activate(".")
-using Pkg, Dates, DataFrames, Distributions, CSV, StatsBase, IterTools
+export softdate,
+       scorer,
+       dt2block,
+       dropmerger,
+       singleformatter,
+       rangeformatter,
+       replacemonth,
+       dateformat2regex
+
+using Dates,
+      DataFrames,
+      Distributions,
+      StatsBase,
+      IterTools
 
 #### Code Structure
 ## text with dates are passed one by one to the softdate function
@@ -673,3 +680,5 @@ outframe = softdate("June 1 2019 adsf\n\rJune 2 2019 weqr",
 # Forgot to update the date form 2018 to 2019
 outframe = softdate("12-30-218 someth\n\r12-31-2018 someth\n\r01-01-2018 text",
   Date.(["2018 12 30","2019 01 01"], dateformat"y m d")...)
+
+end

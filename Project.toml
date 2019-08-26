@@ -1,11 +1,10 @@
-name = "SoftDatesJL2"
+name = "SoftDates.jl"
 uuid = "a59a0362-b561-11e9-14f8-f5e251d5119d"
-authors = ["francis.smart.ctr "]
+authors = ["Francis Smart"]
 version = "0.1.0"
 
 [deps]
 Atom = "c52e3926-4ff0-5f6e-af25-54175e0327b1"
-CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
