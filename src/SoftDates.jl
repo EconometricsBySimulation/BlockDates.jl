@@ -186,6 +186,8 @@ rangeformatter(;txtin::AbstractString, rangeformat, I...) =
  rangeformatter(txtin, rangeformat = rangeformat, I...)
 
 # Extra spaces between dates are ignore (after the first)
+rangeformatter(txtin = "", rangeformat = ["d m y"])
+
 rangeformatter(txtin = "1 1 2015:5/1/2015 Date match", rangeformat = ["d m y"])
 rangeformatter(txtin = "1 1 15 till   5/1/15 Some values", rangeformat = ["d m y"])
 rangeformatter(txtin = "1 1 215 till   5 1 2015 poorly entered dates", rangeformat = ["d m y"])
@@ -299,6 +301,7 @@ function singleformatter(txtin; singleformat = ["m d y"],
     end
 end
 
+sg0 = singleformatter("", singleformat = ["m d y"])
 sg1 = singleformatter("3/21/3019: Some date", singleformat = ["m d y"])
 sg2 = singleformatter("Sunday, June 30th, 2109", singleformat = ["m d y"])
 # In the absence of a year us dtstart
@@ -356,7 +359,7 @@ dropmerger(mydata, excludevalue = 0, exclude = :date, merger = :txt)
 ######
 ## Takes a date text string Array and tries to match first ranges then singles
 ## Uses dtstart and dtend to fill in missing
-function dt2block(txtsplit;
+function dt2block(txtsplit::Array{String};
   dtstart = Date(now() - Day(10)),
   dtend   = Date(now()),
   singleformat = ["m d y"],
@@ -419,7 +422,10 @@ end
 ################################################### - End dt2block
 
 # Alternative specification of dt2block
-dt2block(txt, dtstart, dtend, I...) = dt2block(txt, dtstart = dtstart, dtend = dtend, I...)
+dt2block(txt::Array{AbstractString}, dtstart, dtend, I...) = dt2block(txt, dtstart = dtstart, dtend = dtend, I...)
+
+dt2block(txt::AbstractString; dtstart, dtend, I...) = dt2block([txt], dtstart = dtstart, dtend = dtend, I...)
+
 
 #### Test block 1
 dtstart = Date("2017 16 01", dateformat"y d m")
@@ -427,7 +433,7 @@ dtend   = Date("2017 25 01", dateformat"y d m")
 
 outframe = dt2block(["1 15 2017 an out of date date",
   "1 16 2017 A date",
-  "3.23 lb",
+  "3.23 lb", "",
   "1 18 2017 - 01 24 2017 A range",
   "A non-date"], dtstart = dtstart, dtend = dtend)
 
@@ -453,6 +459,8 @@ dtstart = Date("2017 09 11", dateformat"y d m")
 dtend   = Date("2017 27 11", dateformat"y d m")
 
 dt2block(txtin, dtstart = dtstart, dtend = dtend)
+
+dt2block("", dtstart = dtstart, dtend = dtend)
 
 # dtblock = dt2block([strip(tx) for tx in split(txtin, splits) if strip(tx) != ""] ,
 #    dtstart = dtstart, dtend = dtend)
@@ -580,7 +588,7 @@ mytranformations = [((x, I...)->x), makeyr3into4, set20xx_dtstart, set20xx_dtend
   set1st1x_201x, set2nd1x_201x]
 
 [set3rd1x_201x, set4th1x_201x, set1st2nd1x_201x,
-set1st3rd1x_201x, set2nd3rd1x_201x, set2nd4th1x_201x]
+  set1st3rd1x_201x, set2nd3rd1x_201x, set2nd4th1x_201x]
 
 # Singleformats hopefully unneccessary
 #  ["mm dd yy", (x->x[1:(end-2)] * "20" * x[(end-1):end]), "mm dd yyyy"] ,
@@ -625,7 +633,7 @@ function softdate(txtin, dtstart::Date, dtend::Date;
 
         # Send textsplit to be converted into dates
         txtframe = dt2block(
-            txtsplit, dtstart = dtstart, dtend = dtend,
+            string.(txtsplit), dtstart = dtstart, dtend = dtend,
             singleformat = singleformats[F],
             rangeformat = rangeformats[r],
             trans=transformations[t1]  )
