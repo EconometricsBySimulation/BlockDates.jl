@@ -1,14 +1,16 @@
 name = "SoftDates"
-uuid = "a59a0362-b561-11e9-14f8-f5e251d5119d"
-authors = ["Francis Smart"]
+uuid = "40bb21cb-f0a6-4fd7-824c-565ec25acab6"
+authors = ["Francis.Smart <francis.smart@gmail.com>"]
 version = "0.1.0"
 
 [deps]
-Atom = "c52e3926-4ff0-5f6e-af25-54175e0327b1"
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+DataFramesMeta = "1313f7d8-7da2-5740-9ea0-a2ca25f37964"
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
-IJulia = "7073ff75-c697-5162-941a-fcdaad2a7d2a"
 IterTools = "c8e1da08-722c-5040-9ed9-7db0dc04731e"
+NBInclude = "0db19996-df87-5ea3-a455-e3a50d440464"
+Pipe = "b98c9c47-44ae-5843-9183-064241ee97a0"
+Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
 StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
-TableView = "40c74d1a-b44c-5b06-a7c1-6cbea58ea978"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
