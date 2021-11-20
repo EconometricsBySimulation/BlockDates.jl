@@ -1,21 +1,14 @@
-# cd("E:/WAR_processing/SoftDates")
-# using Pkg
-# Pkg.activate(".")
-    
-# for v in  ["Dates"
-#     "DataFrames"
-#     "Distributions"
-#     "StatsBase"
-#     "IterTools"
-#     "DataFramesMeta"
-#     "Pipe"
-#     "Test"
-#     "NBInclude"]
-#     Pkg.add(v)
-# end
+module SoftDates
+
+export softdate
+
+##############################################################################
+##
+## Dependencies
+##
+##############################################################################
 
 using Dates,
-    DataFrames,
     Distributions,
     StatsBase,
     IterTools,
@@ -23,6 +16,12 @@ using Dates,
     Pipe,
     Test,
     NBInclude
+
+##############################################################################
+##
+## Exported methods and types (in addition to everything reexported above)
+##
+##############################################################################
 
 ### Code Structure
 # - text with dates are passed one by one to the softdate function
@@ -76,7 +75,7 @@ Remove potential day name matches from text
 function removedays(x, I...)
     dayabrev = Regex("(?i)(^|\\b)(" * join(unique([[dn[1:min(i,end)]
       for dn in dayname.(now() + Day.(0:6)), i in 9:-1:1]...]),"|") * ")(\\b|\$)")
-    replace(x, dayabrev=>"") |> strip
+    replace(x, dayabrev => "") |> strip
 end
 
 """
@@ -509,12 +508,311 @@ function formatSingle(textin; singleformat = 1, defaultdate = Date(0))
 
     starter , scoremod, mods = DateMod(r..., defaultdate = defaultdate)
         
-    return DataFrame(date = starter, 
-        text     = textin, 
-        scoremod = scoremod,
-        mods     = strip(String(mods)))
+    return DataFrame(date     = starter, 
+                     text     = textin, 
+                     scoremod = scoremod,
+                     mods     = strip(String(mods)))
+end
+
+"""
+    andSplit(txtin, splitters = "(?:\\/)", ands = "(?:and|,)")
+
+A function to split dates that have groupings like "and" and ",".
+"""
+function andSplit(txtin, splitters = "(?:\\/)", ands = "(?:and|,)");
+    andmatcher = r"^([a-zA-Z ]{0,5}((\d{1,4}(\/)\d{1,4})+\s*(,|and|\s)+\s*)+)"
+    if occursin(andmatcher, txtin)
+        m = match(andmatcher, txtin)
+        txtdup = replace(txtin, m.captures[1] => "")
+        x = [string(x[1]) for x in eachmatch(
+            Regex("((?:[0-9]+" * splitters * ")+[0-9]+)"), m.captures[1])]
+        return join(x .* " " .* txtdup, "\n")
+    end
+    return txtin
+end
+
+"""
+    textToBlock(txtsplit::Array{String}; 
+                    singleformat = 1, 
+                    rangeformat  = 1,
+                    defaultdate = Date(0))
+
+Takes a date text string list and tries to match each element first as a range 
+then as a single.
+"""
+function textToBlock(txtsplit::Array{String}; 
+    singleformat = 1, 
+    rangeformat  = 1,
+    defaultdate  = Date(0))
+
+    outframe = DataFrame()
+
+    for tx in txtsplit;
+        rangeattempt = formatRange(tx, 
+            rangeformat = rangeformat, 
+            defaultdate = defaultdate)
+
+        if size(rangeattempt,1) > 1
+            rangeattempt.mods .*= " rangefound"
+            outframe = vcat(outframe, rangeattempt)
+            continue
+        end
+
+        singleattempt = formatSingle(tx, 
+                singleformat  = singleformat, 
+                defaultdate   = defaultdate)
+        outframe = vcat(outframe, singleattempt)
+
+    end
+
+    return outframe[strip.(outframe.text) .!= "", :]
+end
+
+"""
+    spreadOverNonDates(inframe)
+
+Merges rows with missing dates with previous row (unless first row then merges with next row).
+"""
+function spreadOverNonDates(inframe)
+  
+    # Create column to keep track of input dates == date(0)
+    inframe[!, :date0] .= inframe.date
+    
+    # Track order that text is in
+    inframe[!, :order] = 1:size(inframe,1)
+      
+    # Treat input text as a groupby unique ID to use for joining text fields without dates
+    inframe[!, :block] .= inframe.text
+  
+    # Grab previous date if current date is missing
+    for i in 2:size(inframe,1)
+      (inframe[i, :date] == Date(0)) && 
+          (inframe[i, [:block, :date]]  = inframe[i-1, [:block, :date]])
+    end
+  
+    # Grab next date if current date is missing
+    for i in (size(inframe,1)-1):-1:1
+      (inframe[i, :date] == Date(0)) && 
+          (inframe[i, [:block, :date]]  = inframe[i+1, [:block, :date]])
+    end
+      
+    # Combine text across the block
+    @pipe DataFramesMeta.groupby(inframe , :block) |> 
+      @transform(_, :text = join(unique(:text), " \n "))
+  
+    # Drop anything that started with date == Date(0) ie missing
+    inframe = inframe[(inframe.date0 .!= Date(0)) .| (inframe.date .== Date(0)), 
+          Not([:date0, :block])]  
+      
+    inframe
+end
+
+"""
+    joinDuplicateDates(inframe, penalty = 7)
+
+Join any duplicate dates which have different text together.
+Scoremod penalizes these observations by -7 number of duplicate dates.
+"""
+function joinDuplicateDates(inframe, penalty = 3)
+  inframe = @pipe DataFramesMeta.groupby(inframe , :date) |>
+    @combine(_, 
+      :mods     = join(ifelse(length(:mods) > 1, 
+                 vcat(unique(:mods)..., "duplicateDates"), unique(:mods)), " "),
+      :scoremod = sum(:scoremod) - penalty*(length(:mods)-1),
+      :order    = [[:order...]],
+      :text     = join(unique(:text), " \n ")
+  )
+    
+  (Date(0) in inframe.date) && (inframe.scoremod = [0]; inframe.mods = ["noDateFound"])
+    
+  inframe
+end
+
+"""
+    fillMissing(inframe, dtstart = Date(0), dtend   = Date(0))
+
+Join any duplicate dates which have different text together.
+Scoremod penalizes these observations by -7 number of duplicate dates.
+"""
+function fillMissing(inframe, dtstart = Date(0), dtend   = Date(0))
+  
+    # Make sure all of the dates appear in the data
+    (dtstart == Date(0)) && return inframe
+      
+    outframe = outerjoin(DataFrame(date = dtstart:Day(1):dtend), inframe, on = :date)
+      
+    outframe[ismissing.(outframe.text), :scoremod] .= -5
+      
+    outframe[!, :text] = 
+      [coalesce(outframe.text[i], "<<NO TEXT FOUND FOR $(outframe.date[i])>>") 
+          for i in 1:size(outframe,1)]
+    
+    outframe[ismissing.(outframe.mods), :mods] .= "filled"
+      
+    if (Date(0) in outframe.date)
+        outframe.text = "Header Text: " .* outframe.text[outframe.date .== Date(0)] .* 
+                        " " .* outframe.text
+        outframe = outframe[outframe.date .!= Date(0), :]
+    end
+    
+    outframe
+end
+
+"""
+   scoreDatesOutside!(inblock; dtstart, dtend, penalty = 5)
+
+Scores dates outside of the dtstart - dtend range. Dates which are outside 
+get penalized by the penalty value. If they are outside by more than 1 2 4 8 16 25 100
+weeks then then accumulate another penalty for each step and the "outOfRange" gets a "*"
+appended to it for each step.
+
+Parameters:
+inblock: DataFrame containing date, mod, and scoremod columns
+dtstart: the start of the interval of interest
+dtend: the end of the interval of interest
+penalty: the penalty to the scoremod for each step out of the dtstart/dtend range
+"""
+function scoreDatesOutside!(inblock; dtstart, dtend, penalty = 5)
+    outOfRange = (inblock.date .> dtend) .| (inblock.date .< dtstart)
+    inblock[outOfRange, :mods] = strip.(inblock[outOfRange, :mods] .* " outOfRange")
+    inblock[outOfRange, :scoremod] .-= penalty
+    
+    step = Day(7)
+    for i in [1 2 4 8 16 25 50 100]
+        outOfRange = (inblock.date .> dtend + i*step) .| (inblock.date .< dtstart - i*step)
+        inblock[outOfRange, :mods] = strip.(inblock[outOfRange, :mods] .* "*")
+        inblock[outOfRange, :scoremod] .-= penalty
+    end
+    
+    inblock
+end
+
+"""
+   dropBadMatches(inframe::DataFrame, dropscore = -15)
+
+Removes the date and score from any dates for which their interpretation is extremely
+low scored. This is most often helpful when a non-date becomes interpetted as a date.
+"""
+function dropBadMatches(inframe::DataFrame, dropscore = -15)
+    dropscores = (inframe.scoremod  .<= dropscore) .& (inframe.date .!= Date(0))
+    any(dropscores) && (inframe[dropscores, :date]     .= Date(0); 
+                        inframe[dropscores, :scoremod] .= 0)
+    return inframe
+end
+
+function fixBlock(inframe::DataFrame; dtstart = Date(0), dtend   = Date(0))
+
+    outframe = copy(inframe)
+  # println(outframe)
+      
+    outframe = scoreDatesOutside!(outframe, dtstart = dtstart, dtend = dtend)
+  # println("outframe = scoreDatesOutside!(outframe, dtstart = dtstart, dtend = dtend)")  
+  # println(outframe)
+      
+    outframe = dropBadMatches(outframe)
+  # println("outframe = dropBadMatches(outframe)")  
+  # println(outframe)
+      
+    outframe = spreadOverNonDates(outframe)
+  # println("outframe = spreadOverNonDates(outframe)")  
+  # println(outframe)
+  
+    outframe = joinDuplicateDates(outframe)
+  # println("outframe = joinDuplicateDates(outframe)")  
+  # println(outframe)
+      
+    (dtstart != Date(0)) && (outframe = fillMissing(outframe, dtstart, dtend))
+      
+    outframe = sort(outframe[:, [:date, :mods, :scoremod, :order ,:text]], :date)
+      
+    return outframe
+    
+end
+
+"""
+    scoreOutofOrder!(inblock, dtstart, dtend)
+
+penalizes dates out of order
+"""
+function scoreOutofOrder!(inblock; dtstart=now(), dtend=now()-Day(7))
+    inview = view(inblock, .!ismissing.(inblock.order), :)
+    for i in 2:size(inview, 1)
+        ((maximum(inview.order[i-1]) > maximum(inview.order[i])) |
+         (minimum(inview.order[i-1]) > minimum(inview.order[i]))) &&
+            (inview[i, :mods]     = strip(inview[i, :mods] * " outOfOrder");
+             inview[i, :scoremod] = inview[i, :scoremod] - 2)
+    end
+    inblock
+end
+
+"""
+    scoreBlock(inframe; dtstart = Date(0), dtend = Date(0))
+
+Score the passed block by first adjusting for out of order entries then
+    taking the average of the scoremod values.
+
+"""
+function scoreBlock(inframe; dtstart = Date(0), dtend = Date(0))
+    (dtstart == Date(0)) && (dtstart = minimum(inframe.date))
+    (dtend   == Date(0)) && (dtend   = maximum(inframe.date))
+    
+#     inframe = scoreDatesOutside!(inframe, dtstart = dtstart, dtend = dtend)
+    inframe = scoreOutofOrder!(inframe, dtstart = dtstart, dtend = dtend)
+
+    inframe[!, :score] .= sum(inframe.scoremod)/size(inframe, 1)
+    inframe = inframe[!, [:date, :mods, :scoremod, :score, :order, :text]]
+    
+    return inframe
 end
 
 
-# end # module
+"""
+    softdate(txtin; dtstart = Date(0), dtend = Date(0),
+        splits          = r"[\n\r]+",
+        singleformats   = length(singleset),
+        rangeformats    = length(rangeset),
+        targetScore     = 28,
+        verbose         = false)
+
+Split the text
+"""
+function softdate(txtin; dtstart = Date(0), dtend = Date(0),
+    splits          = r"[\n\r]+",
+    singleformats   = length(singleset),
+    rangeformats    = length(rangeset),
+    targetScore     = 28,
+    verbose         = false)
+
+    scoreMax, outframeMax = -999, DataFrame()
+
+    txtSplit = String.([strip(tx) for tx in split(txtin, splits) if strip(tx) != ""])
+
+    for s in 1:singleformats, r in 1:rangeformats
+
+    outframe = @pipe textToBlock(txtSplit, singleformat = s, rangeformat  = r, defaultdate = dtstart) |>
+    fixBlock(_, dtstart = dtstart, dtend = dtend)  |>
+    scoreBlock(_, dtstart = dtstart, dtend = dtend)
+
+    if (outframe.score[1] > scoreMax)
+    outframe[!, :singleformat] .= s
+    outframe[!, :rangeformat]  .= r   
+    scoreMax, outframeMax = outframe.score[1], outframe
+    verbose && (@show outframeMax)
+
+    (scoreMax >= targetScore) && verbose &&
+    (println("targetScore ($targetScore) achieved."); break)
+    end
+
+    end
+
+    (scoreMax < targetScore) && verbose &&
+    println("targetScore ($targetScore) not achieved.")
+
+    outframeMax
+end
+
+
+
+#############################################################
+end # module
 
