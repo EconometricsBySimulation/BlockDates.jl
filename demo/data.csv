@@ -1,0 +1,954 @@
+id,startDate,endDate,text remark
+1,8/22/2021,8/28/2021,08/22/2021 through 08/28/2021 - Eget egestas purus viverra accumsan in nisl. 
+2,9/5/2021,9/11/2021,"9/05/2021 - Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+9/06/2021 - Fermentum posuere urna nec tincidunt praesent.
+9/07/2021 - Convallis a cras semper auctor neque vitae.
+9/08/2021 - Porttitor lacus luctus accumsan tortor posuere.
+9/09/2021 - Tristique senectus et netus et.
+9/10/2021 - Porttitor rhoncus dolor purus non.
+9/11/2021 - Tristique senectus et netus et malesuada fames."
+3,8/1/2021,8/7/2021,08/01/2021 through 08/07/2021 - Bibendum neque egestas congue quisque egestas.
+4,1/31/2021,2/6/2021,"1/31/21
+Pretium viverra suspendisse potenti nullam.
+2/01/21
+Nibh tortor id aliquet lectus proin nibh.
+ 
+2/02/21
+Eu consequat ac felis donec et odio pellentesque.
+2/03/21
+Risus nullam eget felis eget nunc lobortis mattis aliquam faucibus.
+2/04/21
+Risus viverra adipiscing at in tellus integer feugiat scelerisque varius.
+2/05/21
+Amet facilisis magna etiam tempor orci eu lobortis elementum.
+2/06/21
+Tellus mauris a diam maecenas sed enim ut sem viverra."
+5,12/12/2021,12/18/2021,"12/12/2021 - Morbi quis commodo odio aenean sed adipiscing.
+12/13/2021 - Elementum eu facilisis sed odio morbi.
+12/14/2021 - At auctor urna nunc id cursus metus aliquam eleifend.
+12/15/2021 - Amet nulla facilisi morbi tempus iaculis urna id volutpat lacus.
+12/16/2021 - Sem fringilla ut morbi tincidunt augue interdum velit euismod in.
+12/17/2021 - Pharetra diam sit amet nisl suscipit adipiscing bibendum est ultricies.
+12/18/2021 - Ultricies mi eget mauris pharetra et ultrices neque ornare aenean."
+6,8/15/2021,8/21/2021,"08/15/2021 - Sed risus pretium quam vulputate.
+08/16/2021 - Sed cras ornare arcu dui.
+08/17/2021 - Tristique senectus et netus et malesuada fames ac.
+08/18/2021 - Amet justo donec enim diam vulputate ut pharetra.
+08/19/2021 - Vitae auctor eu augue ut.
+08/20/2021 - Volutpat odio facilisis mauris sit amet massa.
+08/21/2021 - Quam nulla porttitor massa id neque."
+7,7/4/2021,7/10/2021,"7/4/2021 - Consequat semper viverra nam libero.
+ 
+7/5/2021 - Consequat semper viverra nam libero.
+7/6/2021 - Consequat semper viverra nam libero.
+7/7/2021 - Consequat semper viverra nam libero.
+7/8/2021 - Consequat semper viverra nam libero.
+7/9/2021 - Consequat semper viverra nam libero.
+7/10/2021 - Consequat semper viverra nam libero."
+8,8/24/2021,8/24/2021,08/24/2021 - Imperdiet sed euismod nisi porta lorem.
+9,5/9/2021,5/15/2021,"5/9/2021 - Augue interdum velit euismod in pellentesque massa.
+5/10/2021 - Ut tellus elementum sagittis vitae et leo duis.
+5/11/2021 - Donec ac odio tempor orci dapibus ultrices in on 05/11/21 @ 18:41 hrs. Tempor commodo ullamcorper a lacus vestibulum sed arcu.
+5/12/2021 -Lacus sed turpis tincidunt id aliquet risus.
+5/13/2021 - Id ornare arcu odio ut.
+5/14/2021 - A arcu cursus vitae congue mauris rhoncus aenean vel.
+5/15/2021 - At tempor commodo ullamcorper a lacus vestibulum."
+10,9/5/2021,9/11/2021,09/05/21 through 09/11/21 - Scelerisque in dictum non consectetur a erat.
+11,3/28/2021,4/3/2021,"03/28/2021 - Amet venenatis urna cursus eget nunc scelerisque viverra mauris.
+03/29/2021 - Tortor id aliquet lectus proin nibh nisl.
+03/30/2021 - Molestie nunc non blandit massa enim nec.
+03/31/2021 - Vitae aliquet nec ullamcorper sit amet risus nullam eget.
+04/01/2021 - Morbi tristique senectus et netus.
+04/02/2021 - Sed risus ultricies tristique nulla.
+04/03/2021 - Id leo in vitae turpis massa sed elementum."
+12,4/18/2021,4/24/2021,"4/18/21 - 4/22/21 - Sollicitudin ac orci phasellus egestas tellus rutrum tellus.
+4/23/21 - Malesuada pellentesque elit eget gravida.
+4/24/21 - Imperdiet massa tincidunt nunc pulvinar sapien et ligula ullamcorper."
+13,9/5/2021,9/11/2021,"09/05/2021 - Augue ut lectus arcu bibendum.
+09/06/2021 - Nulla facilisi morbi tempus iaculis urna id volutpat lacus.
+09/07/2021 - Urna porttitor rhoncus dolor purus non enim praesent elementum.
+09/08/2021 - Molestie a iaculis at erat pellentesque adipiscing.
+09/09/2021 - Aliquam ut porttitor leo a diam.
+09/10/2021 - Habitasse platea dictumst vestibulum rhoncus est pellentesque.
+09/11/2021 - Elementum tempus egestas sed sed."
+14,6/27/2021,7/3/2021,"06/27/2021 - Ornare arcu dui vivamus arcu felis bibendum.
+06/28/2021 - Semper auctor neque vitae tempus quam pellentesque nec.
+06/29/2021 - Vel pharetra vel turpis nunc.
+06/30/2021 - Pretium viverra suspendisse potenti nullam ac tortor vitae purus.
+07/01/2021 - Eros in cursus turpis massa.
+07/02/2021 - Pharetra pharetra massa massa ultricies mi.
+07/03/2021 - Tellus id interdum velit laoreet.	"
+15,1/15/2021,1/15/2021,Neque aliquam vestibulum morbi blandit cursus risus 11/8/2012 to 12/14/2012. Fames ac turpis egestas sed tempus urna et pharetra in 2012 lectus quam on 5/16/2018. Nisl vel pretium lectus quam on 1/8/2021.
+16,8/22/2021,8/25/2021,"08/22/2021 - 08/23/2021 - Egestas purus viverra accumsan in nisl nisi scelerisque eu.
+08/24/2021 - Accumsan lacus vel facilisis volutpat est velit.
+08/25/2021 - Ante in nibh mauris cursus mattis molestie a."
+17,7/4/2021,7/10/2021,7/4 - 7/10/2021 - Dictum at tempor commodo ullamcorper a lacus.
+18,10/3/2021,10/9/2021,"10/3/2021: Arcu risus quis varius quam quisque id.
+10/4/2021: Mauris sit amet massa vitae tortor condimentum lacinia.
+At auctor urna nunc id cursus metus aliquam.
+10/5/2021: Pellentesque nec nam aliquam sem et.
+10/6/2021: Volutpat lacus laoreet non curabitur gravida arcu.
+10/7/2021: Tincidunt dui ut ornare lectus sit amet est placerat in.
+10/8/2021: Libero id faucibus nisl tincidunt eget nullam.
+10/9/2021: Parturient montes nascetur ridiculus mus mauris."
+19,1/24/2021,1/30/2021,01/24/2021 - 01/30/2021 - Habitant morbi tristique senectus et netus et malesuada fames ac.
+20,5/9/2021,5/15/2021,"05/09/21: Non enim praesent elementum facilisis leo vel fringilla.
+05/10/21: Sit amet facilisis magna etiam tempor orci eu.
+05/11/21: Nec tincidunt praesent semper feugiat nibh.
+05/12/21: Diam quam nulla porttitor massa id neque aliquam vestibulum.
+05/13/21: In hac habitasse platea dictumst quisque sagittis purus.
+05/14/21 - 05/15/21: Placerat in egestas erat imperdiet."
+21,12/12/2021,12/17/2021,"12/12/2021 - Quis imperdiet massa tincidunt nunc pulvinar.
+12/13/2021 - Quis imperdiet massa tincidunt nunc pulvinar.
+12/14/2021 - Quis imperdiet massa tincidunt nunc pulvinar.
+12/15/2021 - Quis imperdiet massa tincidunt nunc pulvinar.
+12/16/2021 - Purus sit amet volutpat consequat mauris nunc congue nisi.
+12/17/2021 - Eu turpis egestas pretium aenean pharetra magna ac."
+22,2/21/2021,2/27/2021,"2/21/2021: In dictum non consectetur a erat nam at.
+2/22/2021: Et netus et malesuada fames ac.
+2/23/2021:Praesent elementum facilisis leo vel fringilla est ullamcorper.
+2/24/2021: Ac tincidunt vitae semper quis lectus nulla.
+2/25/2021:  Morbi blandit cursus risus at ultrices mi tempus.
+2/26/2021:  Mattis rhoncus urna neque viverra.
+2/27/2021:  Ultricies leo integer malesuada nunc vel risus commodo viverra."
+23,8/10/2021,8/14/2021,"08/10/21 - Et ultrices neque ornare aenean euismod elementum nisi.
+08/11/21 - Sed euismod nisi porta lorem mollis aliquam ut porttitor.
+08/12/21 - Placerat duis ultricies lacus sed turpis tincidunt id. 
+08/13/21 - Diam quis enim lobortis scelerisque fermentum dui faucibus.
+08/14/21 - Ut porttitor leo a diam sollicitudin tempor id eu."
+24,2/7/2021,2/13/2021,02/07/2021 thru 02/13/2021:  Cum sociis natoque penatibus et magnis dis parturient montes.
+25,2/7/2021,2/13/2021,"02/07/2021 thru 02/08/2021:  Ornare arcu dui vivamus arcu felis bibendum ut.
+02/09/2021 thru 02/13/2021:  Maecenas volutpat blandit aliquam etiam erat."
+26,5/16/2021,5/22/2021,"5/16/2021 - Urna condimentum mattis pellentesque id nibh tortor.
+5/17/2021 - Lorem sed risus ultricies tristique.
+5/18/2021 - Lorem sed risus ultricies tristique.
+5/19/2021 - Lorem sed risus ultricies tristique.
+5/20/2021 - Lorem sed risus ultricies tristique.
+5/21/2021 - Lorem sed risus ultricies tristique.
+5/22/2021 - Lorem sed risus ultricies tristique."
+27,11/1/2021,11/6/2021,"Vivamus arcu felis bibendum ut tristique et.
+11/1/2021 --Maecenas ultricies mi eget mauris pharetra et ultrices.
+11/2/2021 -- Tellus cras adipiscing enim eu turpis.
+11/3/2021 -- Curabitur gravida arcu ac tortor dignissim convallis aenean.
+11/4/2021 -- Ut sem viverra aliquet eget sit amet.
+11/5/2021 -- Gravida rutrum quisque non tellus orci ac auctor augue.
+Malesuada fames ac turpis egestas maecenas pharetra convallis posuere.									
+Vitae nunc sed velit dignissim.		
+			
+11/6/2021 -- Pellentesque habitant morbi tristique senectus et netus et.								
+					
+									
+										
+									
+										
+ "
+28,1/10/2021,1/16/2021,01/10/2021 thru 01/16/2021:  Urna nunc id cursus metus aliquam eleifend mi in nulla.
+29,4/25/2021,5/1/2021,"04/25/2021 through 05/01/2021 - 
+Nisl vel pretium lectus quam id leo in."
+30,4/4/2021,4/10/2021,"04/04/2021 thru 04/05/2021:  Diam quis enim lobortis scelerisque fermentum.
+04/06/2021:  Ac auctor augue mauris augue neque gravida in.
+04/07/2021:  Etiam tempor orci eu lobortis elementum nibh.
+04/08/2021:  Quis auctor elit sed vulputate mi sit amet mauris.
+04/09/2021:  Tincidunt tortor aliquam nulla facilisi cras fermentum odio eu.
+04/10/2021:  Massa eget egestas purus viverra accumsan in."
+31,5/11/2021,5/14/2021,"05/11/2021:  Ornare massa eget egestas purus viverra accumsan in nisl nisi.
+05/12/2021:  Ac tortor vitae purus faucibus ornare suspendisse.
+05/13/2021:  Metus vulputate eu scelerisque felis imperdiet proin.
+05/14/2021:  Tellus orci ac auctor augue mauris augue neque gravida."
+32,7/18/2021,7/24/2021,"07/18/2021: Viverra nibh cras pulvinar mattis nunc sed blandit libero.
+07/19/2021: Gravida in fermentum et sollicitudin ac orci phasellus egestas tellus.
+07/20/2021: Porta nibh venenatis cras sed felis eget velit.
+07/21/2021: Risus quis varius quam quisque.
+07/22/2021: Scelerisque viverra mauris in aliquam.
+Note: On 07/22/2021 at 20:17 hrs, in hendrerit gravida rutrum quisque.
+07/23/2021: Ornare massa eget egestas purus viverra.
+07/24/2021: Mi ipsum faucibus vitae aliquet nec ullamcorper sit amet."
+33,1/6/2021,1/9/2021,"01/06/2021 - Ligula ullamcorper malesuada proin libero nunc.
+01/07/2021 - Nec nam aliquam sem et tortor consequat id porta nibh.
+01/08/2021 - Orci eu lobortis elementum nibh tellus molestie nunc non.
+01/09/2021 - Egestas sed sed risus pretium quam vulputate dignissim suspendisse."
+34,7/18/2021,7/24/2021,"7.18.21 - Massa tempor nec feugiat nisl pretium.
+7.19.21 - Massa tempor nec feugiat nisl pretium.
+7.20.21 - Massa tempor nec feugiat nisl pretium.
+7.21.21 - Massa tempor nec feugiat nisl pretium.
+7.22.21 - Massa tempor nec feugiat nisl pretium.
+7.23.21 - Est sit amet facilisis magna etiam.
+7.24.21 - Est ullamcorper eget nulla facilisi etiam dignissim diam quis."
+35,2/14/2021,2/20/2021,"Sunday 2/14/2021: Cursus turpis massa tincidunt dui.
+Monday 2/15/2021: Semper eget duis at tellus at urna.
+Tuesday 2/16/2021: Elementum nisi quis eleifend quam adipiscing vitae proin sagittis.
+Wednesday 2/17/2021: Volutpat commodo sed egestas egestas fringilla.
+Thursday 2/18/2021: Id aliquet risus feugiat in.
+Friday 2/19/2021: Imperdiet proin fermentum leo vel orci porta non pulvinar neque.
+Saturday 2/20/2021: Proin sed libero enim sed faucibus."
+36,4/18/2021,4/23/2021,"04/18/21 - Morbi tristique senectus et netus.
+04/19/21 - Massa ultricies mi quis hendrerit.
+04/20/21 - Amet mattis vulputate enim nulla aliquet porttitor.
+04/21/21 - Tempus quam pellentesque nec nam aliquam sem et tortor consequat.
+04/22/21 - Imperdiet massa tincidunt nunc pulvinar sapien.
+04/23/21 - Fermentum posuere urna nec tincidunt."
+37,6/5/2021,6/5/2021,06/05/2021 - Amet justo donec enim diam vulputate.
+38,11/26/2021,11/27/2021,"11/26/21 - Nisi quis eleifend quam adipiscing vitae proin sagittis.
+11/27/21 - Libero volutpat sed cras ornare."
+39,5/2/2021,5/8/2021,05/02/2021 to 05/08/2021 - Diam maecenas sed enim ut sem viverra aliquet eget.
+40,5/30/2021,6/5/2021,05/30/2021 - 06/05/2021 - Ullamcorper eget nulla facilisi etiam dignissim diam quis enim lobortis.
+41,4/18/2021,4/24/2021,"04/18/2021 through 04/22/2021 - Tincidunt arcu non sodales neque sodales ut etiam sit.
+04/23/2021 - In nisl nisi scelerisque eu.
+04/24/2021 - Natoque penatibus et magnis dis parturient."
+42,6/27/2021,7/3/2021,06/27/2021 - 07/03/2021 - Condimentum id venenatis a condimentum vitae sapien.
+43,10/23/2021,10/23/2021,10/23/2021 - Est sit amet facilisis magna.
+44,9/5/2021,9/11/2021,"09.05.2021 - 09.11.2021 
+Amet massa vitae tortor condimentum."
+45,4/18/2021,4/24/2021,"Sunday 4/18/2021: Aliquam eleifend mi in nulla posuere sollicitudin.
+Monday 4/19/2021: At tempor commodo ullamcorper a lacus vestibulum.
+Tuesday 4/20/2021: At elementum eu facilisis sed odio morbi quis commodo.
+Wednesday 4/21/2021: Et odio pellentesque diam volutpat commodo.
+Thursday 4/22/2021: Imperdiet sed euismod nisi porta lorem mollis aliquam.
+Friday 4/23/2021: Vestibulum mattis ullamcorper velit sed ullamcorper morbi tincidunt ornare massa..
+Saturday 4/24/2021: Eu feugiat pretium nibh ipsum consequat nisl vel pretium lectus."
+46,9/26/2021,10/2/2021,09/26/2021 through 10/02/2021 - Sapien et ligula ullamcorper malesuada.
+47,12/19/2021,12/25/2021,"12/19/21 through 12/20/21 - Pretium aenean pharetra magna ac placerat vestibulum lectus.
+12/21/21 - At tellus at urna condimentum.
+Senectus et netus et malesuada. 
+12/22/21 - Velit sed ullamcorper morbi tincidunt ornare massa.
+12/23/21 - Consectetur adipiscing elit duis tristique sollicitudin.
+12/24/21 - Integer malesuada nunc vel risus commodo. 
+12/25/21 - Dis parturient montes nascetur ridiculus mus mauris vitae ultricies."
+48,4/5/2021,4/9/2021,"04/05/2021  Adipiscing elit pellentesque habitant morbi tristique senectus et netus.
+04/06/2021  Tortor pretium viverra suspendisse potenti.
+04/07/2021  Sem viverra aliquet eget sit amet tellus cras adipiscing.
+04/08/2021  In vitae turpis massa sed.
+04/09/2021  Tellus orci ac auctor augue mauris augue neque gravida in.
+Odio euismod lacinia at quis risus sed.
+Sapien pellentesque habitant morbi tristique senectus et netus.
+Pharetra pharetra massa massa ultricies mi quis hendrerit dolor."
+49,9/26/2021,10/2/2021,"09/26/21 - Nulla at volutpat diam ut venenatis tellus.
+09/27/21 - Convallis convallis tellus id interdum velit laoreet id.
+09/28/21 - Lacus vel facilisis volutpat est velit egestas dui id ornare.
+09/29/21 - Lobortis feugiat vivamus at augue eget.
+09/30/21 - Ultrices mi tempus imperdiet nulla.
+10/01/21 - Malesuada bibendum arcu vitae elementum.
+10/02/21 - Adipiscing elit pellentesque habitant morbi tristique senectus et netus et."
+50,1/3/2021,1/9/2021,"1/3/21 - Etiam non quam lacus suspendisse faucibus interdum posuere lorem.
+1/4/21 - Arcu ac tortor dignissim convallis aenean. 
+1/5/21 - Risus sed vulputate odio ut enim blandit volutpat maecenas volutpat.
+ 
+1/6/21 - Purus sit amet volutpat consequat mauris nunc.
+Scelerisque felis imperdiet proin fermentum leo vel orci porta non.
+1/7/21 - Enim sit amet venenatis urna cursus eget.
+1/8/21 - Feugiat scelerisque varius morbi enim nunc faucibus a pellentesque sit.
+1/9/21 - Commodo quis imperdiet massa tincidunt nunc pulvinar sapien et ligula."
+51,7/25/2021,7/31/2021,"07/25/2021: Turpis egestas sed tempus urna et pharetra pharetra massa massa.
+07/26/2021: Magna fermentum iaculis eu non diam phasellus vestibulum lorem.
+07/27/2021: Morbi blandit cursus risus at ultrices.
+07/28/2021: Cras adipiscing enim eu turpis egestas pretium.
+07/29/2021: Ac turpis egestas integer eget aliquet.
+07/30/2021: Massa placerat duis ultricies lacus sed turpis.
+07/31/2021: Tincidunt vitae semper quis lectus nulla at."
+52,6/13/2021,6/19/2021,"06/13/21
+Tellus molestie nunc non blandit massa enim.
+06/14/21
+Pellentesque habitant morbi tristique senectus.
+06/15/21
+Quisque non tellus orci ac auctor augue mauris.
+ Ultricies leo integer malesuada nunc vel risus.
+06/16/21
+Magna fringilla urna porttitor rhoncus.
+06/17/21
+Aliquam sem fringilla ut morbi.
+6/18 - 06/19/21
+Sapien pellentesque habitant morbi tristique senectus et netus et malesuada."
+53,7/11/2021,7/17/2021,07/11/2021 - 07/17/2021 - Augue mauris augue neque gravida in fermentum.
+54,10/31/2021,11/6/2021,"10/31/2021 - Quam pellentesque nec nam aliquam sem.
+11/1/2021 - Quam pellentesque nec nam aliquam sem.
+11/2/2021 - Quam pellentesque nec nam aliquam sem.
+11/3/2021 - Quam pellentesque nec nam aliquam sem.
+11/4/2021 - Quam pellentesque nec nam aliquam sem.
+11/5/2021 - Quam pellentesque nec nam aliquam sem.
+11/6/2021 - Quam pellentesque nec nam aliquam sem."
+55,11/14/2021,11/20/2021,"11/14/21 - Nibh cras pulvinar mattis nunc.
+11/15/21 - Vitae et leo duis ut diam.
+11/16/21 - Ipsum a arcu cursus vitae congue mauris.
+11/17/21 - Adipiscing bibendum est ultricies integer quis auctor.
+11/18/21 through 11/20/21 - Ut eu sem integer vitae justo."
+56,7/18/2021,7/24/2021,07/18 - 07/24/2021: Egestas integer eget aliquet nibh praesent tristique magna sit.
+57,5/23/2021,5/29/2021,"05/23/2021 - 05/26/2021 - Tincidunt vitae semper quis lectus nulla.
+05/27/2021 - Ut tristique et egestas quis ipsum suspendisse ultrices gravida.
+05/28/2021 - Scelerisque mauris pellentesque pulvinar pellentesque habitant morbi tristique senectus et.
+05/29/2021 - Integer quis auctor elit sed vulputate."
+58,8/15/2021,8/21/2021,"8/15/2021 - Blandit aliquam etiam erat velit.
+8/16/2021 - Blandit aliquam etiam erat velit.
+8/17/2021 - Blandit aliquam etiam erat velit.
+8/18/2021 - Blandit aliquam etiam erat velit.
+8/19/2021 - Blandit aliquam etiam erat velit.
+8/20/2021 - Blandit aliquam etiam erat velit.
+8/21/2021 - Blandit aliquam etiam erat velit."
+59,7/11/2021,7/17/2021,7/11/21 - 7/17/21 - Pulvinar mattis nunc sed blandit.
+60,10/17/2021,10/18/2021,"10/17/2021 - Orci porta non pulvinar neque laoreet.
+10/18/2021 - Sed lectus vestibulum mattis ullamcorper."
+61,6/20/2021,6/26/2021,06/20/21 - 06/26/21: Rutrum quisque non tellus orci.
+62,8/15/2021,8/21/2021,08/15 - 08/21/2021: Aliquet sagittis id consectetur purus.
+63,5/23/2021,5/29/2021,"05/23/2021 - 05/26/2021 - Sit amet tellus cras adipiscing enim eu turpis egestas.
+05/27/2021 - Tempus iaculis urna id volutpat lacus laoreet non curabitur gravida.
+05/28/2021 - Nulla pellentesque dignissim enim sit amet venenatis urna cursus.
+05/29/2021 - Pulvinar neque laoreet suspendisse interdum consectetur."
+64,5/30/2021,6/5/2021,"05/30/21: Mattis pellentesque id nibh tortor id aliquet lectus.
+05/31/21: Pellentesque habitant morbi tristique senectus et netus.
+06/01/21: Dolor sed viverra ipsum nunc aliquet bibendum enim facilisis.
+06/02/21: Ut pharetra sit amet aliquam id.
+06/03/21: Tellus molestie nunc non blandit massa enim nec dui nunc.
+06/04/21: Sodales neque sodales ut etiam sit amet.
+06/05/21: Adipiscing elit ut aliquam purus sit amet luctus venenatis lectus."
+65,5/9/2021,5/15/2021,"5/9/2021 - Blandit cursus risus at ultrices mi tempus imperdiet nulla malesuada.
+5/10/2021 - Massa sed elementum tempus egestas sed sed risus pretium.
+5/11/2021 - Orci dapibus ultrices in iaculis nunc sed augue lacus viverra.
+5/12/2021 - Et pharetra pharetra massa massa ultricies.
+5/13/2021 - Metus vulputate eu scelerisque felis imperdiet.
+5/14/2021 - Facilisi morbi tempus iaculis urna id.
+5/15/2021 - Habitasse platea dictumst quisque sagittis purus."
+66,9/12/2021,9/18/2021,"09/12/2021 - 09/17/2021 - Quam vulputate dignissim suspendisse in est ante in.
+09/18/2021 - In nisl nisi scelerisque eu ultrices vitae auctor."
+67,4/23/2021,4/24/2021,"04/23/2021:  Semper auctor neque vitae tempus quam pellentesque.
+04/24/2021:  Mauris cursus mattis molestie a iaculis at erat pellentesque adipiscing."
+68,4/25/2021,5/1/2021,"04/25/2021 - Cursus mattis molestie a iaculis at erat.
+04/26/2021 - Odio tempor orci dapibus ultrices in iaculis nunc sed augue.
+04/27/2021 - Sed cras ornare arcu dui vivamus arcu felis bibendum.
+04/28/2021 - Ultricies tristique nulla aliquet enim tortor at auctor urna nunc.
+04/29/2021 - Adipiscing elit ut aliquam purus sit amet luctus venenatis lectus.
+04/30/2021 - Rutrum quisque non tellus orci.
+05/01/2021 - Massa massa ultricies mi quis hendrerit dolor."
+69,6/6/2021,6/12/2021,06/06/2021 - 06/12/2021 - Diam quam nulla porttitor massa id neque aliquam vestibulum morbi.
+70,4/27/2021,5/1/2021,"04/27/2021 - Viverra mauris in aliquam sem fringilla.
+04/28/2021 - Rhoncus mattis rhoncus urna neque.
+04/29/2021 - Dictum fusce ut placerat orci nulla pellentesque.
+05/01/2021 - Fermentum et sollicitudin ac orci phasellus."
+71,9/19/2021,9/25/2021,"9/19/21: Augue mauris augue neque gravida in fermentum et sollicitudin.
+9/20/21: Augue mauris augue neque gravida in fermentum et sollicitudin.
+9/21/21: Augue mauris augue neque gravida in fermentum et sollicitudin.
+9/22/21: Augue mauris augue neque gravida in fermentum et sollicitudin.
+9/23/21: Augue mauris augue neque gravida in fermentum et sollicitudin.
+9/24/21: Augue mauris augue neque gravida in fermentum et sollicitudin.
+9/25/21: Augue mauris augue neque gravida in fermentum et sollicitudin."
+72,2/21/2021,2/22/2021,"02/21/2021: Interdum varius sit amet mattis vulputate enim.
+02/22/2021: Turpis egestas integer eget aliquet nibh praesent tristique magna sit."
+73,5/23/2021,5/29/2021,"5/23/2021: Ornare suspendisse sed nisi lacus sed.
+5/24/2021: Pulvinar etiam non quam lacus suspendisse faucibus interdum.
+5/25/2021: Justo nec ultrices dui sapien eget mi.
+5/26/2021: Sed felis eget velit aliquet sagittis id consectetur purus ut.
+5/27/2021: Pellentesque sit amet porttitor eget.
+5/28/2021: Aliquam faucibus purus in massa tempor nec feugiat nisl pretium.
+5/29/2021: Venenatis cras sed felis eget velit aliquet sagittis."
+74,4/3/2021,4/3/2021,04/03/2021 Blandit volutpat maecenas volutpat blandit aliquam etiam erat.
+75,4/11/2021,4/17/2021,"Sunday 4/11/2021: Arcu cursus euismod quis viverra nibh cras pulvinar mattis nunc.
+Monday 4/12/2021: Euismod in pellentesque massa placerat duis.
+Tuesday 4/13/2021: Elit sed vulputate mi sit.
+Wednesday 4/14/2021: Pellentesque massa placerat duis ultricies lacus sed.
+Thursday 4/15/2021: Velit ut tortor pretium viverra.
+Friday 4/16/2021: Faucibus et molestie ac feugiat sed lectus vestibulum mattis ullamcorper.
+Saturday 4/17/2021: Dictumst vestibulum rhoncus est pellentesque elit."
+76,11/5/2021,11/6/2021,"11/05/2021 - Sit amet cursus sit amet.
+11/06/2021 - Proin libero nunc consequat interdum."
+77,7/28/2021,7/31/2021,"7/28/21: Sit amet consectetur adipiscing elit duis tristique sollicitudin nibh.
+7/29/21: Ultricies leo integer malesuada nunc vel.
+7/30/21: Vitae aliquet nec ullamcorper sit amet risus nullam.
+7/31/21: Diam vulputate ut pharetra sit."
+78,7/18/2021,7/21/2021,"07/18/21 through 07/20/21 - Nam libero justo laoreet sit amet cursus sit amet.
+07/21/21 - Tempus egestas sed sed risus pretium quam vulputate."
+79,2/21/2021,2/27/2021,"02/21/2021: Ultrices mi tempus imperdiet nulla.
+02/22/2021: Ornare arcu dui vivamus arcu.
+02/23/2021: At lectus urna duis convallis convallis tellus id interdum velit.
+02/24/2021: At tellus at urna condimentum mattis.
+02/25/2021: Molestie at elementum eu facilisis sed odio morbi quis commodo.
+02/26/2021: Viverra ipsum nunc aliquet bibendum enim facilisis gravida neque convallis.
+Note: On 02/26/21 at 20:56 hrs, nulla at volutpat diam ut venenatis tellus.
+02/27/2021: Facilisis gravida neque convallis a cras semper auctor.
+Note: On 02/27/2021 at 09:20 hrs, fermentum odio eu feugiat pretium nibh.                             "
+80,10/31/2021,11/6/2021,"   10/31/2021 - Dui faucibus in ornare quam viverra orci sagittis eu.
+   11/01/2021 - Tortor vitae purus faucibus ornare suspendisse.
+   11/02/2021 - In ornare quam viverra orci sagittis eu volutpat.
+   11/03/2021 - In nibh mauris cursus mattis molestie a iaculis at.
+   11/04/2021 - Eu non diam phasellus vestibulum lorem sed risus ultricies tristique.
+   11/05/2021 thru 11/06/2021 - Nisl suscipit adipiscing bibendum est."
+81,7/11/2021,7/17/2021,7/11/21 - 7/17/21 - Adipiscing commodo elit at imperdiet dui accumsan.
+82,12/19/2021,12/25/2021,"12/19/2021: Urna nec tincidunt praesent semper feugiat nibh sed.
+12/20/2021: Orci phasellus egestas tellus rutrum tellus pellentesque.
+12/21/2021: Nulla porttitor massa id neque aliquam.
+12/22/2021: Dolor sit amet consectetur adipiscing elit ut aliquam.
+12/23/2021: Libero enim sed faucibus turpis in eu.
+12/24/2021: Porttitor leo a diam sollicitudin tempor id eu nisl nunc.
+12/25/2021: Quis blandit turpis cursus in.
+Note: On 12/25/2021 at 16:45 hrs, id venenatis a condimentum vitae sapien pellentesque habitant morbi tristique."
+83,9/12/2021,9/18/2021,"09/12/21: Neque sodales ut etiam sit amet nisl.
+09/13/21: Pellentesque elit eget gravida cum sociis natoque.
+09/14/21: Pellentesque elit eget gravida cum sociis natoque.
+09/15/21: Pellentesque elit eget gravida cum sociis natoque.
+09/16/21: Pellentesque elit eget gravida cum sociis natoque.
+09/17/21: Rutrum quisque non tellus orci.
+09/18/21: Diam vel quam elementum pulvinar etiam non quam.
+Nisl rhoncus mattis rhoncus urna."
+84,1/19/2021,1/23/2021,"Tue 01/19/2021: Urna molestie at elementum eu facilisis sed odio morbi quis.
+Wed 01/20/2021: Vel pretium lectus quam id leo in vitae turpis massa.
+Thu 01/21/2021: In metus vulputate eu scelerisque felis.
+Fri 01/22/2021: Sed id semper risus in hendrerit gravida.
+Sat 01/23/2021: Ipsum nunc aliquet bibendum enim facilisis gravida neque convallis a.
+-	Volutpat sed cras ornare arcu dui vivamus arcu felis.   -  "
+85,10/8/2021,10/9/2021,"October 8, 2021 - Ultricies mi eget mauris pharetra et ultrices neque.
+October 9, 2021 - Et pharetra pharetra massa massa ultricies mi quis hendrerit."
+86,8/1/2021,8/7/2021,08/01/2021 through 08/07/2021 - Non blandit massa enim nec dui nunc mattis.
+87,1/17/2021,1/23/2021,"1/17/2021- Vulputate dignissim suspendisse in est ante in nibh.
+1/18/2021- Id diam vel quam elementum pulvinar etiam non.
+Lectus magna fringilla urna porttitor rhoncus.
+1/19/2021- Ultrices neque ornare aenean euismod.
+1/20/2021- Mattis aliquam faucibus purus in massa tempor nec feugiat nisl.
+Malesuada fames ac turpis egestas maecenas pharetra convallis posuere morbi.
+1/21/2021- Ut faucibus pulvinar elementum integer enim.
+1/22/2021- Egestas dui id ornare arcu odio ut sem nulla.
+1/23/2021- Et netus et malesuada fames ac turpis egestas."
+88,4/30/2021,5/1/2021,"4/30/21
+Nulla aliquet enim tortor at.
+5/1/21
+Integer eget aliquet nibh praesent.
+Odio euismod lacinia at quis."
+89,5/23/2021,5/29/2021,05/23/21 - 05/29/21: Mi bibendum neque egestas congue quisque egestas diam on 05/24/21 adipiscing tristique risus nec feugiat.
+90,6/13/2021,6/19/2021,"06/13/21 - Nam libero justo laoreet sit amet cursus sit.
+06/14/21 - At erat pellentesque adipiscing commodo elit at imperdiet dui accumsan.
+06/15/21 - Venenatis tellus in metus vulputate eu.
+06/16/21 - Blandit cursus risus at ultrices mi tempus imperdiet nulla malesuada.
+06/17/21 - Auctor neque vitae tempus quam pellentesque nec nam aliquam sem.
+06/18-19/21 -	Dui vivamus arcu felis bibendum ut tristique et egestas quis.
+NOTE: Tristique senectus et netus et on Wednesday, June 16, 2021 at 0941 hours. Platea dictumst vestibulum rhoncus est pellentesque elit ullamcorper dignissim.
+Pharetra pharetra massa massa ultricies mi quis hendrerit dolor.
+ 
+Facilisi nullam vehicula ipsum a arcu cursus.
+Note: Gravida cum sociis natoque penatibus et magnis dis at 1452 hours on Wednesday, June 16, 2021, et malesuada fames ac turpis egestas maecenas pharetra convallis posuere.
+Auctor neque vitae tempus quam pellentesque."
+91,7/25/2021,7/28/2021,"07/25/2021 - 07/27/2021 - Odio pellentesque diam volutpat commodo sed egestas egestas fringilla phasellus.
+07/28/2021 - Sed euismod nisi porta lorem mollis aliquam ut porttitor."
+92,7/11/2021,7/17/2021,"7/11/21 - Diam sollicitudin tempor id eu nisl nunc mi.
+7/12/21 - Dolor sit amet consectetur adipiscing elit.
+7/13/21 - Magna fermentum iaculis eu non diam phasellus.
+7/14/21 - Dui sapien eget mi proin sed libero enim sed.
+7/15/21 - Pharetra vel turpis nunc eget lorem dolor sed viverra.
+7/16/21 - Vel risus commodo viverra maecenas accumsan lacus vel.
+7/17/21 - Ornare arcu odio ut sem."
+93,11/28/2021,12/4/2021,"11/28/2021 - Proin fermentum leo vel orci porta.
+11/29/2021 - Quis ipsum suspendisse ultrices gravida dictum.
+11/30/2021 - Malesuada fames ac turpis egestas.
+12/01/2021 - Viverra mauris in aliquam sem fringilla ut.
+12/02/2021 - Duis ut diam quam nulla porttitor massa id neque.
+12/03/2021 - Rutrum quisque non tellus orci ac auctor augue mauris augue.
+12/04/2021 - Scelerisque fermentum dui faucibus in ornare quam."
+94,11/7/2021,11/13/2021,"11/7/21 - Erat imperdiet sed euismod nisi porta lorem mollis.
+Nulla porttitor massa id neque aliquam.
+11/8/21 - Quisque sagittis purus sit amet volutpat.
+11/9/21 - In nisl nisi scelerisque eu ultrices vitae.
+11/10/21 -  Ornare lectus sit amet est placerat in egestas.
+11/11/21 - Ultrices vitae auctor eu augue ut.
+11/12/21 - Facilisis magna etiam tempor orci eu lobortis elementum nibh.
+11/13/21 - Integer quis auctor elit sed vulputate mi sit amet."
+95,9/26/2021,10/2/2021,"09/26/2021:  Hac habitasse platea dictumst quisque sagittis purus sit amet volutpat.
+09/27/2021:  Suspendisse ultrices gravida dictum fusce.
+09/28/2021:  Arcu cursus euismod quis viverra nibh cras.
+09/29/2021 thru 10/02/2021:  Duis ut diam quam nulla porttitor massa id neque aliquam."
+96,7/4/2021,7/10/2021,07/04/2021 through 07/10/2021 - Elit eget gravida cum sociis natoque.
+97,9/5/2021,9/11/2021,09/05/2021 through 09/11/2021 - Enim praesent elementum facilisis leo vel fringilla est.
+98,5/30/2021,6/5/2021,"05/30/2021:  Posuere morbi leo urna molestie at elementum eu facilisis.
+05/31/2021:  Lorem ipsum dolor sit amet consectetur adipiscing elit duis tristique.
+06/01/2021:  Ultricies integer quis auctor elit sed vulputate mi sit.
+06/02/2021:  Tempor orci eu lobortis elementum nibh tellus molestie.
+06/03/2021: Turpis egestas pretium aenean pharetra magna ac.
+06/04/2021:  Nisi scelerisque eu ultrices vitae auctor eu augue ut lectus.
+06/05/2021:  Condimentum mattis pellentesque id nibh tortor id aliquet lectus proin."
+99,3/10/2021,3/13/2021,"3/10/2021 -- Amet mattis vulputate enim nulla aliquet porttitor.							
+Purus non enim praesent elementum.
+Scelerisque mauris pellentesque pulvinar pellentesque habitant morbi tristique.
+3/11/2021 -- Aenean euismod elementum nisi quis eleifend quam adipiscing vitae proin.
+3/12/2021 -- 3/13/2021 -  Cras ornare arcu dui vivamus arcu felis bibendum ut tristique.									
+										
+										"
+100,7/11/2021,7/17/2021,"7/11/2021 - Et malesuada fames ac turpis egestas integer eget aliquet.
+7/12/2021 - Et malesuada fames ac turpis egestas integer eget aliquet.
+7/13/2021 - Et malesuada fames ac turpis egestas integer eget aliquet.
+7/14/2021 - Et malesuada fames ac turpis egestas integer eget aliquet.
+7/15/2021 - Et malesuada fames ac turpis egestas integer eget aliquet.
+7/16/2021 - Et malesuada fames ac turpis egestas integer eget aliquet.
+7/17/2021 - Et malesuada fames ac turpis egestas integer eget aliquet."
+101,8/22/2021,8/24/2021,"08/22/2021
+Odio facilisis mauris sit amet.
+08/23/2021
+Integer eget aliquet nibh praesent tristique magna sit amet purus at 15:38 08/23/2021 pellentesque habitant morbi tristique senectus et netus et malesuada.
+08/24/2021
+Aliquam ultrices sagittis orci a scelerisque purus semper."
+102,10/14/2021,10/16/2021,"10/14/2021:  Ultrices mi tempus imperdiet nulla malesuada pellentesque elit eget gravida.
+10/15/2021:  Massa vitae tortor condimentum lacinia quis vel eros.
+10/16/2021:  Ut placerat orci nulla pellentesque dignissim enim sit amet."
+103,9/14/2021,9/16/2021,"09/14/2021  Eleifend donec pretium vulputate sapien nec sagittis aliquam malesuada.
+09/15/2021  Id venenatis a condimentum vitae sapien pellentesque habitant morbi.
+09/16/2021  Scelerisque varius morbi enim nunc faucibus a pellentesque."
+104,11/14/2021,11/20/2021,11/21/2021 - 11/27/2021 - Quis eleifend quam adipiscing vitae proin sagittis nisl rhoncus mattis.
+105,10/24/2021,10/30/2021,"Donec adipiscing tristique risus nec feugiat by November 25, 2021."
+106,10/31/2021,11/6/2021,Tellus orci ac auctor augue mauris.
+107,10/3/2021,10/9/2021,"10/3-8/21: Montes nascetur ridiculus mus mauris vitae ultricies leo integer.
+10/9/21: Risus pretium quam vulputate dignissim suspendisse in est."
+108,11/14/2021,11/20/2021,"11/14/21 - 11/21/21 - Suscipit tellus mauris a diam maecenas (Sed vulputate odio ut enim blandit volutpat on October 7, 2021)."
+109,10/31/2021,11/6/2021,"10/30/21 through 11/06/21 - Eu scelerisque felis imperdiet proin fermentum leo vel orci. Euismod lacinia at quis risus sed November/December. 
+ 
+Non blandit massa enim nec dui nunc mattis enim mid June ready molestie a iaculis at erat."
+110,6/20/2021,6/26/2021,"CORRECTION REPORT (10-28-21) Maecenas sed enim ut sem viverra aliquet eget sit.
+6/17/21 Turpis tincidunt id aliquet risus feugiat.
+______________END OF CORRECTION REPORT_____________
+6/20/21 - Turpis egestas integer eget aliquet nibh praesent tristique magna sit. Amet aliquam id diam maecenas ultricies mi eget mauris.
+6/21/21 - Quam lacus suspendisse faucibus interdum posuere lorem ipsum dolor.
+6/22/21 - Nec ullamcorper sit amet risus nullam eget felis eget nunc.
+6/23/21 - Id diam vel quam elementum pulvinar etiam non quam lacus.
+6/24/21 - Ultrices dui sapien eget mi proin sed libero.
+6/25/21 - Fermentum odio eu feugiat pretium nibh ipsum consequat nisl.
+6/26/21 - Vestibulum lorem sed risus ultricies tristique nulla."
+111,7/19/2021,7/21/2021,"7-18-21:  In tellus integer feugiat scelerisque varius morbi.
+7-19-21:  Nisi vitae suscipit tellus mauris a diam.
+7-20-21:  Interdum varius sit amet mattis vulputate.
+7-21-21: Curabitur gravida arcu ac tortor dignissim convallis aenean.
+NOTE: Nibh praesent tristique magna sit amet purus gravida quis."
+112,9/19/2021,9/25/2021,"9/18/21 - Cras fermentum odio eu feugiat pretium nibh ipsum.
+9/19/21 - Cras fermentum odio eu feugiat pretium nibh ipsum.
+9/20/21 - Consectetur adipiscing elit duis tristique.
+9/21/21 - Et egestas quis ipsum suspendisse ultrices.
+9/22/21 - Viverra aliquet eget sit amet tellus.
+9/23/21 - At tempor commodo ullamcorper a lacus vestibulum sed arcu.
+9/24/21 - Gravida neque convallis a cras.
+9/25/21 - Nisl pretium fusce id velit ut."
+113,8/29/2021,9/4/2021,08/29-09/04/21 - Tincidunt ornare massa eget egestas purus viverra accumsan.
+114,8/11/2021,8/14/2021,"08/11/2021 - Volutpat maecenas volutpat blandit aliquam etiam erat velit scelerisque in.
+08/12 - 14/2021 - At tempor commodo ullamcorper a lacus vestibulum sed arcu."
+115,11/28/2021,12/2/2021,"11/28-12/1/21 - Adipiscing vitae proin sagittis nisl rhoncus.
+12/2/21 - Amet consectetur adipiscing elit pellentesque habitant.
+A arcu cursus vitae congue mauris.
+NOTE: 
+At 1209 hours on Thursday, December 2, 2021, massa massa ultricies mi quis hendrerit dolor magna eget est."
+116,11/14/2021,11/20/2021,"11/14/2021 --Commodo quis imperdiet massa tincidunt nunc pulvinar sapien et ligula.	
+ 
+11/15/2021 -- Mauris commodo quis imperdiet massa.
+NOTE: On 11-16-2021 convallis tellus id interdum velit laoreet id donec ultrices tincidunt.								
+			
+Note: On 11-16-2021 venenatis urna cursus eget nunc scelerisque viverra.
+		
+11/16/2021 -- Tortor pretium viverra suspendisse potenti nullam ac.
+Proin sagittis nisl rhoncus mattis rhoncus urna neque viverra.
+11/17/2021 -- Tortor aliquam nulla facilisi cras fermentum odio eu feugiat.
+11/18/2021 -- Dignissim diam quis enim lobortis scelerisque.								
+Urna porttitor rhoncus dolor purus non.
+11/19/2021 -- Urna nec tincidunt praesent semper feugiat nibh.
+ 
+11/20/2021 -- At volutpat diam ut venenatis tellus in metus vulputate eu.								"
+117,6/6/2021,6/12/2021,"6/6 - 6/10/2021 - Risus sed vulputate odio ut on 6/9/2021. Elit eget gravida cum sociis natoque penatibus.
+Note: 6/10/2021 - Ultricies lacus sed turpis tincidunt id aliquet risus feugiat in.
+6/11/2021 - Amet luctus venenatis lectus magna."
+118,9/12/2021,9/18/2021,09/12 through 09/18/2021 - Quam elementum pulvinar etiam non quam lacus suspendisse faucibus interdum.
+119,6/6/2021,6/12/2021,"06/06/21: Non quam lacus suspendisse faucibus interdum posuere lorem ipsum dolor.
+06/07/21: Nisl tincidunt eget nullam non nisi.
+06/08 - 06/12/2021: Tincidunt tortor aliquam nulla facilisi cras fermentum."
+120,10/10/2021,10/16/2021,"10/10/21 through 10/16/21 - Est sit amet facilisis magna etiam tempor.  Mauris rhoncus aenean vel elit scelerisque mauris pellentesque in October/November. 
+ 
+Purus sit amet luctus venenatis lectus magna fringilla urna porttitor mid June amet massa vitae tortor condimentum."
+121,12/19/2021,12/25/2021,12/19/21 through 12/25/21 - Nunc sed blandit libero volutpat sed cras ornare.
+122,10/24/2021,10/30/2021,10/24/21 -10/30/21 - Lectus proin nibh nisl condimentum id venenatis a condimentum.
+123,10/3/2021,10/9/2021,"10/03/21 - Donec massa sapien faucibus et.
+10/04/21 - Vulputate dignissim suspendisse in est ante in nibh mauris.
+10/05/21 - Pulvinar elementum integer enim neque volutpat ac tincidunt vitae semper.
+10/06/21 - Scelerisque purus semper eget duis.
+10/07/21 - Sagittis aliquam malesuada bibendum arcu vitae.
+10/08/21 - Adipiscing commodo elit at imperdiet dui accumsan sit amet.
+10/09/21 - Tincidunt id aliquet risus feugiat in ante metus dictum."
+124,9/19/2021,9/25/2021,"09/19/21 - Enim sit amet venenatis urna cursus eget.
+	   Leo duis ut diam quam nulla porttitor.
+	   Congue mauris rhoncus aenean vel.
+	   Commodo viverra maecenas accumsan lacus vel facilisis.
+	
+09/20/21 - Ac orci phasellus egestas tellus rutrum.
+	   Placerat in egestas erat imperdiet sed euismod nisi.
+	   Odio pellentesque diam volutpat commodo sed egestas egestas.
+	
+09/21/21 - Mi eget mauris pharetra et ultrices neque ornare.
+	   Platea dictumst vestibulum rhoncus est pellentesque elit ullamcorper dignissim.
+	  Congue quisque egestas diam in.
+	
+09/22/21 - Vel facilisis volutpat est velit egestas dui id ornare.
+	
+09/23/21 - Sit amet facilisis magna etiam tempor orci eu.
+	
+09/24/21 - Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+	
+09/25/21 - Urna id volutpat lacus laoreet."
+125,8/22/2021,8/28/2021,"08/22/21: Cras tincidunt lobortis feugiat vivamus at augue eget arcu.
+08/23/21: Senectus et netus et malesuada fames ac turpis egestas sed.
+08/24/21: Vel facilisis volutpat est velit egestas dui id ornare arcu.
+08/25/21: Senectus et netus et malesuada fames ac turpis egestas.
+08/27/21: Enim blandit volutpat maecenas volutpat.
+08/28/21: Velit ut tortor pretium viverra suspendisse potenti nullam ac."
+126,10/24/2021,10/30/2021,10/24/2021 - 10/30/2021: Et malesuada fames ac turpis egestas.
+127,11/14/2021,11/20/2021,"11/14/2021 - 11/20/2021 - Elit sed vulputate mi sit amet mauris commodo quis.
+Consectetur adipiscing elit duis tristique sollicitudin nibh sit amet commodo Friday, November 26th."
+128,10/3/2021,10/9/2021,"10/3/2021 - Morbi leo urna molestie at elementum eu.
+10/4/2021 - Morbi leo urna molestie at elementum eu.
+10/5/2021 - Morbi leo urna molestie at elementum eu.
+10/6/2021 - Morbi leo urna molestie at elementum eu.
+10/7/2021 - Morbi leo urna molestie at elementum eu.
+10/8/2021 - Morbi leo urna molestie at elementum eu.
+10/9/2021 - Morbi leo urna molestie at elementum eu."
+129,12/26/2021,1/1/2022,"12/26/2021 - Tortor id aliquet lectus proin.
+12/27/2021 - Lectus arcu bibendum at varius vel.
+12/28/2021 - Id aliquet lectus proin nibh.
+12/29/2021 - Adipiscing tristique risus nec feugiat in fermentum posuere urna.
+12/30/2021 - Pulvinar etiam non quam lacus suspendisse faucibus interdum posuere.
+12/31/2021 - Vel facilisis volutpat est velit egestas dui.
+01/01/2021 - Congue mauris rhoncus aenean vel."
+130,11/28/2021,12/4/2021,"11/28/20201- Sit amet dictum sit amet justo donec enim diam vulputate.
+11/29/2021- Tempus iaculis urna id volutpat lacus laoreet non curabitur.
+11/30/2021- Urna porttitor rhoncus dolor purus.
+12/01/2021- Augue lacus viverra vitae congue eu consequat ac.
+12/02/2021 - Cursus sit amet dictum sit amet justo donec enim.
+12/03/2021- Vitae et leo duis ut diam quam.
+12/04/2021 - Nulla porttitor massa id neque."
+131,7/4/2021,7/10/2021,"7/4/20201 - Lacus vestibulum sed arcu non odio euismod lacinia at.
+7/5/2021 - Ut tortor pretium viverra suspendisse.
+7/6/2021 - Bibendum est ultricies integer quis auctor elit sed vulputate mi.
+7/7 - 7/9/2021 - At volutpat diam ut venenatis tellus in.
+7/10/2021 - Quis hendrerit dolor magna eget est lorem ipsum dolor."
+132,8/8/2021,8/14/2021,"08/08/21 - Neque gravida in fermentum et.
+08/09/21 - Tellus mauris a diam maecenas sed enim.
+08/10/21 - Gravida cum sociis natoque penatibus.
+08/11/21 - Sed vulputate mi sit amet mauris.
+08/12/21 - Aliquet porttitor lacus luctus accumsan tortor.
+08/13/21 - Adipiscing elit pellentesque habitant morbi tristique senectus.
+08/14/21 - Orci nulla pellentesque dignissim enim sit amet venenatis."
+133,12/5/2021,12/10/2021,"12/05/21 - Amet nulla facilisi morbi tempus iaculis urna id volutpat.
+12/06/21 - Purus in mollis nunc sed id semper risus in.
+12/07/21 - Vestibulum lorem sed risus ultricies tristique.
+12/08/21 - Nunc id cursus metus aliquam eleifend mi in nulla posuere.
+12/09/21 - Convallis tellus id interdum velit laoreet id donec ultrices.
+12/10/21 - Netus et malesuada fames ac turpis egestas."
+134,9/7/2021,9/9/2021,"09/07/21 - Egestas fringilla phasellus faucibus scelerisque.
+09/08/21 - Elit ut aliquam purus sit amet luctus venenatis lectus.																						
+Mi sit amet mauris commodo quis.
+09/09/21 - Egestas integer eget aliquet nibh praesent.
+Note: Sem fringilla ut morbi tincidunt augue interdum velit euismod.																				"
+135,11/28/2021,12/4/2021,"Sun - 11/28/21 - Convallis a cras semper auctor neque vitae tempus quam.
+Note:  Nunc consequat interdum varius sit amet mattis vulputate at 6:23 p.m. on 11/29/2021.
+Tues - 11/30/21- Tincidunt arcu non sodales neque sodales ut etiam sit amet.
+Wed - 12/1/21 - Lectus nulla at volutpat diam ut venenatis tellus.
+Thurs - 12/2/21 - Nunc mattis enim ut tellus elementum sagittis vitae et leo.
+Gravida cum sociis natoque penatibus et magnis.
+Fri - 12/3/21 - Mi ipsum faucibus vitae aliquet nec ullamcorper sit amet risus.
+NOTE: On Dec 3rd, 2021 @ 11:45 hrs Tellus id interdum velit laoreet id.
+Sat - 12/4/21 - Arcu odio ut sem nulla."
+136,10/31/2021,11/6/2021,"Sun - 10/31/21 - Morbi enim nunc faucibus a pellentesque sit amet.
+Mon - 11/1/21 - Elementum nibh tellus molestie nunc non blandit massa enim nec.
+Tues - 11/2/21- Nisi lacus sed viverra tellus in hac habitasse platea dictumst.
+Etiam erat velit scelerisque in dictum non consectetur.
+Wed - 11/3/21 - Viverra nam libero justo laoreet sit amet cursus.
+NOTE: On November 3rd, 2021 @ 11:10 hrs Donec enim diam vulputate ut pharetra sit amet.
+Thurs - 11/4/21 -Nisl pretium fusce id velit.
+Fri - 11/5/21 - Eget arcu dictum varius duis at consectetur lorem.
+Sat - 11/6/21 - Quis ipsum suspendisse ultrices gravida dictum fusce.
+Non tellus orci ac auctor.
+Note:  Eget egestas purus viverra accumsan in nisl nisi scelerisque eu."
+137,12/5/2021,12/11/2021,"Sun - 12/5/21 - Neque vitae tempus quam pellentesque nec.
+Mon - 12/6/21 - Vestibulum rhoncus est pellentesque elit ullamcorper dignissim cras tincidunt lobortis.
+ 
+NOTE: On Dec 6th 2021 @ 14:02 hrs vestibulum sed arcu non odio euismod lacinia at quis.
+Tues - 12/7/21- Bibendum est ultricies integer quis auctor elit sed vulputate mi.
+Thurs - 12/9/21 -Eget arcu dictum varius duis at.
+Fri - 12/10/21 - Arcu odio ut sem nulla.
+Sat - 12/11/21 - Quis hendrerit dolor magna eget est lorem."
+138,10/6/2021,10/9/2021,"10/6/20: Etiam sit amet nisl purus in mollis nunc sed id.
+10/7/20: Eros in cursus turpis massa tincidunt dui ut ornare lectus.
+10/8/20: Tellus in hac habitasse platea dictumst.
+10/9/21: Elit ullamcorper dignissim cras tincidunt lobortis feugiat vivamus at."
+139,12/26/2021,1/1/2022,"12/26/21 In metus vulputate eu scelerisque.
+12/27/21  Diam quam nulla porttitor massa id neque aliquam.
+12/28/21 Id faucibus nisl tincidunt eget.
+12/29/21 Sed euismod nisi porta lorem mollis aliquam ut.
+12/30/21 At elementum eu facilisis sed odio morbi quis commodo.
+12/31/21 Vel fringilla est ullamcorper eget nulla facilisi etiam dignissim diam.
+01/01/21 Lectus quam id leo in vitae."
+140,10/3/2021,10/9/2021,"10/3/21 - Adipiscing vitae proin sagittis nisl rhoncus mattis.
+10/4/21 - Ut tortor pretium viverra suspendisse potenti nullam.
+10/5/21 - Donec ac odio tempor orci.
+10/6/21 - A cras semper auctor neque vitae tempus.
+10/7/21 - Amet cursus sit amet dictum sit amet justo donec enim.
+10/8/21 - Condimentum lacinia quis vel eros.
+10/9/20 - Gravida dictum fusce ut placerat orci nulla pellentesque dignissim."
+141,11/14/2021,11/20/2021,11/14/21 - 11/20/21 - Tempor id eu nisl nunc mi.
+142,12/5/2021,12/11/2021,12/05/21 through 12/11/21 - Porttitor lacus luctus accumsan tortor posuere.
+143,9/19/2021,9/25/2021,09/19/21 through 09/25/21 - Enim facilisis gravida neque convallis a cras semper auctor.
+144,10/10/2021,10/16/2021,"10/03/21 through 10/13/21 - Neque convallis a cras semper auctor neque vitae tempus quam.
+10/14/21 - Lectus vestibulum mattis ullamcorper velit sed ullamcorper morbi tincidunt ornare.
+10/15/21 through 10/16/21 - Ipsum dolor sit amet consectetur adipiscing elit pellentesque habitant."
+145,9/5/2021,9/6/2021,"09/04/21 through 09/05/21 - Mauris ultrices eros in cursus.
+09/06/21 - Pellentesque habitant morbi tristique senectus et netus et."
+146,8/22/2021,8/28/2021,"08/21/21 through 08/26/21 - Nulla posuere sollicitudin aliquam ultrices sagittis orci.
+08/27/21 through 08/28/21 - Auctor augue mauris augue neque."
+147,11/14/2021,11/20/2021,"Sun 11/14/2021: Laoreet id donec ultrices tincidunt arcu non sodales neque sodales.
+Mon 11/15/2021: Interdum velit euismod in pellentesque massa placerat duis.
+- On 11-15-2021 ac orci phasellus egestas tellus.
+Tue 11/16/2021: Tincidunt vitae semper quis lectus nulla at volutpat.
+Wed 11/17/2021: Etiam dignissim diam quis enim lobortis.
+Thu 11/18/2021: Enim neque volutpat ac tincidunt vitae.
+Fri 11/19/2021: Iaculis urna id volutpat lacus.
+- Pellentesque id nibh tortor id aliquet lectus.
+- Bibendum est ultricies integer quis auctor.
+Sat 11/20/2021: Vitae semper quis lectus nulla at volutpat diam ut venenatis.
+-On 11/20/21 @ 02:50 hrs Iaculis nunc sed augue lacus.
+- Felis bibendum ut tristique et egestas quis ipsum suspendisse ultrices @ 15:00 hrs. On 11/20/21 @ 17:24 hrs. 
+-Condimentum vitae sapien pellentesque habitant morbi.
+-	Lorem dolor sed viverra ipsum nunc aliquet bibendum enim. - "
+148,8/22/2021,8/28/2021,"08/22/21 - Auctor augue mauris augue neque gravida in.
+08/23/21 - Elit ut aliquam purus sit amet luctus.
+08/24/21 - Semper risus in hendrerit gravida rutrum quisque non.
+08/24/21 - Ornare arcu odio ut sem nulla.
+08/25/21 - Diam maecenas sed enim ut sem viverra aliquet.
+08/26/21 - Vitae aliquet nec ullamcorper sit.
+08/27/21 through 08/28/21 - Congue eu consequat ac felis donec et odio pellentesque."
+149,7/4/2021,7/10/2021,"**********************************CORRECTION REPORT**********************************************
+07/06/21 - Faucibus interdum posuere lorem ipsum dolor.
+****************************************UPDATED 9/29/2021****************************************
+07/04/21 - Bibendum est ultricies integer quis auctor elit.
+07/05/21 - Lectus mauris ultrices eros in cursus turpis massa tincidunt.
+07/06/21 - Non arcu risus quis varius quam.
+07/07/21 - Amet consectetur adipiscing elit duis tristique sollicitudin nibh sit amet.
+07/09/21 - Parturient montes nascetur ridiculus mus mauris.
+07/10/21 - In est ante in nibh mauris cursus."
+150,8/15/2021,8/21/2021,"*********************************************CORRECTION REPORT**************************************************
+Commodo viverra maecenas accumsan lacus vel for the week ending 08/21/21:
+08/19/21 - Ornare massa eget egestas purus viverra accumsan in.
+**********************************************************10/27/2021************************************
+08/15/21 - Nisi est sit amet facilisis magna etiam tempor orci eu.
+08/16/21 - Amet luctus venenatis lectus magna fringilla urna.
+08/17/21 - Ac placerat vestibulum lectus mauris ultrices eros.
+08/18/21 - Nulla facilisi nullam vehicula ipsum a arcu cursus vitae.
+08/19/21 - At tellus at urna condimentum mattis pellentesque id nibh tortor.
+08/20/21 - Enim diam vulputate ut pharetra sit amet aliquam id diam.
+08/21/21 - Nullam vehicula ipsum a arcu cursus vitae."
+151,9/5/2021,9/9/2021,"*******************************************CORRECTION REPORT****************************************************
+Lobortis scelerisque fermentum dui faucibus for the week ending 09/09/21:
+09/09/21 - Ante metus dictum at tempor commodo ullamcorper a.
+*******************************************************************************************************
+09/05/21 through 09/08/21 - Ultrices mi tempus imperdiet nulla malesuada.
+09/09/21 - Proin fermentum leo vel orci porta non pulvinar neque."
+152,8/15/2021,8/21/2021,"08-Aug-21 - Tempus urna et pharetra pharetra massa massa ultricies mi.
+09-Aug-21 - Lorem ipsum dolor sit amet consectetur adipiscing elit duis.
+10-Aug-21 - Tellus pellentesque eu tincidunt tortor aliquam nulla.
+11-Aug-21 - Ut faucibus pulvinar elementum integer enim.
+12-Aug-21 - Risus viverra adipiscing at in tellus.
+13-Aug-21 - Sed lectus vestibulum mattis ullamcorper velit sed. 
+14-Aug-21 - Neque vitae tempus quam pellentesque nec nam.
+15-Aug-21 - Arcu ac tortor dignissim convallis aenean et. 
+16-Aug-21 - In nibh mauris cursus mattis molestie a iaculis at erat.
+18-Aug-21 - Mattis pellentesque id nibh tortor.
+19-Aug-21 - Sed elementum tempus egestas sed sed.
+20-Aug-21 - Quisque sagittis purus sit amet volutpat consequat mauris nunc congue.
+21-Aug-21 - Risus ultricies tristique nulla aliquet enim tortor at."
+153,8/29/2021,9/4/2021,"8/29/21: Ac turpis egestas integer eget.
+8/30/21: Est placerat in egestas erat imperdiet sed euismod.
+8/31/21: Id venenatis a condimentum vitae sapien.
+9/1/21: Ut porttitor leo a diam sollicitudin tempor id eu.
+9/2/21: Ut porttitor leo a diam sollicitudin tempor id eu.
+9/3/21: Ut porttitor leo a diam sollicitudin tempor id eu.
+9/4/21: Ut porttitor leo a diam sollicitudin tempor id eu.
+9/5/21: Ut porttitor leo a diam sollicitudin tempor id eu.
+9/6/21: Ut porttitor leo a diam sollicitudin tempor id eu."
+154,10/17/2021,10/23/2021,"10/17/21 - Elementum pulvinar etiam non quam lacus suspendisse.
+10/18/21 - Vulputate odio ut enim blandit.
+10/19/21 - Diam maecenas ultricies mi eget.
+10/20/21 - Id aliquet lectus proin nibh nisl.
+10/21/21 - Ac turpis egestas integer eget.
+10/22/21 - Fermentum et sollicitudin ac orci phasellus egestas.
+10/23/21 - Elit sed vulputate mi sit amet mauris commodo quis imperdiet.
+NOTE: Tincidunt ornare massa eget egestas purus viverra accumsan at 1154 hours on Monday, October 18, 2021, in hendrerit gravida rutrum quisque non tellus orci ac.
+.	10/11/21 
+o	 Donec ac odio tempor orci.
+o	Elit ut aliquam purus sit.
+o	Sapien nec sagittis aliquam malesuada bibendum arcu vitae.
+.	10/12/21
+o	Risus in hendrerit gravida rutrum quisque non tellus.
+o	Quam nulla porttitor massa id neque.
+o	Euismod in pellentesque massa placerat duis.
+o	Maecenas accumsan lacus vel facilisis volutpat est velit egestas.
+.	10/13/21
+o	Ornare suspendisse sed nisi lacus sed viverra tellus.
+o	Ullamcorper a lacus vestibulum sed arcu.
+.	10/14/21
+o	In fermentum et sollicitudin ac orci phasellus egestas tellus.
+o	Pellentesque dignissim enim sit amet venenatis.
+o	Nisi scelerisque eu ultrices vitae auctor eu augue ut lectus.
+.	10/15/21
+o	Morbi blandit cursus risus at.
+o	Turpis in eu mi bibendum.
+o	Ut tortor pretium viverra suspendisse potenti nullam ac tortor.
+.	10/16/21
+o	Fringilla urna porttitor rhoncus dolor purus non enim praesent.
+o	Egestas quis ipsum suspendisse ultrices gravida.
+o	A condimentum vitae sapien pellentesque habitant morbi tristique senectus et.
+.	10/17/21
+o	Faucibus pulvinar elementum integer enim neque volutpat ac tincidunt.
+o	Varius morbi enim nunc faucibus a pellentesque sit amet porttitor.
+ 
+Felis donec et odio pellentesque diam.
+.	Erat pellentesque adipiscing commodo elit at.
+.	Erat pellentesque adipiscing commodo elit at.
+.	Erat pellentesque adipiscing commodo elit at.
+.	Erat pellentesque adipiscing commodo elit at.
+.	Erat pellentesque adipiscing commodo elit at.
+.	Erat pellentesque adipiscing commodo elit at.
+Erat velit scelerisque in dictum non consectetur a erat nam.
+NOTE: Accumsan sit amet nulla facilisi morbi on 10/20/2021. Ac orci phasellus egestas tellus rutrum at 0840 hours on Wednesday, October 20, 2021, ut sem viverra aliquet eget sit amet tellus. 
+NOTE: Vulputate odio ut enim blandit volutpat maecenas volutpat on 10/21/2021. Bibendum neque egestas congue quisque egestas diam at 1317 hours on Thursday, October 21, 2021, rutrum tellus pellentesque eu tincidunt tortor aliquam nulla.
+Id neque aliquam vestibulum morbi blandit cursus."
+155,6/27/2021,7/3/2021,"CORRECTION REPORT (10-28-21) Semper viverra nam libero justo laoreet.
+6/17/21 Imperdiet nulla malesuada pellentesque elit.
+______________END OF CORRECTION REPORT_____________
+6/27/21 - Porta non pulvinar neque laoreet suspendisse interdum consectetur libero id.
+6/28/21 - Interdum consectetur libero id faucibus. Laoreet non curabitur gravida arcu.
+6/29/21 - Nam libero justo laoreet sit amet cursus.
+6/30/21 - Parturient montes nascetur ridiculus mus mauris vitae ultricies leo.
+7/1/21 - Tristique sollicitudin nibh sit amet commodo nulla facilisi.
+7/2/21 - Gravida neque convallis a cras semper auctor.
+7/3/21 - Mattis molestie a iaculis at erat."
+156,10/24/2021,10/30/2021,"10/24/2021:  Consequat semper viverra nam libero justo laoreet sit amet.
+10/25/2021:  Ac tortor vitae purus faucibus ornare.
+10/26/2021:  Vel risus commodo viverra maecenas accumsan lacus vel facilisis volutpat.
+10/27/2021:  Eu consequat ac felis donec et odio.
+10/28/2201 thru 10/29/2021:  Accumsan sit amet nulla facilisi morbi tempus iaculis.
+10/30/2021:  Purus semper eget duis at tellus."
+157,10/24/2021,10/30/2021,"10/24/2021:  Semper quis lectus nulla at volutpat diam ut venenatis.
+10/25/2021:  Cursus turpis massa tincidunt dui ut ornare lectus sit.
+10/26/2021:  Tortor dignissim convallis aenean et tortor.
+10/27/2021:  Pellentesque eu tincidunt tortor aliquam nulla.
+10/28/2201 thru 10/29/2021:  Ac orci phasellus egestas tellus rutrum tellus.
+10/30/20201:  Amet risus nullam eget felis eget nunc lobortis."
+158,11/28/2021,12/3/2021,"11/28/2021:  Aliquam ut porttitor leo a.
+11/29/2201:  Curabitur vitae nunc sed velit dignissim sodales.
+11/30/2021:  Pretium viverra suspendisse potenti nullam ac.
+12/01/2021:  Sed viverra tellus in hac habitasse platea dictumst vestibulum.
+12/02/2021:  Purus ut faucibus pulvinar elementum integer enim neque volutpat.
+12/03/2021:  Vitae ultricies leo integer malesuada nunc vel."
+159,10/3/2021,10/3/2021,10/3:  Porta lorem mollis aliquam ut porttitor leo a.
+160,12/26/2021,1/1/2022,"12.26 - 1-1 -2022 
+Habitasse platea dictumst vestibulum rhoncus est pellentesque elit ullamcorper.
+Thursday, December 30, 2021 1:41 PM
+- Turpis massa sed elementum tempus egestas sed sed risus since 12/26/21. Nascetur ridiculus mus mauris vitae ultricies leo.
+Tuesday, December 28, 2021 8:41 AM
+- Cursus eget nunc scelerisque viverra mauris in aliquam sem.
+Eget est lorem ipsum dolor sit amet consectetur adipiscing elit."
+161,12/19/2021,12/25/2021,"12/19 - 12/25 Maecenas volutpat blandit aliquam etiam erat velit scelerisque in dictum.
+Vitae semper quis lectus nulla at volutpat diam ut."
+162,7/18/2021,7/24/2021,7-18 thru 7-24: Arcu dictum varius duis at consectetur.
+163,12/12/2021,12/18/2021,"12/12 - 12/18 
+Enim blandit volutpat maecenas volutpat blandit aliquam etiam erat velit.
+.	Aliquam etiam erat velit scelerisque in dictum non consectetur a.
+.	Vitae semper quis lectus nulla at."
+164,10/24/2021,10/30/2021,"10/24/2021 - Eget magna fermentum iaculis eu non diam.
+10/25/2021 - Amet facilisis magna etiam tempor orci eu lobortis elementum.
+10/26/2021 - Cras fermentum odio eu feugiat pretium nibh ipsum.
+10/27/2021 - Eu consequat ac felis donec.
+10/27/2021 - 10/30/2021 -Urna et pharetra pharetra massa massa ultricies mi."
+165,6/20/2021,6/26/2021,"06/20/2021: Vitae proin sagittis nisl rhoncus mattis rhoncus.
+06/21/2021: Sed sed risus pretium quam vulputate dignissim suspendisse.
+06/22/2021: Sit amet nisl purus in.
+06/23/2021: Ut pharetra sit amet aliquam id diam maecenas ultricies mi.
+06/24/2021: Nisl purus in mollis nunc sed.
+Note: On 06/24/2021 at 22:08 hrs, quis eleifend quam adipiscing vitae proin sagittis nisl rhoncus mattis.
+06/25/2021:Maecenas volutpat blandit aliquam etiam erat.
+06/26/2021: Erat nam at lectus urna duis convallis."
+166,12/5/2021,12/11/2021,"Enim tortor at auctor urna nunc id cursus metus.
+12/05/2021 -12/11/2021 
+12/05/2021 - Volutpat maecenas volutpat blandit aliquam etiam erat velit scelerisque.
+12/06/2021 - 12/09/2021 - Elit ullamcorper dignissim cras tincidunt lobortis feugiat vivamus at augue.
+12/10/2021 - Ipsum suspendisse ultrices gravida dictum fusce ut placerat.
+12/11/2021- Est ultricies integer quis auctor.                                                                                                                                                  "
+167,5/2/2021,5/8/2021,"************************************************CORRECTION REPORT************************************************
+05-06-2021 - Maecenas sed enim ut sem viverra aliquet eget.
+****************************** 11/3/2021**************************************************************
+*NOTE: Phasellus vestibulum lorem sed risus ultricies tristique nulla aliquet.
+5/2/2021 -  Enim nec dui nunc mattis enim ut tellus elementum sagittis.
+5/3/2021 - Facilisi morbi tempus iaculis urna id volutpat lacus laoreet.
+5/4/2021 - Donec adipiscing tristique risus nec feugiat in fermentum posuere urna.
+5/5/2021 -Vitae congue mauris rhoncus aenean vel elit scelerisque mauris.
+5/6/2021 - Est ultricies integer quis auctor elit sed vulputate mi sit.
+5/7/2021 - 5/8/2021 - Purus semper eget duis at tellus at urna."
+168,10/20/2021,10/23/2021,"10/20/2021 thru 09/21/2021:  Enim neque volutpat ac tincidunt vitae semper.
+09/22/2021 thru 09/23/2021:  Dolor sit amet consectetur adipiscing elit duis tristique."
+169,8/29/2021,9/4/2021,At auctor urna nunc id cursus metus aliquam eleifend mi.
+170,11/21/2021,11/21/2021,Amet justo donec enim diam vulputate ut on 11/19.
+171,10/31/2021,11/6/2021,"10/31/2021 - Eros donec ac odio tempor orci dapibus ultrices.
+11/01/2021 - Eu turpis egestas pretium aenean pharetra.
+11/02/2021 - Morbi non arcu risus quis varius quam.
+11/03/2021 - At tellus at urna condimentum mattis.
+11/04 -11/06/2021 - Magna eget est lorem ipsum.
+Vel elit scelerisque mauris pellentesque pulvinar pellentesque habitant morbi tristique: 
+10/31/2021 - Scelerisque eleifend donec pretium vulputate sapien nec sagittis aliquam malesuada.
+11/02/2021 - Nisi lacus sed viverra tellus."
+172,8/8/2021,8/14/2021,"08/08/2021 - Viverra nam libero justo laoreet sit amet cursus.
+08/09/2021 - Volutpat commodo sed egestas egestas fringilla phasellus faucibus scelerisque eleifend.
+08/10/2021 - Maecenas pharetra convallis posuere morbi leo urna molestie at elementum.
+08/11/2021 - Commodo viverra maecenas accumsan lacus vel facilisis.
+08/12/2021- Pharetra diam sit amet nisl suscipit adipiscing.
+08/14/2021 - Natoque penatibus et magnis dis parturient montes nascetur ridiculus.
+Please Note: 
+8/09/2021 - A erat nam at lectus urna on August 11, 2021. 
+08/09/2021 - Velit scelerisque in dictum non consectetur a."
+173,9/12/2021,9/18/2021,"09/12/2021 - Turpis egestas pretium aenean pharetra magna ac placerat.
+09/13/2021- Leo urna molestie at elementum eu facilisis sed.
+09/14/2021 - Pulvinar elementum integer enim neque volutpat ac tincidunt vitae.
+09/15/2021- Mi ipsum faucibus vitae aliquet.
+09/16/2021- Facilisis magna etiam tempor orci eu lobortis elementum nibh tellus.
+09/17/2021- Dolor purus non enim praesent elementum facilisis leo vel fringilla.
+09/18/2021 - Euismod in pellentesque massa placerat duis ultricies lacus sed turpis.
+Verbal Approval: 
+09/13/2021 - Pellentesque pulvinar pellentesque habitant morbi tristique senectus et.
+09/18/2021 - Lorem sed risus ultricies tristique nulla."
+174,8/18/2021,8/19/2021,"8/19/2021 -- Risus in hendrerit gravida rutrum.
+8/13/2021  Rutrum quisque non tellus orci ac auctor augue mauris.
+8/14/2021 - Massa id neque aliquam vestibulum morbi blandit cursus risus."
+175,8/22/2021,8/28/2021,"8/29/2021 - Quisque non tellus orci ac auctor augue mauris.
+8/30/2021 - Quisque non tellus orci ac auctor augue mauris.
+8/31/2021 - Quisque non tellus orci ac auctor augue mauris.
+9/01/2021 - Quisque non tellus orci ac auctor augue mauris.
+9/02/2021 - Quisque non tellus orci ac auctor augue mauris.
+9/03/2021 - Quisque non tellus orci ac auctor augue mauris.
+9/04/2021 - Quisque non tellus orci ac auctor augue mauris."
+176,10/3/2021,10/7/2021,"10/03/2021 thru 10/09/2021:  Nibh nisl condimentum id venenatis a condimentum vitae sapien pellentesque.
+10/07/2021:  Posuere morbi leo urna molestie at elementum.
+**Note:  On September 17, 2021, facilisis gravida neque convallis a cras semper auctor neque vitae.
+Cursus sit amet dictum sit amet.
+Sem viverra aliquet eget sit amet tellus cras adipiscing."
+177,8/17/2021,8/21/2021,"08/15/2021: In fermentum posuere urna nec tincidunt.
+Note: On Sunday, August 15, 2021 8:18 AM, lacus sed viverra tellus in hac habitasse platea dictumst vestibulum.
+08/16/2021: Pellentesque id nibh tortor id aliquet lectus proin nibh nisl.
+08/17/2021: Ornare quam viverra orci sagittis eu volutpat odio facilisis.
+08/18/2021: Nibh sit amet commodo nulla facilisi nullam vehicula.
+08/19/2021: Euismod in pellentesque massa placerat duis ultricies lacus sed.
+08/20/2021: Tincidunt augue interdum velit euismod in pellentesque massa placerat duis.
+08/21/2021: Massa ultricies mi quis hendrerit."
+178,10/17/2021,10/17/2021,10/17/2021 - Scelerisque mauris pellentesque pulvinar pellentesque habitant morbi until March or April of 2022. 
+179,11/14/2021,11/14/2021,11/14/2021: Gravida cum sociis natoque penatibus et magnis.
+180,2/23/2021,2/27/2021,"02/23/2021: Libero nunc consequat interdum varius.
+NOTE: Lacus luctus accumsan tortor posuere ac.
+02/24/2021: Egestas erat imperdiet sed euismod nisi porta lorem.
+02/25/2021: Vitae turpis massa sed elementum tempus egestas.
+02/26/2021: Est ullamcorper eget nulla facilisi etiam dignissim diam quis enim.
+02/27/2021: Est ullamcorper eget nulla facilisi etiam dignissim diam quis enim.
+ "
+181,8/22/2021,8/28/2021,"8/22/2021 - Vulputate odio ut enim blandit volutpat maecenas volutpat.
+8/23/2021 - Ipsum dolor sit amet consectetur.
+8/24/2021 - Metus vulputate eu scelerisque felis imperdiet proin fermentum leo.
+8/25/2021 - Erat imperdiet sed euismod nisi porta.
+8/27/2021 - Blandit libero volutpat sed cras ornare arcu dui vivamus arcu.
+8/28/2021 - Ac felis donec et odio."
+182,12/12/2021,12/18/2021,"Est lorem ipsum dolor sit amet consectetur Sun - 12/12/21 -A pellentesque sit amet porttitor eget.
+Mon - 12/13/21 - Aliquet enim tortor at auctor urna nunc id cursus metus.
+Tues - 12/14/21- Tellus elementum sagittis vitae et leo.
+Wed - 12/15/21 - Malesuada fames ac turpis egestas integer eget aliquet.
+Thurs - 12/16/21 - Aliquam sem fringilla ut morbi tincidunt.
+Fri - 12/17/21 - Gravida quis blandit turpis cursus in hac habitasse platea.
+Sat - 12/18/21 - Varius morbi enim nunc faucibus."

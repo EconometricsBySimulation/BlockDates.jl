@@ -1,8 +1,12 @@
 # cd("E:/WAR_processing/SoftDates")
-# using Pkg
-# Pkg.activate(".")
+using Pkg
+Pkg.activate(".")
 
-include("E:/WAR_processing/SoftDates/src/SoftDates.jl")
+include("../src/BlockDates.jl")
+
+using Main.BlockDates, Dates, DataFrames
+
+using Main.BlockDates: replacemonth, removedays, removestopwords, removecommonprefix, removejoiner, range1, range2, rangeSub1, rangeSub2, rangeYearMiss1, rangeYearMiss2, rangeMonthMiss1, rangeMissYearFirst1, rangeMissYearFirst2, rangeMissFirstMonth1, rangeInText1, rangeInText2, single0, single1, single2, single3, single4, singleInText1, singleInText2, cleanDate, DateMod, formatRange, formatSingle
 
 using Test
 
@@ -11,11 +15,12 @@ using Test
 
 @test dateformat2regex("y d m") == 
     "(?:[12][0-9]|20[12][0-9]) (?:[1-3][0-9]|[0]?[1-9]) (?:[1][0-9]|[0]?[1-9])"
+
 @test dateformat2regex("y d m") == 
     "(?:[12][0-9]|20[12][0-9]) (?:[1-3][0-9]|[0]?[1-9]) (?:[1][0-9]|[0]?[1-9])"
 
 # Requires exact number for match
-dateformat2regex("y d m This is something") == 
+@test dateformat2regex("y d m This is something") == 
     "(?:[12][0-9]|20[12][0-9]) (?:[1-3][0-9]|[0]?[1-9]) (?:[1][0-9]|[0]?[1-9]) This is something"
 
 @test replacemonth("Jan") == "1"
@@ -153,4 +158,3 @@ x = formatSingle("23213 1212 321 No date found", singleformat=1)
 
 @test formatSingle("27-DEC-2020: ipsum lorem lorem", singleformat = 2)[1, :scoremod] ==  5
 
-include("src/SoftDates.jl")

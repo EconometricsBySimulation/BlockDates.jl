@@ -590,6 +590,7 @@ function textToBlock(txtsplit::Array{String};
     return outframe[strip.(outframe.text) .!= "", :]
 end
 
+
 """
     spreadOverNonDates(inframe)
 
@@ -611,7 +612,7 @@ function spreadOverNonDates(inframe)
       (inframe[i, :date] == Date(0)) && 
           (inframe[i, [:block, :date]]  = inframe[i-1, [:block, :date]])
     end
-  
+
     # Grab next date if current date is missing
     for i in (size(inframe,1)-1):-1:1
       (inframe[i, :date] == Date(0)) && 
@@ -619,8 +620,8 @@ function spreadOverNonDates(inframe)
     end
       
     # Combine text across the block
-    @pipe DataFramesMeta.groupby(inframe , :block) |> 
-      @transform(_, :text = join(unique(:text), " \n "))
+    inframe = @pipe DataFramesMeta.groupby(inframe , :block) |> 
+                @transform(_, :text = join(unique(:text), " \n "))
   
     # Drop anything that started with date == Date(0) ie missing
     inframe = inframe[(inframe.date0 .!= Date(0)) .| (inframe.date .== Date(0)), 
@@ -725,23 +726,18 @@ end
 function fixBlock(inframe::DataFrame; dtstart = Date(0), dtend   = Date(0))
 
     outframe = copy(inframe)
-  # println(outframe)
       
     outframe = scoreDatesOutside!(outframe, dtstart = dtstart, dtend = dtend)
   # println("outframe = scoreDatesOutside!(outframe, dtstart = dtstart, dtend = dtend)")  
-  # println(outframe)
       
     outframe = dropBadMatches(outframe)
   # println("outframe = dropBadMatches(outframe)")  
-  # println(outframe)
       
     outframe = spreadOverNonDates(outframe)
   # println("outframe = spreadOverNonDates(outframe)")  
-  # println(outframe)
   
     outframe = joinDuplicateDates(outframe)
   # println("outframe = joinDuplicateDates(outframe)")  
-  # println(outframe)
       
     (dtstart != Date(0)) && (outframe = fillMissing(outframe, dtstart, dtend))
       
@@ -787,7 +783,6 @@ function scoreBlock(inframe; dtstart = Date(0), dtend = Date(0))
     return inframe
 end
 
-
 """
     softdate(txtin; dtstart = Date(0), dtend = Date(0),
         splits          = r"[\n\r]+",
@@ -812,8 +807,8 @@ function blockdate(txtin; dtstart = Date(0), dtend = Date(0),
     for s in 1:singleformats, r in 1:rangeformats
 
     outframe = @pipe textToBlock(txtSplit, singleformat = s, rangeformat  = r, defaultdate = dtstart) |>
-    fixBlock(_, dtstart = dtstart, dtend = dtend)  |>
-    scoreBlock(_, dtstart = dtstart, dtend = dtend)
+                     fixBlock(  _, dtstart = dtstart, dtend = dtend)  |>
+                     scoreBlock(_, dtstart = dtstart, dtend = dtend)
 
     if (outframe.score[1] > scoreMax)
     outframe[!, :singleformat] .= s
