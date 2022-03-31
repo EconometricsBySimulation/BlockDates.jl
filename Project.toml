@@ -1,5 +1,5 @@
-name = "SoftDates"
-uuid = "40bb21cb-f0a6-4fd7-824c-565ec25acab6"
+name = "BlockDates"
+uuid = "c90da8c0-b148-11ec-1a7e-43a2532b2fa8"
 authors = ["Francis.Smart <francis.smart@gmail.com>"]
 version = "0.1.0"
 
