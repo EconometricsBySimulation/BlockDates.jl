@@ -1,6 +1,6 @@
 module BlockDates
 
-export blockdates,
+export blockdate,
        dateformat2regex,
        replacemonth, 
        removedays, 
@@ -723,6 +723,16 @@ function dropBadMatches(inframe::DataFrame, dropscore = -15)
     return inframe
 end
 
+"""
+    fixBlock(inframe::DataFrame; dtstart = Date(0), dtend   = Date(0))
+
+    inframe : a dataframe produced by `textToBlock` textToBlock
+    dtstart : start date
+    dtend   : end date
+
+    Applies functions scoreDatesOutside!, dropBadMatches, spreadOverNonDates, joinDuplicateDates, and fillMissing to inframe.
+
+"""
 function fixBlock(inframe::DataFrame; dtstart = Date(0), dtend   = Date(0))
 
     outframe = copy(inframe)
@@ -784,20 +794,30 @@ function scoreBlock(inframe; dtstart = Date(0), dtend = Date(0))
 end
 
 """
-    softdate(txtin; dtstart = Date(0), dtend = Date(0),
-        splits          = r"[\n\r]+",
+    blockdate(
+        txtin; 
+        dtstart         = Date(0), 
+        dtend           = Date(0),
+        splits          = r\"[\\n\\r]+\",
         singleformats   = length(singleset),
         rangeformats    = length(rangeset),
-        targetScore     = 28,
+        targetScore     = 5,
         verbose         = false)
 
-Split the text
+        txtin         : Text block unput into blockdates
+        dtstart       : Start date of dates
+        dtend         : End date of dates  
+        splits        : Defines the character used to split the input text. Default is line breaks    
+        singleformats : Single formats allowed integers
+        rangeformats  : Range formats allowed integers
+        targetScore   : Cut score considered good enough
+        verbose       : Provide extra feedback
 """
 function blockdate(txtin; dtstart = Date(0), dtend = Date(0),
     splits          = r"[\n\r]+",
     singleformats   = length(singleset),
     rangeformats    = length(rangeset),
-    targetScore     = 28,
+    targetScore     = 5,
     verbose         = false)
 
     scoreMax, outframeMax = -999, DataFrame()
@@ -811,13 +831,13 @@ function blockdate(txtin; dtstart = Date(0), dtend = Date(0),
                      scoreBlock(_, dtstart = dtstart, dtend = dtend)
 
     if (outframe.score[1] > scoreMax)
-    outframe[!, :singleformat] .= s
-    outframe[!, :rangeformat]  .= r   
-    scoreMax, outframeMax = outframe.score[1], outframe
-    verbose && (@show outframeMax)
+        outframe[!, :singleformat] .= s
+        outframe[!, :rangeformat]  .= r   
+        scoreMax, outframeMax = outframe.score[1], outframe
+        verbose && (@show outframeMax)
 
-    (scoreMax >= targetScore) && verbose &&
-    (println("targetScore ($targetScore) achieved."); break)
+        (scoreMax >= targetScore) && verbose &&
+        (println("targetScore ($targetScore) achieved."); break)
     end
 
     end

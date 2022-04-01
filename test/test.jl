@@ -1,12 +1,12 @@
 # cd("E:/WAR_processing/SoftDates")
-using Pkg
-Pkg.activate(".")
+# using Pkg
+# Pkg.activate(".")
 
-include("../src/BlockDates.jl")
+# include("../src/BlockDates.jl")
 
 using Main.BlockDates, Dates, DataFrames
 
-using Main.BlockDates: replacemonth, removedays, removestopwords, removecommonprefix, removejoiner, range1, range2, rangeSub1, rangeSub2, rangeYearMiss1, rangeYearMiss2, rangeMonthMiss1, rangeMissYearFirst1, rangeMissYearFirst2, rangeMissFirstMonth1, rangeInText1, rangeInText2, single0, single1, single2, single3, single4, singleInText1, singleInText2, cleanDate, DateMod, formatRange, formatSingle
+using Main.BlockDates: dateformat2regex, replacemonth, removedays, removestopwords, removecommonprefix, removejoiner, range1, range2, rangeSub1, rangeSub2, rangeYearMiss1, rangeYearMiss2, rangeMonthMiss1, rangeMissYearFirst1, rangeMissYearFirst2, rangeMissFirstMonth1, rangeInText1, rangeInText2, single0, single1, single2, single3, single4, singleInText1, singleInText2, cleanDate, DateMod, formatRange, formatSingle
 
 using Test
 
@@ -157,4 +157,17 @@ x = formatSingle("23213 1212 321 No date found", singleformat=1)
 @test formatSingle("21 30 06 ", singleformat = 4)[1,:date] == Date("2021-06-30")
 
 @test formatSingle("27-DEC-2020: ipsum lorem lorem", singleformat = 2)[1, :scoremod] ==  5
+
+txt = """
+03/14/2022 went for a walk
+and a stroll
+
+03/15 went sky diving
+
+03/16/2022 went fishing
+"""
+txtout = blockdate(txt; dtstart = Date("2022-03-14"), dtend = Date("2022-03-16"))
+
+@test size(txtout, 1)   == 3
+@test txtout[1, :score] == 2.0
 
